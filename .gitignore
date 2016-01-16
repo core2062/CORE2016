@@ -37,8 +37,6 @@ ehthumbs.db
 Thumbs.db
 Debug/
 Simulate/
-.project
 sysProps.xml
 *.cproject
 .settings/
-*.project
