@@ -27,7 +27,6 @@ void JoystickCache::register_button(controllerInputs name, int joystick, int but
 	old_buttons.insert(b_cache::value_type(name, false));
 }
 
-
 void JoystickCache::update_cache(void){
 	j_map::iterator it;
 	cached_axes.clear();

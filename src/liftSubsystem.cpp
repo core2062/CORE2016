@@ -15,15 +15,16 @@
 		liftMotor.Set(0);
 		liftMotor.SetExpiration(0.25);
 		robot.outLog.appendLog("LiftSubsystem: TeleopInit Success");
-
+		robot.joystick.register_axis(LIFT_AXIS, 2, 1);
+		liftPID = new COREPID(0,0,0);
 	}
 	void LiftSubsystem::teleop(void){
-
-
+		liftPID->calculate();
+		if(robot.joystick.axis(LIFT_AXIS) != 0) {
+			liftMotor.Set(robot.joystick.axis(LIFT_AXIS));
+		}
+		else if(robot.joystick.button(LIFT_LEVEL1)){
+			liftPID->setPoint(liftHeight.LEVEL1);
+			liftMotor.Set(liftPID->getOutput());
+		}
 	}
-
-
-
-
-
-

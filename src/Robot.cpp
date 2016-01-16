@@ -30,15 +30,9 @@ public:
 		robot.add(vision);
 	}
 
-
-
-
-
 	void RobotInit() {
 		robot.robotInit();
 	}
-
-
 
 	void Autonomous()
 	{
@@ -50,9 +44,7 @@ public:
 			autoControl.iter();
 			Wait(robot.getLoopWait());
 		}
-
 	}
-
 
 	void OperatorControl()
 	{
@@ -68,7 +60,6 @@ public:
 		}
 		robot.teleopEnd();
 	}
-
 	void Test()
 	{
 	}

@@ -17,29 +17,21 @@ using namespace CORE;
 class LiftSubsystem : public CORESubsystem {
 public:
 	CANTalon liftMotor;
-
-
+	Encoder liftEncoder;
+	COREPID *liftPID;
 	LiftSubsystem(CORERobot& robot):
 		CORESubsystem(robot),
-		liftMotor(14)
+		liftMotor(14),
+		liftEncoder(-1)
 	{
 		robot.motorMap.insert(std::pair<motors,CANSpeedController*>(motors::LIFT_MOTOR,&liftMotor));
 //		robot.digitalSensorMap.insert(std::pair<digitalSensors,DigitalInput*>(digitalSensors::BOT_LIFT_LIMIT,&bottomLimit));
 //		robot.digitalSensorMap.insert(std::pair<digitalSensors,DigitalInput*>(digitalSensors::TOP_LIFT_LIMIT,&topLimit));
-
 	}
-
 	void robotInit(void);
 	void teleopInit(void);
 	void teleop(void);
 	std::string name(){return "Lift";}
-
-
-
-
-
 };
-
-
 
 #endif /* SRC_SUBSYSTEMS_LIFTSUBSYSTEM_H_ */
