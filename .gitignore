@@ -38,8 +38,7 @@ Thumbs.db
 Debug/
 Simulate/
 .project
-*.xml
 sysProps.xml
 *.cproject
-build.xml
 .settings/
+*.project
