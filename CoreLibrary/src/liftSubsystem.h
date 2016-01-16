@@ -16,25 +16,16 @@ using namespace CORE;
 
 class LiftSubsystem : public CORESubsystem {
 public:
-	DigitalInput bottomLimit;
-	DigitalInput topLimit;
 	CANTalon liftMotor;
 
 
-
-
-	bool bottomLatch = false;
-	bool topLatch = true;
-
 	LiftSubsystem(CORERobot& robot):
 		CORESubsystem(robot),
-		bottomLimit(0),
-		topLimit(1),
 		liftMotor(14)
 	{
 		robot.motorMap.insert(std::pair<motors,CANSpeedController*>(motors::LIFT_MOTOR,&liftMotor));
-		robot.digitalSensorMap.insert(std::pair<digitalSensors,DigitalInput*>(digitalSensors::BOT_LIFT_LIMIT,&bottomLimit));
-		robot.digitalSensorMap.insert(std::pair<digitalSensors,DigitalInput*>(digitalSensors::TOP_LIFT_LIMIT,&topLimit));
+//		robot.digitalSensorMap.insert(std::pair<digitalSensors,DigitalInput*>(digitalSensors::BOT_LIFT_LIMIT,&bottomLimit));
+//		robot.digitalSensorMap.insert(std::pair<digitalSensors,DigitalInput*>(digitalSensors::TOP_LIFT_LIMIT,&topLimit));
 
 	}
 
