@@ -15,13 +15,19 @@ enum motors{
 	LIFT_MOTOR
 };
 
+enum struct liftHeights {
+		LEVEL1 = 0,
+		LEVEL2 = 12
+};
 
 enum controllerInputs{
 	LIFT_AXIS,
 	DRIVE_Y,
 	DRIVE_X,
 	DRIVE_ROT,
-	DRIVE_SPEED
+	DRIVE_SPEED,
+	LIFT_LEVEL1,
+	LIFT_LEVEL2
 };
 
 enum digitalSensors{

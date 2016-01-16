@@ -33,7 +33,6 @@ public:
 		PID2.mistake.reserve(integralAccuracy);
 		PID2.mistake[1] = 0;
 		PID.timer.Reset();
-		PID.timer.Start();
 	}
 	void calculate(int profile = 1);
 	void setPoint(double setPoint);
