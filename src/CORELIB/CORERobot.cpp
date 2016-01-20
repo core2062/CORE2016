@@ -103,7 +103,7 @@ double CORERobot::getLoopWait(){
 	loopTimer.Reset();
 	return loopTime;
 }
-void CORERobot::link()
+// void CORERobot::link()
 
 
 

@@ -21,19 +21,19 @@ public:
 //		CANSpeedController::ControlMode mode = CANSpeedController::kVoltage;
 
 		// Drive Motors
-		CANTalon frontLeft;
-		CANTalon backLeft;
-		CANTalon frontRight;
-		CANTalon backRight;
+		Jaguar frontLeft;
+		Jaguar backLeft;
+		Jaguar frontRight;
+		Jaguar backRight;
 
 
 	std::string name(void);
 	DrivePickupSubsystem(CORERobot& robot):
 		CORESubsystem(robot),
 		frontLeft(13),
-		backLeft(12),
-		frontRight(10),
-		backRight(11)
+		backLeft(14),
+		frontRight(20),
+		backRight(16)
 
 		{
 			//start false to avoid error
