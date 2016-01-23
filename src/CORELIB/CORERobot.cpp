@@ -80,15 +80,19 @@ void CORESubsystem::teleopInit(void){
 void CORESubsystem::teleop(){
 	printf("Unimplemented teleop function\n");
 }
-void CORERobot::addMotor(motors motors,CANSpeedController* motor){
-	motorMap[motors] = motor;
+void CORERobot::link(motors motorKey,CANSpeedController* motor){
+	motorMap.insert(std::pair<motors,CANSpeedController*>(motorKey,motor));
 }
-void CORERobot::addDigitalSensor(digitalSensors digitalSensors,DigitalInput* sensor){
-	digitalSensorMap[digitalSensors] = sensor;
+void CORERobot::link(digitalSensors digitalSensorKey,DigitalInput* sensor){
+	digitalSensorMap.insert(std::pair<digitalSensors,DigitalInput*>(digitalSensorKey, sensor));
 }
-void CORERobot::addAnalogSensor(analogSensors analogSensors,AnalogInput* sensor){
-	analogSensorMap[analogSensors] = sensor;
+void CORERobot::link(analogSensors analogSensorKey,AnalogInput* sensor){
+	analogSensorMap.insert(std::pair<analogSensors,AnalogInput*>(analogSensorKey, sensor));
 }
+void CORERobot::link(pneumatics pneumaticKey, DoubleSolenoid* cylinder){
+	pneumaticMap.insert(std::pair<pneumatics,DoubleSolenoid*>(pneumaticKey, cylinder));
+}
+
 double CORERobot::getLoopWait(){
 	if (!loopStarted){
 		loopTimer.Reset();
