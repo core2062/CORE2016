@@ -37,7 +37,7 @@ public:
 	void teleopInit(void);
 	void teleop(void);
 	std::string name(){return "Lift";}
-	void changePickupState(liftHeights level);
+	void changeLiftHeight(liftHeights level);
 };
 
 #endif /* SRC_SUBSYSTEMS_LIFTSUBSYSTEM_H_ */

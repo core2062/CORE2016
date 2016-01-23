@@ -21,10 +21,12 @@ void DrivePickupSubsystem::teleopInit(void){
 	backLeft.SetSafetyEnabled(true);
 	frontRight.SetSafetyEnabled(true);
 	backRight.SetSafetyEnabled(true);
+	pickupMotor.SetSafetyEnabled(true);
 	frontLeft.Set(0.0);
 	backLeft.Set(0.0);
 	frontRight.Set(0.0);
 	backRight.Set(0.0);
+	pickupMotor.Set(0.0);
 
 }
 
@@ -35,22 +37,16 @@ void DrivePickupSubsystem::teleop(void){
 	bool pickupOn = false;
 	bool cycleLift = false;
 
-
-
-//	double drive_rotation = robot.joystick.axis(controllerInputs::DRIVE_ROT);
 //Simple Dead-banding
-		if (drive_x < 0.05 && drive_x > -.05){
-			drive_x = 0;
-		}
+	if (drive_x < 0.05 && drive_x > -.05){
+		drive_x = 0;
+	}
 	if (drive_y < .05 && drive_y > -.05){
 		drive_y = 0;
 	}
 	drive_y *= -1;
-//	if (drive_rotation < .05 && drive_rotation > -.05){
-//		drive_rotation = 0;
-//	}
 
-
+ // Arcade Dive //
 	double maxPercent = 1;
 	double maxMotorSpeed = .99;
 
@@ -76,7 +72,13 @@ void DrivePickupSubsystem::teleop(void){
 		backRight.Set(drive_y-drive_x);
 	}
 
-	}
+	// AutoPickup //
+//	double angleTollerance = 3;
+//	if(autoPickupButton == true){
+//		if(vision->angleError(LEFT))
+//	}
+
+}
 
 void DrivePickupSubsystem::teleopEnd(void){
 	robot.outLog.appendLog("drive tele end");
@@ -90,11 +92,14 @@ void DrivePickupSubsystem::teleopEnd(void){
 	backRight.Set(0.0);
 }
 
-void DrivePickupSubsystem::bolderAlign(int lError, int rError){
+void DrivePickupSubsystem::bolderAlign(double lError, double rError, double distAway){
 
 	//need's to be written!!
 
 }
 
+void DrivePickupSubsystem::setPickupSpeed(double speed){
+	pickupMotor.Set(speed);
+}
 
 
