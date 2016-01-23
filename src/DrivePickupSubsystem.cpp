@@ -11,6 +11,7 @@ void DrivePickupSubsystem::robotInit(void){
 	robot.outLog.appendLog("DriveSubsystem: RobotInit Success");
 	robot.joystick.register_axis(DRIVE_X, 1, 4);
 	robot.joystick.register_axis(DRIVE_Y, 1, 5);
+	robot.joystick.register_button(AUTO_PICKUP, 2, 8);
 }
 void DrivePickupSubsystem::teleopInit(void){
 	robot.outLog.appendLog("DriveSubsystem: TeleopInit Success");
@@ -30,8 +31,11 @@ void DrivePickupSubsystem::teleopInit(void){
 void DrivePickupSubsystem::teleop(void){
 	double drive_y = robot.joystick.axis(controllerInputs::DRIVE_Y);
 	double drive_x = robot.joystick.axis(controllerInputs::DRIVE_X);
-	double maxPercent = 1;
-	double maxMotorSpeed = .99;
+	bool autoPickupButton = robot.joystick.button(controllerInputs::AUTO_PICKUP);
+	bool pickupOn = false;
+	bool cycleLift = false;
+
+
 
 //	double drive_rotation = robot.joystick.axis(controllerInputs::DRIVE_ROT);
 //Simple Dead-banding
@@ -46,6 +50,9 @@ void DrivePickupSubsystem::teleop(void){
 //		drive_rotation = 0;
 //	}
 
+
+	double maxPercent = 1;
+	double maxMotorSpeed = .99;
 
 	if((drive_y+drive_x) >= maxPercent){
 		frontLeft.Set(maxMotorSpeed);
@@ -82,3 +89,12 @@ void DrivePickupSubsystem::teleopEnd(void){
 	backLeft.Set(0.0);
 	backRight.Set(0.0);
 }
+
+void DrivePickupSubsystem::bolderAlign(int lError, int rError){
+
+	//need's to be written!!
+
+}
+
+
+

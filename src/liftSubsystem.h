@@ -12,16 +12,19 @@
 #include "CORELIB/COREPID.h"
 #include "WPILib.h"
 #include <string>
+#include "DrivePickupSubsystem.h"
 
 using namespace CORE;
 
 class LiftSubsystem : public CORESubsystem {
 public:
+	DrivePickupSubsystem* drive;
 	CANTalon liftMotor;
 	COREPID liftPID;
 
-	LiftSubsystem(CORERobot& robot):
+	LiftSubsystem(CORERobot& robot, DrivePickupSubsystem& drive):
 		CORESubsystem(robot),
+		drive(&drive),
 		liftMotor(14),
 		liftPID(0,0,0)
 
@@ -34,6 +37,7 @@ public:
 	void teleopInit(void);
 	void teleop(void);
 	std::string name(){return "Lift";}
+	void changePickupState(liftHeights level);
 };
 
 #endif /* SRC_SUBSYSTEMS_LIFTSUBSYSTEM_H_ */

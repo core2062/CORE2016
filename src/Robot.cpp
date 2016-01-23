@@ -19,8 +19,8 @@ public:
 	Robot() :
 		robot(),
 		autoControl(robot),
-		lift(robot),
-		drive(robot),
+		lift(robot, drive),
+		drive(robot, vision),
 		shooter(robot),
 		vision(robot)
 	{

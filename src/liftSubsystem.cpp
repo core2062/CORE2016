@@ -29,3 +29,7 @@
 			liftMotor.Set(liftPID.getOutput());
 		}
 	}
+
+	void LiftSubsystem::changePickupState(liftHeights level){
+		liftMotor.Set(level);
+	}

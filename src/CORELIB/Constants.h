@@ -15,7 +15,7 @@ enum motors{
 	LIFT_MOTOR
 };
 
-enum struct liftHeights {
+enum liftHeights {
 		LEVEL1 = 0,
 		LEVEL2 = 12
 };
@@ -27,7 +27,8 @@ enum controllerInputs{
 	DRIVE_ROT,
 	DRIVE_SPEED,
 	LIFT_LEVEL1,
-	LIFT_LEVEL2
+	LIFT_LEVEL2,
+	AUTO_PICKUP
 };
 
 enum digitalSensors{
@@ -38,6 +39,7 @@ enum digitalSensors{
 enum analogSensors{
 
 };
+
 
 /* SMART DASHBOARD CONSTANTS */
 const std::string TESTVALUE = "Test_Value";

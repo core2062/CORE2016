@@ -25,6 +25,12 @@ void VisionSubsystem::teleopInit(void){
 
 void VisionSubsystem::teleop(void){
 
+	///////////////////////////////////////////////////
+	///////                                      //////
+	///////      Camera Angle Calculations       //////
+	///////                                      //////
+	///////////////////////////////////////////////////
+
 	const double cameraFOV = 68.5;
 	const double cameraMountAngle = 10; // Angle center of camera makes with the chassis //
 	const double distBetweenCameras = 10; //In inches //

@@ -7,6 +7,7 @@
 #include <iostream>
 #include <math.h>
 #include <navx2.0/AHRS.h>
+#include "VisionSubsystem.h"
 
 using namespace CORE;
 
@@ -20,6 +21,8 @@ public:
 		CANSpeedController::ControlMode mode = CANSpeedController::kPercentVbus;
 //		CANSpeedController::ControlMode mode = CANSpeedController::kVoltage;
 
+		VisionSubsystem* vision;
+
 		// Drive Motors
 		Jaguar frontLeft;
 		Jaguar backLeft;
@@ -28,8 +31,9 @@ public:
 
 
 	std::string name(void);
-	DrivePickupSubsystem(CORERobot& robot):
+	DrivePickupSubsystem(CORERobot& robot, VisionSubsystem& vision):
 		CORESubsystem(robot),
+		vision(&vision),
 		frontLeft(13),
 		backLeft(14),
 		frontRight(20),
@@ -50,8 +54,8 @@ public:
 	void robotInit(void);
 	void teleopInit(void);
 	void teleop(void);
-
-void teleopEnd(void);
+	void teleopEnd(void);
+	void bolderAlign(int lError, int rError);
 };
 
 
