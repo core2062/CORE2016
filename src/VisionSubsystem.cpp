@@ -31,18 +31,9 @@ void VisionSubsystem::teleop(void){
 	///////                                      //////
 	///////////////////////////////////////////////////
 
-	const double cameraFOV = 68.5;
-	const double cameraMountAngle = 10; // Angle center of camera makes with the chassis //
-	const double distBetweenCameras = 10; //In inches //
-	const int maxXRes = 1280;
+//	int leftCameraXPoint; //need to be supplied this with vision //
+//	int rightCameraXPoint; // need to be supplied this with vision //
 
-	int leftCameraXPoint; //need to be supplied this with vision //
-	int rightCameraXPoint; // need to be supplied this with vision //
-
-	double relativeLeftAngle = 0;
-	double relativeRightAngle = 0;
-	double rightAngleError = 0;
-	double leftAngleError = 0;
 	double precentLeftAngle = leftCameraXPoint/maxXRes;
 	double precentRightAngle = rightCameraXPoint/maxXRes;
 
@@ -74,5 +65,19 @@ void VisionSubsystem::teleopEnd(void){
 	robot.outLog.appendLog("Vision tele end");
 }
 
+double VisionSubsystem::angleError(side motorSide){
+	if(motorSide == LEFT){
+		return leftAngleError;
+	}else if(motorSide == RIGHT){
+		return rightAngleError;
+	}else{
+		return 0;
+	}
+}
+
+double VisionSubsystem::distFromBall(void){
+	 // Calc distance From ball //
+	return (((distBetweenCameras/2)/(sin((180-relativeLeftAngle-relativeRightAngle)/2)))*sin(relativeRightAngle));
+}
 
 

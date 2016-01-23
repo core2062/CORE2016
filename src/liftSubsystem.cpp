@@ -30,6 +30,6 @@
 		}
 	}
 
-	void LiftSubsystem::changePickupState(liftHeights level){
+	void LiftSubsystem::changeLiftHeight(liftHeights level){
 		liftMotor.Set(level);
 	}

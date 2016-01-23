@@ -28,6 +28,7 @@ public:
 		Jaguar backLeft;
 		Jaguar frontRight;
 		Jaguar backRight;
+		Jaguar pickupMotor;
 
 
 	std::string name(void);
@@ -37,7 +38,8 @@ public:
 		frontLeft(13),
 		backLeft(14),
 		frontRight(20),
-		backRight(16)
+		backRight(16),
+		pickupMotor(-1)
 
 		{
 			//start false to avoid error
@@ -45,17 +47,20 @@ public:
 			frontRight.SetSafetyEnabled(false);
 			backLeft.SetSafetyEnabled(false);
 			backRight.SetSafetyEnabled(false);
+			pickupMotor.SetSafetyEnabled(false);
 			frontLeft.Set(0.0);
 			frontRight.Set(0.0);
 			backLeft.Set(0.0);
 			backRight.Set(0.0);
+			pickupMotor.Set(0.0);
 		}
 
 	void robotInit(void);
 	void teleopInit(void);
 	void teleop(void);
 	void teleopEnd(void);
-	void bolderAlign(int lError, int rError);
+	void bolderAlign(double lError, double rError, double distAway);
+	void setPickupSpeed(double speed);
 };
 
 

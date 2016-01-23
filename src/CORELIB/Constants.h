@@ -16,8 +16,14 @@ enum motors{
 };
 
 enum liftHeights {
-		LEVEL1 = 0,
-		LEVEL2 = 12
+	LEVEL1 = 0,
+	LEVEL2 = 12
+};
+enum side {
+	LEFT,
+	RIGHT,
+	UP,
+	DOWN
 };
 
 enum controllerInputs{
@@ -39,6 +45,14 @@ enum digitalSensors{
 enum analogSensors{
 
 };
+
+//  Motor Speed Values //
+const double FORWARD = .99;
+const double OFF = 0;
+const double REVERSE =-.99;
+const double HALF_SPEED = .5;
+const double HALF_SPEED_REVERSE =-.5;
+
 
 
 /* SMART DASHBOARD CONSTANTS */
