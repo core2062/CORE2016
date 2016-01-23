@@ -10,6 +10,8 @@
 #define SRC_CORELIB_CONSTANTS_H_
 
 #include <string>
+#include <tuple>
+
 
 enum motors{
 	LIFT_MOTOR
@@ -40,9 +42,54 @@ enum analogSensors{
 
 };
 
+enum pneumatics{
+
+};
+
 
 /* SMART DASHBOARD CONSTANTS */
 const std::string TESTVALUE = "Test_Value";
+
+const std::tuple<std::string,double> test1("hey",5.3);
+
+ class smartDB{
+public:
+	std::string n;
+	double v = 0.0;
+	bool b = true;
+
+	smartDB(std::string name, double base){
+		n = name;
+		v = base;
+		SmartDashboard::PutNumber(name, base);
+	}
+	smartDB(std::string name, double base, bool put){
+		n = name;
+		v = base;
+		if (put){
+			SmartDashboard::PutNumber(name, base);
+		}
+	}
+	smartDB(std::string name, bool base){
+		n = name;
+		b = base;
+		SmartDashboard::PutBoolean(name, base);
+	}
+	smartDB(std::string name, bool base, bool put){
+		n = name;
+		b = base;
+		if (put){
+			SmartDashboard::PutBoolean(name, base);
+		}
+	}
+
+
+};
+
+ const smartDB rotationPValue("Rotation P", .05);
+
+
+
 
 
 #endif /* SRC_CONSTANTS_H_ */

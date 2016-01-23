@@ -7,6 +7,9 @@
 #include <map>
 #include "CORELIB.h"
 
+
+
+
 namespace CORE {
 
 class CORESubsystem;
@@ -20,6 +23,7 @@ public:
 	std::map<motors,CANSpeedController*> motorMap;
 	std::map<digitalSensors,DigitalInput*> digitalSensorMap;
 	std::map<analogSensors,AnalogInput*> analogSensorMap;
+	std::map<pneumatics, DoubleSolenoid*> pneumaticMap;
 
 
 	JoystickCache joystick;
@@ -45,16 +49,17 @@ public:
 	void teleopInit(void);
 	void teleop(void);
 	void teleopEnd(void);
-	void addMotor(motors motors,CANSpeedController* motor);
-	void addDigitalSensor(digitalSensors digitalSensors,DigitalInput* sensor);
-	void addAnalogSensor(analogSensors analogSensors,AnalogInput* sensor);
+	void link(motors motorKey,CANSpeedController* motor);
+	void link(digitalSensors digitalSensorKey ,DigitalInput* sensor);
+	void link(analogSensors analogSensorKey ,AnalogInput* sensor);
+	void link(pneumatics pneumaticKey , DoubleSolenoid* cylinder);
 
 	double getLoopWait();
 
 	~CORERobot(){
 	}
 
-	void requirePneumatics(void);
+
 };
 
 class CORESubsystem{
