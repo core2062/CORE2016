@@ -5,6 +5,7 @@
  *      Author: core
  */
 #include "VisionSubsystem.h"
+
 std::string VisionSubsystem::name(void){
 	return "Vision";
 }

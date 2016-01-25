@@ -15,6 +15,7 @@ using namespace CORE;
 class DrivePickupSubsystem: public CORESubsystem{
 
 
+		SendableChooser driveChooser;
 
 public:
 
@@ -24,30 +25,39 @@ public:
 		VisionSubsystem* vision;
 
 		// Drive Motors
-		CANTalon frontLeft;
-		CANTalon backLeft;
-		CANTalon frontRight;
-		CANTalon backRight;
-		CANTalon pickupMotor;
+//		CANTalon frontLeft;
+//		CANTalon backLeft;
+//		CANTalon frontRight;
+//		CANTalon backRight;
+//		CANTalon pickupMotor;
+
+		Jaguar frontLeft;
+		Jaguar backLeft;
+		Jaguar frontRight;
+		Jaguar backRight;
+		Jaguar pickupMotor;
+
+
 
 
 	std::string name(void);
-	DrivePickupSubsystem(CORERobot& robot, VisionSubsystem& vision):
+	DrivePickupSubsystem(CORERobot& robot/*, VisionSubsystem& vision*/):
 		CORESubsystem(robot),
-		vision(&vision),
-		frontLeft(13),
-		backLeft(14),
-		frontRight(20),
-		backRight(16),
-		pickupMotor(-1)
+		driveChooser(),
+//		vision(&vision),
+		frontLeft(2),
+		backLeft(1),
+		frontRight(3),
+		backRight(0),
+		pickupMotor(5)
 
 		{
 
-		robot.link(BACK_RIGHT, &backRight);
-		robot.link(BACK_LEFT, &backLeft);
-		robot.link(FRONT_RIGHT, &frontRight);
-		robot.link(FRONT_LEFT, &frontLeft);
-		robot.link(PICKUP, &pickupMotor);
+//		robot.link(BACK_RIGHT, &backRight);
+//		robot.link(BACK_LEFT, &backLeft);
+//		robot.link(FRONT_RIGHT, &frontRight);
+//		robot.link(FRONT_LEFT, &frontLeft);
+//		robot.link(PICKUP, &pickupMotor);
 
 			//start false to avoid error
 			frontLeft.SetSafetyEnabled(false);
@@ -60,6 +70,8 @@ public:
 			backLeft.Set(0.0);
 			backRight.Set(0.0);
 			pickupMotor.Set(0.0);
+			frontRight.SetInverted(true);
+			backRight.SetInverted(true);
 		}
 
 	void robotInit(void);

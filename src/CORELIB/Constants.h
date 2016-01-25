@@ -35,6 +35,7 @@ enum side {
 enum controllerInputs{
 	LIFT_AXIS,
 	DRIVE_MAG,
+	DRIVE_MAG2,
 	DRIVE_ROT,
 	DRIVE_SPEED,
 	LIFT_LEVEL1,
@@ -105,9 +106,7 @@ public:
 
 };
 
- const smartDB rotationPValue("Rotation P", .05);
- const smartDB etherA("Ether A", 1.0);
- const smartDB etherB("Ether B", 0.0);
+
 
 
 

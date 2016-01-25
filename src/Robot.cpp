@@ -9,29 +9,38 @@ using namespace CORE;
 class Robot: public SampleRobot
 {
 	CORERobot robot;
-	AutoControl autoControl;
-	LiftSubsystem lift;
+//	AutoControl autoControl;
+//	LiftSubsystem lift;
 	DrivePickupSubsystem drive;
-	ShooterSubsystem shooter;
-	VisionSubsystem vision;
-
+//	ShooterSubsystem shooter;
+//	VisionSubsystem vision;
+	Timer testTimer;
 public:
 	Robot() :
 		robot(),
-		autoControl(robot),
-		lift(robot, drive),
-		drive(robot, vision),
-		shooter(robot),
-		vision(robot)
+//		autoControl(robot),
+//		lift(robot, drive),
+		drive(robot/*, vision*/),
+//		shooter(robot),
+//		vision(robot),
+		testTimer()
 	{
-		robot.add(lift);
+//		robot.add(lift);
 		robot.add(drive);
-		robot.add(shooter);
-		robot.add(vision);
+//		robot.add(shooter);
+//		robot.add(vision);
 	}
 
 	void RobotInit() {
 		robot.robotInit();
+
+		smartDB rotationPValue("Rotation P", .05);
+		smartDB etherA("Ether A", 1.0);
+		smartDB etherB("Ether B", 0.0);
+
+
+
+
 	}
 
 	void Autonomous()
@@ -41,7 +50,7 @@ public:
 //		autoControl.add(test);
 //		autoControl.init();
 		while (IsAutonomous() and !IsDisabled()) {
-			autoControl.iter();
+//			autoControl.iter();
 			Wait(robot.getLoopWait());
 		}
 	}
@@ -62,6 +71,20 @@ public:
 	}
 	void Test()
 	{
+		testTimer.Reset();
+		testTimer.Start();
+		while (testTimer.Get() <1.0){
+			drive.frontLeft.Set(1);
+			drive.backLeft.Set(1);
+			drive.frontRight.Set(1);
+			drive.backRight.Set(1);
+		}
+		drive.frontLeft.Set(0);
+		drive.backLeft.Set(0);
+		drive.frontRight.Set(0);
+		drive.backRight.Set(0);
+
+
 	}
 };
 
