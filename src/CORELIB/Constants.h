@@ -39,7 +39,13 @@ enum controllerInputs{
 	DRIVE_SPEED,
 	LIFT_LEVEL1,
 	LIFT_LEVEL2,
-	AUTO_PICKUP
+	AUTO_PICKUP,
+	SHOOTER_FIRE,
+	COMBO1,
+	COMBO2,
+	COMBO3,
+	COMBO4,
+	COMBO5
 };
 
 enum digitalSensors{
@@ -60,8 +66,8 @@ const double HALF_SPEED_REVERSE =-.5;
 
 
 enum pneumatics{
-	LEFT_SOLINOID,
-	RIGHT_SOLINOID
+	SHOOTER_LEFT_CYLINDER,
+	SHOOTER_RIGHT_CYLINDER
 };
 
 

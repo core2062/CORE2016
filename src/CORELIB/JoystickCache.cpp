@@ -27,6 +27,13 @@ void JoystickCache::register_button(controllerInputs name, int joystick, int but
 	old_buttons.insert(b_cache::value_type(name, false));
 }
 
+void JoystickCache::register_combo(controllerInputs name, int joystick, int button){
+	register_button(name, joystick, button, NORMAL);
+
+}
+
+
+
 void JoystickCache::update_cache(void){
 	j_map::iterator it;
 	cached_axes.clear();
@@ -58,6 +65,10 @@ double JoystickCache::axis(controllerInputs name){
 
 bool JoystickCache::button(controllerInputs name){
 	return cached_button[name];
+}
+
+bool JoystickCache::combo(controllerInputs name){
+	return (button(COMBO1) && button(COMBO2) && button(name));
 }
 
 Joystick& JoystickCache::get_joystick(int axis){

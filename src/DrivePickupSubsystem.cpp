@@ -18,10 +18,10 @@ std::string DrivePickupSubsystem::name(void){
 void DrivePickupSubsystem::robotInit(void){
 
 	robot.outLog.appendLog("DriveSubsystem: RobotInit Success");
-	robot.joystick.register_axis(DRIVE_ROT, 1, 2);
-	robot.joystick.register_axis(DRIVE_MAG, 1, 1);
-	robot.joystick.register_button(DRIVE_SPEED, 1, 5);
-	robot.joystick.register_button(AUTO_PICKUP, 2, 8);
+	robot.joystick.register_axis(DRIVE_ROT, 0, 2);
+	robot.joystick.register_axis(DRIVE_MAG, 0, 1);
+	robot.joystick.register_button(DRIVE_SPEED, 0, 5);
+	robot.joystick.register_button(AUTO_PICKUP, 1, 8);
 }
 void DrivePickupSubsystem::teleopInit(void){
 	robot.outLog.appendLog("DriveSubsystem: TeleopInit Success");
@@ -41,6 +41,9 @@ void DrivePickupSubsystem::teleopInit(void){
 }
 
 void DrivePickupSubsystem::teleop(void){
+
+	if (!robot.isHybrid){
+
 	double drive_mag = robot.joystick.axis(controllerInputs::DRIVE_MAG);
 	double drive_rot = robot.joystick.axis(controllerInputs::DRIVE_ROT);
 //	drive_mag*=(robot.joystick.button(controllerInputs::DRIVE_SPEED))?1.0:NORMAL_SPEED;
@@ -100,6 +103,19 @@ void DrivePickupSubsystem::teleop(void){
 		}
 	}
 
+	frontLeft.Set(left);
+	backLeft.Set(left);
+	frontRight.Set(right);
+	backRight.Set(right);
+
+
+
+	}else{
+		frontLeft.Set(0);
+		backLeft.Set(0);
+		frontRight.Set(0);
+		backRight.Set(0);
+	}
 
 
 

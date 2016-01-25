@@ -19,7 +19,9 @@ using namespace CORE;
 
 class ShooterSubsystem: public CORESubsystem{
 
-
+	DoubleSolenoid leftShooter;
+	DoubleSolenoid rightShooter;
+	Timer shooterTimer;
 
 public:
 
@@ -29,10 +31,16 @@ public:
 
 	std::string name(void);
 	ShooterSubsystem(CORERobot& robot):
-		CORESubsystem(robot)
+		CORESubsystem(robot),
+		leftShooter(0,1),
+		rightShooter(2,3),
+		shooterTimer()
 
 		{
-
+			leftShooter.Set(DoubleSolenoid::kReverse);
+			rightShooter.Set(DoubleSolenoid::kReverse);
+			robot.link(SHOOTER_LEFT_CYLINDER, &leftShooter);
+			robot.link(SHOOTER_RIGHT_CYLINDER, &rightShooter);
 		}
 
 	void robotInit(void);

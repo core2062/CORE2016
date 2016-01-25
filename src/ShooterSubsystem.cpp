@@ -11,17 +11,29 @@ std::string ShooterSubsystem::name(void){
 }
 
 void ShooterSubsystem::robotInit(void){
-
+	robot.joystick.register_button(SHOOTER_FIRE, 1, 2, JoystickCache::RISING);
 	robot.outLog.appendLog("ShooterSubsystem: RobotInit Success");
 }
 void ShooterSubsystem::teleopInit(void){
 	robot.outLog.appendLog("ShooterSubsystem: TeleopInit Success");
-
+	shooterTimer.Reset();
+	shooterTimer.Start();
 
 }
 
 void ShooterSubsystem::teleop(void){
 
+	if (!robot.isHybrid){
+		if (robot.joystick.button(SHOOTER_FIRE) && shooterTimer.Get() >=2.5){
+			leftShooter.Set(DoubleSolenoid::kForward);
+			rightShooter.Set(DoubleSolenoid::kForward);
+			shooterTimer.Reset();
+		}
+	}
+	if (shooterTimer.Get() >= 1.5){
+		leftShooter.Set(DoubleSolenoid::kReverse);
+		rightShooter.Set(DoubleSolenoid::kReverse);
+	}
 
 	}
 

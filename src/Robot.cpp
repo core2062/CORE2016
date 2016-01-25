@@ -15,11 +15,12 @@ class Robot: public SampleRobot
 	ShooterSubsystem shooter;
 	VisionSubsystem vision;
 
+
 public:
 	Robot() :
 		robot(),
 		autoControl(robot),
-		lift(robot, drive),
+		lift(robot),
 		drive(robot, vision),
 		shooter(robot),
 		vision(robot)

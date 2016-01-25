@@ -47,12 +47,15 @@ public:
 	JoystickCache():
 			joystick1(0),
 			joystick2(1){
-
+			register_button(COMBO1, 0, 9);
+			register_button(COMBO2, 0, 5);
 	}
 
 	void register_axis (controllerInputs name, int joystick, int axis);
 
 	void register_button(controllerInputs name, int joystick, int button);
+
+	void register_combo(controllerInputs name, int joystick, int button);
 
 	void register_button(controllerInputs name, int joystick, int button, Metadata type);
 
@@ -61,6 +64,8 @@ public:
 	double axis(controllerInputs name);
 
 	bool button(controllerInputs name);
+
+	bool combo(controllerInputs name);
 
 	Joystick& get_joystick(int axis);
 

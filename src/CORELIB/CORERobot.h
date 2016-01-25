@@ -30,6 +30,7 @@ public:
 	Log outLog;
 	Timer loopTimer;
 	bool loopStarted = false;
+	bool isHybrid = false;
 //	COREDash CD;
 //	AutoControl autoControl;
 

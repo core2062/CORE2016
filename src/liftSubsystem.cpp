@@ -20,13 +20,18 @@
 
 	}
 	void LiftSubsystem::teleop(void){
+
+
 		liftPID.calculate();
-		if(robot.joystick.axis(LIFT_AXIS) != 0) {
-			liftMotor.Set(robot.joystick.axis(LIFT_AXIS));
-		}
-		else if(robot.joystick.button(LIFT_LEVEL1)){
-			liftPID.setPoint(LIFT_LEVEL1);
-			liftMotor.Set(liftPID.getOutput());
+
+		if (!robot.isHybrid){
+			if(robot.joystick.axis(LIFT_AXIS) != 0) {
+				liftMotor.Set(robot.joystick.axis(LIFT_AXIS));
+			}
+			else if(robot.joystick.button(LIFT_LEVEL1)){
+				liftPID.setPoint(LIFT_LEVEL1);
+				liftMotor.Set(liftPID.getOutput());
+			}
 		}
 	}
 

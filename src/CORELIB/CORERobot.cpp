@@ -31,6 +31,8 @@ void CORERobot::teleopInit(void){
 	outLog.appendLog("--------- Teleop Init---------");
 	outLog.startTime();
 //	outLog.Mode = Log::TELE;
+	joystick.register_combo(COMBO3, 0, 1);
+	joystick.register_combo(COMBO4, 0, 2);
 	std::vector<CORESubsystem*>::iterator it;
 	for(it = subsystems.begin(); it != subsystems.end(); ++it){
 //		cout << "tele init " << (*it)->name() << endl;
@@ -47,6 +49,12 @@ void CORERobot::teleopInit(void){
 void CORERobot::teleop(){
 	std::vector<CORESubsystem*>::iterator it;
 	joystick.update_cache();
+	if (joystick.combo(COMBO3)){
+		isHybrid = false;
+	}
+	if (joystick.combo(COMBO4)){
+		outLog.printLog();
+	}
 	for (it = subsystems.begin(); it != subsystems.end(); ++it){
 //		cout << "teleop " << (*it)->name() << endl;
 		(*it)->teleop();
