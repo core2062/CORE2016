@@ -24,11 +24,11 @@ public:
 		VisionSubsystem* vision;
 
 		// Drive Motors
-		Jaguar frontLeft;
-		Jaguar backLeft;
-		Jaguar frontRight;
-		Jaguar backRight;
-		Jaguar pickupMotor;
+		CANTalon frontLeft;
+		CANTalon backLeft;
+		CANTalon frontRight;
+		CANTalon backRight;
+		CANTalon pickupMotor;
 
 
 	std::string name(void);
@@ -42,6 +42,13 @@ public:
 		pickupMotor(-1)
 
 		{
+
+		robot.link(BACK_RIGHT, &backRight);
+		robot.link(BACK_LEFT, &backLeft);
+		robot.link(FRONT_RIGHT, &frontRight);
+		robot.link(FRONT_LEFT, &frontLeft);
+		robot.link(PICKUP, &pickupMotor);
+
 			//start false to avoid error
 			frontLeft.SetSafetyEnabled(false);
 			frontRight.SetSafetyEnabled(false);

@@ -29,7 +29,8 @@ public:
 		liftPID(0,0,0)
 
 	{
-		robot.motorMap.insert(std::pair<motors,CANSpeedController*>(motors::LIFT_MOTOR,&liftMotor));
+		robot.link(LIFT_MOTOR, &liftMotor);
+//		robot.motorMap.insert(std::pair<motors,CANSpeedController*>(motors::LIFT_MOTOR,&liftMotor));
 //		robot.analogSensorMap.insert(std::pair<analogSensors,AnalogInput*>(analogSensors::liftEncoder,&liftEncoder));
 //		robot.digitalSensorMap.insert(std::pair<digitalSensors,DigitalInput*>(digitalSensors::TOP_LIFT_LIMIT,&topLimit));
 	}

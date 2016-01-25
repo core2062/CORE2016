@@ -16,9 +16,6 @@ class TestAction : public ConditionAction{
 
 public:
 
-//	TestAction(CORERobot& robot, bool (*cond) (void), bool (*endCond) (void)):
-//		Action(robot, cond , endCond)
-//	{}
 	virtual bool startCondition(){
 		return false;
 	}

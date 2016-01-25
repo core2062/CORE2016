@@ -14,7 +14,12 @@
 
 
 enum motors{
-	LIFT_MOTOR
+	LIFT_MOTOR,
+	BACK_RIGHT,
+	BACK_LEFT,
+	FRONT_RIGHT,
+	FRONT_LEFT,
+	PICKUP
 };
 
 enum liftHeights {
@@ -48,7 +53,6 @@ enum analogSensors{
 
 };
 
-<<<<<<< HEAD
 //  Motor Speed Values //
 const double FORWARD = .99;
 const double OFF = 0;
@@ -56,11 +60,12 @@ const double REVERSE =-.99;
 const double HALF_SPEED = .5;
 const double HALF_SPEED_REVERSE =-.5;
 
-=======
-enum pneumatics{
 
+enum pneumatics{
+	LEFT_SOLINOID,
+	RIGHT_SOLINOID
 };
->>>>>>> origin/master
+
 
 
 /* SMART DASHBOARD CONSTANTS */
