@@ -10,7 +10,6 @@
 #define SRC_CORELIB_CONSTANTS_H_
 
 #include <string>
-#include <tuple>
 
 
 enum motors{
@@ -35,8 +34,7 @@ enum side {
 
 enum controllerInputs{
 	LIFT_AXIS,
-	DRIVE_Y,
-	DRIVE_X,
+	DRIVE_MAG,
 	DRIVE_ROT,
 	DRIVE_SPEED,
 	LIFT_LEVEL1,
@@ -57,7 +55,7 @@ enum analogSensors{
 const double FORWARD = .99;
 const double OFF = 0;
 const double REVERSE =-.99;
-const double HALF_SPEED = .5;
+const double NORMAL_SPEED = .5;
 const double HALF_SPEED_REVERSE =-.5;
 
 
@@ -108,7 +106,8 @@ public:
 };
 
  const smartDB rotationPValue("Rotation P", .05);
-
+ const smartDB etherA("Ether A", 1.0);
+ const smartDB etherB("Ether B", 0.0);
 
 
 
