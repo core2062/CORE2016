@@ -51,8 +51,10 @@ void CORERobot::teleop(){
 	joystick.update_cache();
 	if (joystick.combo(COMBO3)){
 		isHybrid = false;
+		outLog.appendLog("Hybrid Mode Manually Disabled");
 	}
 	if (joystick.combo(COMBO4)){
+		outLog.appendLog("Logs Manually Printed");
 		outLog.printLog();
 	}
 	for (it = subsystems.begin(); it != subsystems.end(); ++it){

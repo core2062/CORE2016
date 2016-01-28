@@ -31,6 +31,8 @@ void VisionSubsystem::teleop(void){
 	///////                                      //////
 	///////////////////////////////////////////////////
 
+/*
+ // two camera ball code
 //	int leftCameraXPoint; //need to be supplied this with vision //
 //	int rightCameraXPoint; // need to be supplied this with vision //
 
@@ -56,6 +58,13 @@ void VisionSubsystem::teleop(void){
 	// Determine Angle Error //
 	leftAngleError = relativeLeftAngle - cameraMountAngle; // Positive Error is away from chassis //
 	rightAngleError = relativeRightAngle - cameraMountAngle; // Negative Error is towards chassis //
+*/
+
+std::vector<double> ballXCords = ballTable->GetNumberArray("xCord", llvm::ArrayRef<double>());
+std::vector<double> goalXCords = goalTable->GetNumberArray("xCord", llvm::ArrayRef<double>());
+std::vector<double> ballAreas = ballTable->GetNumberArray("area", llvm::ArrayRef<double>());
+std::vector<double> goalAreas = goalTable->GetNumberArray("area", llvm::ArrayRef<double>());
+
 
 
 
@@ -66,6 +75,7 @@ void VisionSubsystem::teleopEnd(void){
 }
 
 double VisionSubsystem::angleError(side motorSide){
+	/*
 	if(motorSide == LEFT){
 		return leftAngleError;
 	}else if(motorSide == RIGHT){
@@ -73,11 +83,14 @@ double VisionSubsystem::angleError(side motorSide){
 	}else{
 		return 0;
 	}
+	*/
+	return 0;
 }
 
 double VisionSubsystem::distFromBall(void){
 	 // Calc distance From ball //
-	return (((distBetweenCameras/2)/(sin((180-relativeLeftAngle-relativeRightAngle)/2)))*sin(relativeRightAngle));
+	//return (((distBetweenCameras/2)/(sin((180-relativeLeftAngle-relativeRightAngle)/2)))*sin(relativeRightAngle));
+	return 0;
 }
 
 

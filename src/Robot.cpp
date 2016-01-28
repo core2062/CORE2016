@@ -33,6 +33,7 @@ public:
 
 	void RobotInit() {
 		robot.robotInit();
+
 	}
 
 	void Autonomous()

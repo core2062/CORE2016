@@ -19,12 +19,13 @@ using namespace CORE;
 
 class VisionSubsystem: public CORESubsystem{
 
+	std::shared_ptr<NetworkTable> ballTable;
+	std::shared_ptr<NetworkTable> goalTable;
+
+/*	//Camera Error Calc Values //
 	const double cameraFOV = 68.5;
 	const double cameraMountAngle = 10; // Angle center of camera makes with the chassis //
 	const double distBetweenCameras = 10; //In inches //
-	const int maxXRes = 1280;
-
-	//Camera Error Calc Values //
 
 	int leftCameraXPoint = 0; //need to be supplied this with vision //
 	int rightCameraXPoint = 0; // need to be supplied this with vision //
@@ -33,7 +34,7 @@ class VisionSubsystem: public CORESubsystem{
 	double precentLeftAngle = 0;
 	double precentRightAngle = 0;
 	double rightAngleError = 0;
-	double leftAngleError = 0;
+	double leftAngleError = 0;*/
 
 public:
 
@@ -49,7 +50,8 @@ public:
 		CORESubsystem(robot)
 
 		{
-
+			ballTable = NetworkTable::GetTable("Vision/ballReport");
+			goalTable = NetworkTable::GetTable("Vision/goalReport");
 		}
 
 	void robotInit(void);

@@ -28,7 +28,7 @@ void JoystickCache::register_button(controllerInputs name, int joystick, int but
 }
 
 void JoystickCache::register_combo(controllerInputs name, int joystick, int button){
-	register_button(name, joystick, button, NORMAL);
+	register_button(name, joystick, button, RISING);
 
 }
 

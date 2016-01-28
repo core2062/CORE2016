@@ -17,15 +17,33 @@ std::string DrivePickupSubsystem::name(void){
 
 void DrivePickupSubsystem::robotInit(void){
 
+    	try {
+            ahrs = new AHRS(SerialPort::Port::kMXP);
+        } catch (std::exception ex ) {
+            std::string err_string = "Error instantiating navX-MXP:  ";
+            err_string += ex.what();
+            DriverStation::ReportError(err_string.c_str());
+        }
+
 	robot.outLog.appendLog("DriveSubsystem: RobotInit Success");
+}
+void DrivePickupSubsystem::teleopInit(void){
+
+
+    bool is_calibrating = ahrs->IsCalibrating();
+    if ( !is_calibrating ) {
+//        Wait( 0.3 );
+        ahrs->ZeroYaw();
+    }
+
 	robot.joystick.register_axis(DRIVE_ROT, 0, 2);
 	robot.joystick.register_axis(DRIVE_MAG, 0, 1);
 	robot.joystick.register_button(DRIVE_SPEED, 0, 5);
-	robot.joystick.register_button(AUTO_PICKUP, 1, 8);
-}
-void DrivePickupSubsystem::teleopInit(void){
-	robot.outLog.appendLog("DriveSubsystem: TeleopInit Success");
-
+	robot.joystick.register_button(DRIVE_AUTO_PICKUP, 0, 2);
+	robot.joystick.register_button(DRIVE_GOAL, 0 , 1);
+	robot.joystick.register_button(DRIVE_PICKUP_IN, 1, 7);
+	robot.joystick.register_button(DRIVE_PICKUP_OUT, 1, 8);
+	robot.joystick.register_combo(COMBO5, 0, 3);
 
 	frontLeft.SetSafetyEnabled(true);
 	backLeft.SetSafetyEnabled(true);
@@ -38,22 +56,31 @@ void DrivePickupSubsystem::teleopInit(void){
 	backRight.Set(0.0);
 	pickupMotor.Set(0.0);
 
+	robot.outLog.appendLog("DriveSubsystem: TeleopInit Success");
+
 }
 
 void DrivePickupSubsystem::teleop(void){
 
+if (robot.joystick.combo(COMBO5)){
+	ahrs->ZeroYaw();
+	robot.outLog.appendLog("Manual Reset Gyro Yaw");
+}
+
+SmartDashboard::PutNumber(robot.sd.compass.n, ahrs->GetCompassHeading());
+
 	if (!robot.isHybrid){
 
-	double drive_mag = robot.joystick.axis(controllerInputs::DRIVE_MAG);
-	double drive_rot = robot.joystick.axis(controllerInputs::DRIVE_ROT);
-//	drive_mag*=(robot.joystick.button(controllerInputs::DRIVE_SPEED))?1.0:NORMAL_SPEED;
-//	drive_rot*=(robot.joystick.button(controllerInputs::DRIVE_SPEED))?1.0:NORMAL_SPEED;
+	pickupMotor.Set((robot.joystick.button(DRIVE_PICKUP_IN))?PICKUP_SPEED:(robot.joystick.button(DRIVE_PICKUP_OUT))?-PICKUP_SPEED:0.0);
 
-	bool autoPickupButton = robot.joystick.button(controllerInputs::AUTO_PICKUP);
-	bool pickupOn = false;
-	bool cycleLift = false;
 
-//Simple Dead-banding
+	/////////////////////////////////////////
+	//////// FIND AND DEADBAND DRIVE ////////
+	/////////////////////////////////////////
+	double drive_mag = robot.joystick.axis(DRIVE_MAG);
+	double drive_rot = robot.joystick.axis(DRIVE_ROT);
+
+	//Simple Dead-banding
 	if (drive_rot < 0.05 && drive_rot > -.05){
 		drive_rot = 0;
 	}
@@ -62,9 +89,58 @@ void DrivePickupSubsystem::teleop(void){
 	}
 	drive_mag *= -1;
 
- // Arcade Dive //
-	double maxPercent = 1;
-	double maxMotorSpeed = .99;
+	if ((drive_rot == 0) && (oldRot != 0.0)){
+		resetQ = 6;
+	}
+	if (resetQ != 0){
+		if (resetQ == 3){
+			ahrs->ZeroYaw();
+//				gyroPID.setPoint = imu->GetYaw();
+		}
+		resetQ--;
+	}
+	oldRot = drive_rot;
+
+	//////////////////////////////////////
+	///////// VISION DRIVE THINGS ////////
+	//////////////////////////////////////
+	if((drive_rot == 0 && drive_mag == 0)){
+		if(robot.joystick.button(DRIVE_AUTO_PICKUP)){
+
+
+
+
+
+		}else if (robot.joystick.button(DRIVE_GOAL)){
+
+
+
+
+
+		}
+	}
+
+
+
+
+
+	///////////////////////////////////////
+	///////// GYRO CALCULATIONS ///////////
+	///////////////////////////////////////
+		double gyroRate = ahrs->GetYaw();
+		//Gyro PID
+		if((drive_rot==0.0 && resetQ == 0 && !SmartDashboard::GetBoolean("disableGyro",false))){
+			double gyroError =  gyroSet - gyroRate;
+//			SmartDashboard::PutNumber("Gyro PID Error", gyroPID.mistake);
+
+			double gyroOutput = (SmartDashboard::GetNumber(robot.sd.rotationPValue.n, robot.sd.rotationPValue.v)*gyroError);
+//			SmartDashboard::PutNumber("Gyro PID Out before", gyroOutput);
+			gyroOutput = gyroOutput > 1.0 ? 1.0 : (gyroOutput < -1.0 ? -1.0 : gyroOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
+			drive_rot = gyroOutput;
+		}
+			if (drive_rot < .05 && drive_rot > -.05){
+				drive_rot = 0;
+			}
 
 
 
@@ -80,8 +156,8 @@ void DrivePickupSubsystem::teleop(void){
 /////////////////////////////
 	double left;
 	double right;
-	double a = SmartDashboard::GetNumber(etherA.n, etherA.v);
-	double b = SmartDashboard::GetNumber(etherB.n, etherB.v);
+	double a = SmartDashboard::GetNumber(robot.sd.etherA.n, robot.sd.etherA.v);
+	double b = SmartDashboard::GetNumber(robot.sd.etherB.n, robot.sd.etherB.v);
 
 
 	if (drive_mag>=0){
@@ -115,6 +191,7 @@ void DrivePickupSubsystem::teleop(void){
 		backLeft.Set(0);
 		frontRight.Set(0);
 		backRight.Set(0);
+		pickupMotor.Set(0);
 	}
 
 

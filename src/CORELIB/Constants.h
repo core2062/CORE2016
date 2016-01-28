@@ -37,9 +37,12 @@ enum controllerInputs{
 	DRIVE_MAG,
 	DRIVE_ROT,
 	DRIVE_SPEED,
+	DRIVE_GOAL,
+	DRIVE_AUTO_PICKUP,
+	DRIVE_PICKUP_IN,
+	DRIVE_PICKUP_OUT,
 	LIFT_LEVEL1,
 	LIFT_LEVEL2,
-	AUTO_PICKUP,
 	SHOOTER_FIRE,
 	COMBO1,
 	COMBO2,
@@ -57,14 +60,6 @@ enum analogSensors{
 
 };
 
-//  Motor Speed Values //
-const double FORWARD = .99;
-const double OFF = 0;
-const double REVERSE =-.99;
-const double NORMAL_SPEED = .5;
-const double HALF_SPEED_REVERSE =-.5;
-
-
 enum pneumatics{
 	SHOOTER_LEFT_CYLINDER,
 	SHOOTER_RIGHT_CYLINDER
@@ -72,11 +67,24 @@ enum pneumatics{
 
 
 
+
+//  Motor Speed Values //
+const double FORWARD = .99;
+const double OFF = 0;
+const double REVERSE =-.99;
+const double NORMAL_SPEED = .5;
+const double HALF_SPEED_REVERSE =-.5;
+const double PICKUP_SPEED = .85;
+
+//	Vision Things	//
+const int VISION_WIDTH = 640;
+const int VISION_HEIGHT = 480;
+const int VISION_BALL_DISP = 200;
+
+
+
+
 /* SMART DASHBOARD CONSTANTS */
-const std::string TESTVALUE = "Test_Value";
-
-const std::tuple<std::string,double> test1("hey",5.3);
-
  class smartDB{
 public:
 	std::string n;
@@ -111,10 +119,27 @@ public:
 
 };
 
- const smartDB rotationPValue("Rotation P", .05);
- const smartDB etherA("Ether A", 1.0);
- const smartDB etherB("Ether B", 0.0);
+class smartDBValues{
 
+
+public:
+
+	 smartDB rotationPValue;
+	 smartDB etherA;
+	 smartDB etherB;
+	 smartDB blueTowerCompass;
+	 smartDB compass;
+
+
+	 smartDBValues():
+	 rotationPValue(std::string("Rotation P"), .05),
+	 etherA(std::string("Ether A"), 1.0),
+	 etherB(std::string("Ether B"), 0.0),
+	 blueTowerCompass(std::string("Blue Tower Compass"), 0.0),
+	 compass(std::string("NavX Compass"), 0.0)
+	 {
+	 }
+};
 
 
 

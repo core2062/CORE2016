@@ -6,8 +6,21 @@
 #include <cmath>
 #include <iostream>
 #include <math.h>
-#include <navx2.0/AHRS.h>
 #include "VisionSubsystem.h"
+
+
+//NavX stuff
+#include <navx2.0/AHRS.h>
+
+/* NOTE:  Comment in only ONE of the following definitions. */
+
+//#define ENABLE_IMU
+//#define ENABLE_IMU_ADVANCED
+#define ENABLE_AHRS
+
+
+
+
 
 using namespace CORE;
 
@@ -15,8 +28,25 @@ using namespace CORE;
 class DrivePickupSubsystem: public CORESubsystem{
 
 
+        SerialPort *serial_port;
+
+
+
+
+    	bool oldRot = 0.0;
+    	int resetQ = 0;
+    	double gyroSet = 0.0;
+
 
 public:
+
+#if defined(ENABLE_AHRS)
+        AHRS *ahrs;
+#elif defined(ENABLE_IMU_ADVANCED)
+        IMUAdvanced *ahrs;
+#else // ENABLE_IMU
+        IMU *ahrs;
+#endif
 
 		CANSpeedController::ControlMode mode = CANSpeedController::kPercentVbus;
 //		CANSpeedController::ControlMode mode = CANSpeedController::kVoltage;
