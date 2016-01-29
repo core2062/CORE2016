@@ -28,7 +28,7 @@ using namespace CORE;
 class DrivePickupSubsystem: public CORESubsystem{
 
 
-        SerialPort *serial_port;
+//        SerialPort *serial_port;
 
 
 
@@ -37,6 +37,8 @@ class DrivePickupSubsystem: public CORESubsystem{
     	int resetQ = 0;
     	double gyroSet = 0.0;
 
+    	int oldBallX = -1;
+    	int oldGoalX = -1;
 
 public:
 

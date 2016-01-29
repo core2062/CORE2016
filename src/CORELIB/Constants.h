@@ -10,7 +10,7 @@
 #define SRC_CORELIB_CONSTANTS_H_
 
 #include <string>
-
+#include <array>
 
 enum motors{
 	LIFT_MOTOR,
@@ -79,8 +79,10 @@ const double PICKUP_SPEED = .85;
 //	Vision Things	//
 const int VISION_WIDTH = 640;
 const int VISION_HEIGHT = 480;
-const int VISION_BALL_DISP = 200;
-
+const int VISION_BALL_TARGET = VISION_WIDTH/2.0;
+const int VISION_H_FOV = 58.0;
+const double VISION_FAST = NORMAL_SPEED;
+const double VISION_SLOW = NORMAL_SPEED / 2.5;
 
 
 
@@ -90,38 +92,31 @@ public:
 	std::string n;
 	double v = 0.0;
 	bool b = true;
+	bool isBool;
 
 	smartDB(std::string name, double base){
 		n = name;
 		v = base;
-		SmartDashboard::PutNumber(name, base);
-	}
-	smartDB(std::string name, double base, bool put){
-		n = name;
-		v = base;
-		if (put){
-			SmartDashboard::PutNumber(name, base);
-		}
+		isBool = false;
 	}
 	smartDB(std::string name, bool base){
 		n = name;
 		b = base;
-		SmartDashboard::PutBoolean(name, base);
+		isBool = true;
 	}
-	smartDB(std::string name, bool base, bool put){
-		n = name;
-		b = base;
-		if (put){
-			SmartDashboard::PutBoolean(name, base);
-		}
+	void put(){
+		if (isBool)
+			SmartDashboard::PutBoolean(n,v);
+		else
+			SmartDashboard::PutNumber(n,b);
 	}
 
 
 };
 
+
+/*
 class smartDBValues{
-
-
 public:
 
 	 smartDB rotationPValue;
@@ -140,6 +135,24 @@ public:
 	 {
 	 }
 };
+*/
+
+ const smartDB rotationPValue(std::string("Rotation P"), .05);
+ const smartDB etherA(std::string("Ether A"), 1.0);
+ const smartDB etherB(std::string("Ether B"), 0.0);
+ const smartDB blueTowerCompass(std::string("Blue Tower Compass"), 0.0);
+ const smartDB compass(std::string("NavX Compass"), 0.0);
+
+ const std::array<const smartDB *,5> sdPointers = {
+		 &rotationPValue,
+		 &etherA,
+		 &etherB,
+		 &blueTowerCompass,
+		 &compass
+ };
+
+
+
 
 
 

@@ -6,6 +6,7 @@
 #include <vector>
 #include <map>
 #include "CORELIB.h"
+#include <array>
 
 
 
@@ -29,7 +30,6 @@ public:
 	JoystickCache joystick;
 	Log outLog;
 	Timer loopTimer;
-	smartDBValues sd;
 	bool loopStarted = false;
 	bool isHybrid = false;
 //	COREDash CD;
@@ -38,8 +38,7 @@ public:
 	CORERobot():
 		subsystems(),
 		joystick(),
-		outLog(),
-		sd()
+		outLog()
 //		autoControl()
 //		CD(outLog)
 	{}

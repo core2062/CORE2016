@@ -60,12 +60,38 @@ void VisionSubsystem::teleop(void){
 	rightAngleError = relativeRightAngle - cameraMountAngle; // Negative Error is towards chassis //
 */
 
-std::vector<double> ballXCords = ballTable->GetNumberArray("xCord", llvm::ArrayRef<double>());
-std::vector<double> goalXCords = goalTable->GetNumberArray("xCord", llvm::ArrayRef<double>());
-std::vector<double> ballAreas = ballTable->GetNumberArray("area", llvm::ArrayRef<double>());
-std::vector<double> goalAreas = goalTable->GetNumberArray("area", llvm::ArrayRef<double>());
+	std::vector<double> ballXCords = ballTable->GetNumberArray("xCord", llvm::ArrayRef<double>());
+	std::vector<double> goalXCords = goalTable->GetNumberArray("xCord", llvm::ArrayRef<double>());
+	std::vector<double> ballAreas = ballTable->GetNumberArray("area", llvm::ArrayRef<double>());
+	std::vector<double> goalAreas = goalTable->GetNumberArray("area", llvm::ArrayRef<double>());
 
+	if (ballXCords.size() == 0){
+		ballArea = -1;
+		ballX = -1;
+	}else{
+		ballArea = -1;
+		for (uint8_t i = 0; i < ballXCords.size(); i++){
+			if ((ballAreas[i] > ballArea) && ballAreas[i] < (VISION_WIDTH * VISION_HEIGHT )){
+				ballX = ballXCords[i];
+				ballArea =  ballAreas[i];
+			}
+		}
+	}
 
+	if (goalXCords.size() == 0){
+		goalX = -1;
+	}else{
+		double biggestArea = 0;
+		for (uint8_t i = 0; i < goalXCords.size(); i++){
+			if ((goalAreas[i] > biggestArea) && goalAreas[i] < (VISION_WIDTH * VISION_HEIGHT * .3333)){
+				goalX = goalXCords[i];
+				biggestArea = goalAreas[i];
+			}
+		}
+		if (biggestArea == 0){
+			goalX = -1;
+		}
+	}
 
 
 	}
@@ -87,10 +113,14 @@ double VisionSubsystem::angleError(side motorSide){
 	return 0;
 }
 
-double VisionSubsystem::distFromBall(void){
-	 // Calc distance From ball //
-	//return (((distBetweenCameras/2)/(sin((180-relativeLeftAngle-relativeRightAngle)/2)))*sin(relativeRightAngle));
-	return 0;
+double VisionSubsystem::getBallX(){
+	return ballX;
+}
+double VisionSubsystem::getBallArea(){
+	return ballArea;
+}
+double VisionSubsystem::getGoalX(){
+	return goalX;
 }
 
 

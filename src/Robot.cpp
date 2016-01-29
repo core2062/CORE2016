@@ -4,6 +4,7 @@
 #include "Actions/TestAction.h"
 #include "Subsytems.h"
 
+
 using namespace CORE;
 
 class Robot: public SampleRobot
@@ -32,6 +33,8 @@ public:
 	}
 
 	void RobotInit() {
+
+
 		robot.robotInit();
 
 	}
