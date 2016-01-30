@@ -8,11 +8,11 @@
 #include "CORELIB.h"
 #include <array>
 
-
 #if defined(USE_NAVX)
 //NavX stuff
 #include <navx2.0/AHRS.h>
 #endif
+
 /* NOTE:  Comment in only ONE of the following definitions. */
 
 //#define ENABLE_IMU
@@ -20,7 +20,15 @@
 #define ENABLE_AHRS
 
 
+
+
+
 namespace CORE {
+
+class Action;
+class OrderAction/* : public Action*/;
+class ConditionAction/* : public Action*/;
+class AutoControl;
 
 class CORESubsystem;
 
@@ -36,6 +44,15 @@ public:
 	std::map<digitalSensors,DigitalInput*> digitalSensorMap;
 	std::map<analogSensors,AnalogInput*> analogSensorMap;
 	std::map<pneumatics, DoubleSolenoid*> pneumaticMap;
+
+	AutoControl * autoSeq;
+	AutoControl * teleSeq;
+
+	std::queue<OrderAction*> aQueue;
+	std::vector<Action*> aBackground;
+
+	std::queue<OrderAction*> tQueue;
+	std::vector<Action*> tBackground;
 
 #if defined(USE_NAVX)
 #if defined(ENABLE_AHRS)
@@ -76,6 +93,34 @@ public:
 	void link(digitalSensors digitalSensorKey ,DigitalInput* sensor);
 	void link(analogSensors analogSensorKey ,AnalogInput* sensor);
 	void link(pneumatics pneumaticKey , DoubleSolenoid* cylinder);
+/*
+	void addA (OrderAction& a){
+		aQueue.push(&a);
+	}
+	void addA (OrderAction* a){
+		aQueue.push(a);
+	}
+	void addA (ConditionAction& a){
+		aBackground.push_back(&a);
+	}
+	void addA (ConditionAction* a){
+		aBackground.push_back(a);
+	}
+	void addT (OrderAction& a){
+		tQueue.push(&a);
+	}
+	void addT (OrderAction* a){
+		tQueue.push(a);
+	}
+	void addT (ConditionAction& a){
+		tBackground.push_back(&a);
+	}
+	void addT (ConditionAction* a){
+		tBackground.push_back(a);
+	}
+*/
+
+
 
 	double getLoopWait();
 

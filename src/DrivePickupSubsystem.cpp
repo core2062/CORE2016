@@ -51,6 +51,8 @@ void DrivePickupSubsystem::teleop(void){
 if (robot.joystick.combo(COMBO5)){
 	robot.ahrs->ZeroYaw();
 	robot.outLog.appendLog("Manual Reset Gyro Yaw");
+	DriveAction driveThing(robot, 5, 1.0);
+	robot.teleSeq->add(driveThing);
 }
 
 SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
@@ -93,9 +95,12 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 	//////////////////////////////////////
 	int ballX = vision->getBallX();
 	int goalX = vision->getGoalX();
+	gyroSet = 0.0;
+
 	if((drive_rot == 0 && drive_mag == 0)){
 
 		if(robot.joystick.button(DRIVE_AUTO_PICKUP)){
+
 			int ballArea = vision->getBallArea();
 			if (ballX == -1){
 				drive_rot = (oldBallX == -1)?NORMAL_SPEED:0.0;
@@ -106,7 +111,7 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 					drive_rot = NORMAL_SPEED;
 				}
 			}else{
-				double targetAngle = ((ballX-(VISION_WIDTH/2.0))/(VISION_WIDTH/2.0))*(VISION_H_FOV/2.0);
+				gyroSet = ((ballX-(VISION_WIDTH/2.0))/(VISION_WIDTH/2.0))*(VISION_H_FOV/2.0);
 				pickup_val = PICKUP_SPEED;
 				if (ballArea <= VISION_WIDTH * VISION_HEIGHT * .35){
 					drive_mag = VISION_FAST;
@@ -128,7 +133,7 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 					drive_rot = NORMAL_SPEED;
 				}
 			}else{
-				double targetAngle = ((goalX-(VISION_WIDTH/2.0))/(VISION_WIDTH/2.0))*(VISION_H_FOV/2.0);
+				gyroSet  = ((goalX-(VISION_WIDTH/2.0))/(VISION_WIDTH/2.0))*(VISION_H_FOV/2.0);
 			}
 
 
