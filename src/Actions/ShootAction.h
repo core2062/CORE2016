@@ -41,7 +41,9 @@ public:
 		timer.Start();
 
 	}
-	void end(){}
+	void end(){
+		timer.Stop();
+	}
 	ControlFlow autoCall(){
 		if(flag == false && robot.pneumaticMap[SHOOTER_LEFT_CYLINDER]->Get() == DoubleSolenoid::kForward) {
 			robot.pneumaticMap[SHOOTER_LEFT_CYLINDER]->Set(DoubleSolenoid::kReverse);
