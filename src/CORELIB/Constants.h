@@ -86,6 +86,7 @@ const double PICKUP_SPEED = .85;
 //	Vision Things	//
 const int VISION_WIDTH = 640;
 const int VISION_HEIGHT = 480;
+const int VISION_BALL_DISP = 200;
 const int VISION_BALL_TARGET = VISION_WIDTH/2.0;
 const int VISION_H_FOV = 58.0;
 const double VISION_FAST = NORMAL_SPEED;

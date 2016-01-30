@@ -22,6 +22,8 @@ class DrivePickupSubsystem: public CORESubsystem{
     	int resetQ = 0;
     	double gyroSet = 0.0;
 
+    	int oldBallX = -1;
+    	int oldGoalX = -1;
 
 public:
 
@@ -80,6 +82,7 @@ public:
 	void setBackLeftMotor(double speed);
 	void setBackRightMotor(double speed);
 	void setPickupMotor(double speed);
+	void setPickupSpeed(double speed);
 };
 
 

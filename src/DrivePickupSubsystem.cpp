@@ -17,13 +17,9 @@ std::string DrivePickupSubsystem::name(void){
 
 void DrivePickupSubsystem::robotInit(void){
 
-
-
 	robot.outLog.appendLog("DriveSubsystem: RobotInit Success");
 }
 void DrivePickupSubsystem::teleopInit(void){
-
-
 
 
 	robot.joystick.register_axis(DRIVE_ROT, 0, 2);
@@ -57,11 +53,12 @@ if (robot.joystick.combo(COMBO5)){
 	robot.outLog.appendLog("Manual Reset Gyro Yaw");
 }
 
-SmartDashboard::PutNumber(robot.sd.compass.n, robot.ahrs->GetCompassHeading());
+SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 
 	if (!robot.isHybrid){
 
-	pickupMotor.Set((robot.joystick.button(DRIVE_PICKUP_IN))?PICKUP_SPEED:(robot.joystick.button(DRIVE_PICKUP_OUT))?-PICKUP_SPEED:0.0);
+	double pickup_val = (robot.joystick.button(DRIVE_PICKUP_IN))?PICKUP_SPEED:(robot.joystick.button(DRIVE_PICKUP_OUT))?-PICKUP_SPEED:0.0;
+
 
 
 	/////////////////////////////////////////
@@ -94,22 +91,52 @@ SmartDashboard::PutNumber(robot.sd.compass.n, robot.ahrs->GetCompassHeading());
 	//////////////////////////////////////
 	///////// VISION DRIVE THINGS ////////
 	//////////////////////////////////////
+	int ballX = vision->getBallX();
+	int goalX = vision->getGoalX();
 	if((drive_rot == 0 && drive_mag == 0)){
+
 		if(robot.joystick.button(DRIVE_AUTO_PICKUP)){
-
-
+			int ballArea = vision->getBallArea();
+			if (ballX == -1){
+				drive_rot = (oldBallX == -1)?NORMAL_SPEED:0.0;
+			}else if (std::fabs(ballX-VISION_BALL_TARGET) > VISION_WIDTH/2.0){
+				if (ballX>VISION_BALL_TARGET){
+					drive_rot = -NORMAL_SPEED;
+				}else{
+					drive_rot = NORMAL_SPEED;
+				}
+			}else{
+				double targetAngle = ((ballX-(VISION_WIDTH/2.0))/(VISION_WIDTH/2.0))*(VISION_H_FOV/2.0);
+				pickup_val = PICKUP_SPEED;
+				if (ballArea <= VISION_WIDTH * VISION_HEIGHT * .35){
+					drive_mag = VISION_FAST;
+				}else{
+					drive_mag = VISION_SLOW;
+				}
+			}
 
 
 
 		}else if (robot.joystick.button(DRIVE_GOAL)){
 
-
+			if (goalX == -1){
+				drive_rot = (oldGoalX == -1)?NORMAL_SPEED:0.0;
+			}else if (std::fabs(goalX-VISION_WIDTH/2.0) > VISION_WIDTH/2.0){
+				if (goalX>VISION_WIDTH/2.0){
+					drive_rot = -NORMAL_SPEED;
+				}else{
+					drive_rot = NORMAL_SPEED;
+				}
+			}else{
+				double targetAngle = ((goalX-(VISION_WIDTH/2.0))/(VISION_WIDTH/2.0))*(VISION_H_FOV/2.0);
+			}
 
 
 
 		}
 	}
-
+	oldBallX = ballX;
+	oldGoalX = goalX;
 
 
 
@@ -122,7 +149,7 @@ SmartDashboard::PutNumber(robot.sd.compass.n, robot.ahrs->GetCompassHeading());
 			double gyroError =  gyroSet - gyroRate;
 //			SmartDashboard::PutNumber("Gyro PID Error", gyroPID.mistake);
 
-			double gyroOutput = (SmartDashboard::GetNumber(robot.sd.rotationPValue.n, robot.sd.rotationPValue.v)*gyroError);
+			double gyroOutput = (SmartDashboard::GetNumber( rotationPValue.n,  rotationPValue.v)*gyroError);
 //			SmartDashboard::PutNumber("Gyro PID Out before", gyroOutput);
 			gyroOutput = gyroOutput > 1.0 ? 1.0 : (gyroOutput < -1.0 ? -1.0 : gyroOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
 			drive_rot = gyroOutput;
@@ -145,8 +172,8 @@ SmartDashboard::PutNumber(robot.sd.compass.n, robot.ahrs->GetCompassHeading());
 /////////////////////////////
 	double left;
 	double right;
-	double a = SmartDashboard::GetNumber(robot.sd.etherA.n, robot.sd.etherA.v);
-	double b = SmartDashboard::GetNumber(robot.sd.etherB.n, robot.sd.etherB.v);
+	double a = SmartDashboard::GetNumber( etherA.n,  etherA.v);
+	double b = SmartDashboard::GetNumber( etherB.n,  etherB.v);
 
 
 	if (drive_mag>=0){
@@ -172,7 +199,7 @@ SmartDashboard::PutNumber(robot.sd.compass.n, robot.ahrs->GetCompassHeading());
 	backLeft.Set(left);
 	frontRight.Set(right);
 	backRight.Set(right);
-
+	pickupMotor.Set(pickup_val);
 
 
 	}else{
@@ -209,20 +236,6 @@ void DrivePickupSubsystem::bolderAlign(double lError, double rError, double dist
 
 }
 
-void DrivePickupSubsystem::setPickupMotor(double speed){
+void DrivePickupSubsystem::setPickupSpeed(double speed){
 	pickupMotor.Set(speed);
 }
-void DrivePickupSubsystem::setFrontLeftMotor(double speed){
-	frontLeft.Set(speed);
-}
-void DrivePickupSubsystem::setFrontRightMotor(double speed){
-	frontRight.Set(speed);
-}
-void DrivePickupSubsystem::setBackLeftMotor(double speed){
-	backLeft.Set(speed);
-}
-void DrivePickupSubsystem::setBackRightMotor(double speed){
-	backRight.Set(speed);
-}
-
-

@@ -58,9 +58,6 @@ public:
 	CORERobot():
 		subsystems(),
 		serial_port(),
-//#if defined(USE_NAVX)
-//		ahrs(),
-//#endif
 		joystick(),
 		outLog()
 //		autoControl()
