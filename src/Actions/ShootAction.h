@@ -19,21 +19,19 @@
 
 using namespace CORE;
 
-class ShootAction : public ConditionAction{
+class ShootAction : public OrderAction{
 
 public:
 	Timer timer;
 	bool flag = false;
+	bool flag2 = false;
+	double loadTime;
 
 
-	virtual bool startCondition(){
-		return false;
-	}
-	virtual bool endCondition(){
-		return false;
-	}
-	ShootAction(CORERobot& robot):
-		ConditionAction(robot)
+
+	ShootAction(CORERobot& robot, double loadTime = 1.5):
+		OrderAction(robot),
+		loadTime(loadTime)
 	{
 
 	};
@@ -45,17 +43,27 @@ public:
 	}
 	void end(){}
 	ControlFlow autoCall(){
-		if(flag == false && robot.pneumaticMap[SHOOTER_LEFT_CYLINDER]->Get() == DoubleSolenoid::kReverse){
+		if(flag == false && robot.pneumaticMap[SHOOTER_LEFT_CYLINDER]->Get() == DoubleSolenoid::kForward) {
+			robot.pneumaticMap[SHOOTER_LEFT_CYLINDER]->Set(DoubleSolenoid::kReverse);
+			robot.pneumaticMap[SHOOTER_RIGHT_CYLINDER]->Set(DoubleSolenoid::kReverse);
+			flag2 = true;
+			timer.Reset();
+		}
+		if(flag2 == true){
+			if(timer.Get() >= loadTime){
+				if(!flag2 == false)
+					flag2 = false;
+				return CONTINUE;
+			}
+		}else if(flag == false && flag2 == false){
 			timer.Reset();
 			robot.pneumaticMap[SHOOTER_LEFT_CYLINDER]->Set(DoubleSolenoid::kForward);
 			robot.pneumaticMap[SHOOTER_RIGHT_CYLINDER]->Set(DoubleSolenoid::kForward);
 			flag = true;
 			return BACKGROUND;
-		} else if(flag == false && robot.pneumaticMap[SHOOTER_LEFT_CYLINDER]->Get() == DoubleSolenoid::kForward) {
-			robot.pneumaticMap[SHOOTER_LEFT_CYLINDER]->Set(DoubleSolenoid::kReverse);
-			robot.pneumaticMap[SHOOTER_RIGHT_CYLINDER]->Set(DoubleSolenoid::kReverse);
 		}
-		if(timer.Get() >= 1.5 && flag == true){
+
+		if(timer.Get() >= loadTime && flag == true){
 			robot.pneumaticMap[SHOOTER_LEFT_CYLINDER]->Set(DoubleSolenoid::kReverse);
 			robot.pneumaticMap[SHOOTER_RIGHT_CYLINDER]->Set(DoubleSolenoid::kReverse);
 			flag = false;
