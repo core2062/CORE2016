@@ -71,7 +71,8 @@ SmartDashboard::PutNumber( compass.n, ahrs->GetCompassHeading());
 
 	if (!robot.isHybrid){
 
-	pickupMotor.Set((robot.joystick.button(DRIVE_PICKUP_IN))?PICKUP_SPEED:(robot.joystick.button(DRIVE_PICKUP_OUT))?-PICKUP_SPEED:0.0);
+	double pickup_val = (robot.joystick.button(DRIVE_PICKUP_IN))?PICKUP_SPEED:(robot.joystick.button(DRIVE_PICKUP_OUT))?-PICKUP_SPEED:0.0;
+
 
 
 	/////////////////////////////////////////
@@ -120,6 +121,7 @@ SmartDashboard::PutNumber( compass.n, ahrs->GetCompassHeading());
 				}
 			}else{
 				double targetAngle = ((ballX-(VISION_WIDTH/2.0))/(VISION_WIDTH/2.0))*(VISION_H_FOV/2.0);
+				pickup_val = PICKUP_SPEED;
 				if (ballArea <= VISION_WIDTH * VISION_HEIGHT * .35){
 					drive_mag = VISION_FAST;
 				}else{
@@ -211,7 +213,7 @@ SmartDashboard::PutNumber( compass.n, ahrs->GetCompassHeading());
 	backLeft.Set(left);
 	frontRight.Set(right);
 	backRight.Set(right);
-
+	pickupMotor.Set(pickup_val);
 
 
 	}else{
