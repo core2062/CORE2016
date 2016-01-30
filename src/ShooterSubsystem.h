@@ -47,6 +47,7 @@ public:
 	void teleopInit(void);
 	void teleop(void);
 	void teleopEnd(void);
+	void shoot(void);
 };
 
 #endif /* SRC_SHOOTERSUBSYSTEM_H_ */

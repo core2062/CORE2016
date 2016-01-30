@@ -8,6 +8,15 @@
 #include "CORELIB.h"
 
 
+#if defined(USE_NAVX)
+//NavX stuff
+#include <navx2.0/AHRS.h>
+#endif
+/* NOTE:  Comment in only ONE of the following definitions. */
+
+//#define ENABLE_IMU
+//#define ENABLE_IMU_ADVANCED
+#define ENABLE_AHRS
 
 
 namespace CORE {
@@ -16,15 +25,26 @@ class CORESubsystem;
 
 class CORERobot {
 	std::vector<CORESubsystem*> subsystems;
+    SerialPort *serial_port;
 
 
 public:
+
 
 	std::map<motors,CANSpeedController*> motorMap;
 	std::map<digitalSensors,DigitalInput*> digitalSensorMap;
 	std::map<analogSensors,AnalogInput*> analogSensorMap;
 	std::map<pneumatics, DoubleSolenoid*> pneumaticMap;
 
+#if defined(USE_NAVX)
+#if defined(ENABLE_AHRS)
+        AHRS *ahrs;
+#elif defined(ENABLE_IMU_ADVANCED)
+        IMUAdvanced *ahrs;
+#elif defined(ENABLE_IMU) // ENABLE_IMU
+        IMU *ahrs;
+#endif
+#endif
 
 	JoystickCache joystick;
 	Log outLog;
@@ -37,6 +57,10 @@ public:
 
 	CORERobot():
 		subsystems(),
+		serial_port(),
+//#if defined(USE_NAVX)
+//		ahrs(),
+//#endif
 		joystick(),
 		outLog(),
 		sd()

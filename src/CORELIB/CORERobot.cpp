@@ -19,6 +19,15 @@ void CORERobot::robotInit(void){
 //			cout << "robot init " << (*it)->name() << endl;
 			(*it)->robotInit();
 		}
+#if defined(USE_NAVX)
+	try {
+		ahrs = new AHRS(SerialPort::Port::kMXP);
+	} catch (std::exception ex ) {
+		std::string err_string = "Error instantiating navX-MXP:  ";
+		err_string += ex.what();
+		DriverStation::ReportError(err_string.c_str());
+	}
+#endif
 	outLog.appendLog("\n\n\n\n\n");
 	outLog.printLog();
 	loopTimer.Reset();
@@ -33,6 +42,12 @@ void CORERobot::teleopInit(void){
 //	outLog.Mode = Log::TELE;
 	joystick.register_combo(COMBO3, 0, 1);
 	joystick.register_combo(COMBO4, 0, 2);
+#if defined(USE_NAVX)
+    if (!ahrs->IsCalibrating()) {
+//        Wait( 0.3 );
+        ahrs->ZeroYaw();
+    }
+#endif
 	std::vector<CORESubsystem*>::iterator it;
 	for(it = subsystems.begin(); it != subsystems.end(); ++it){
 //		cout << "tele init " << (*it)->name() << endl;

@@ -9,16 +9,6 @@
 #include "VisionSubsystem.h"
 
 
-//NavX stuff
-#include <navx2.0/AHRS.h>
-
-/* NOTE:  Comment in only ONE of the following definitions. */
-
-//#define ENABLE_IMU
-//#define ENABLE_IMU_ADVANCED
-#define ENABLE_AHRS
-
-
 
 
 
@@ -28,11 +18,6 @@ using namespace CORE;
 class DrivePickupSubsystem: public CORESubsystem{
 
 
-        SerialPort *serial_port;
-
-
-
-
     	bool oldRot = 0.0;
     	int resetQ = 0;
     	double gyroSet = 0.0;
@@ -40,13 +25,6 @@ class DrivePickupSubsystem: public CORESubsystem{
 
 public:
 
-#if defined(ENABLE_AHRS)
-        AHRS *ahrs;
-#elif defined(ENABLE_IMU_ADVANCED)
-        IMUAdvanced *ahrs;
-#else // ENABLE_IMU
-        IMU *ahrs;
-#endif
 
 		CANSpeedController::ControlMode mode = CANSpeedController::kPercentVbus;
 //		CANSpeedController::ControlMode mode = CANSpeedController::kVoltage;
@@ -97,7 +75,11 @@ public:
 	void teleop(void);
 	void teleopEnd(void);
 	void bolderAlign(double lError, double rError, double distAway);
-	void setPickupSpeed(double speed);
+	void setFrontLeftMotor(double speed);
+	void setFrontRightMotor(double speed);
+	void setBackLeftMotor(double speed);
+	void setBackRightMotor(double speed);
+	void setPickupMotor(double speed);
 };
 
 

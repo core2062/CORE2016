@@ -35,12 +35,18 @@ void ShooterSubsystem::teleop(void){
 		rightShooter.Set(DoubleSolenoid::kReverse);
 	}
 
-	}
+}
 
 void ShooterSubsystem::teleopEnd(void){
 	robot.outLog.appendLog("shooter tele end");
 
 }
+void ShooterSubsystem::shoot(void){
+		leftShooter.Set(DoubleSolenoid::kForward);
+		rightShooter.Set(DoubleSolenoid::kForward);
+		shooterTimer.Reset();
+}
+
 
 
 

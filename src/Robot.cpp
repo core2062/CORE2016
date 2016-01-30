@@ -4,10 +4,12 @@
 #include "Actions/TestAction.h"
 #include "Subsytems.h"
 
+
 using namespace CORE;
 
 class Robot: public SampleRobot
 {
+
 	CORERobot robot;
 	AutoControl autoControl;
 	LiftSubsystem lift;
@@ -17,6 +19,8 @@ class Robot: public SampleRobot
 
 
 public:
+
+
 	Robot() :
 		robot(),
 		autoControl(robot),

@@ -17,24 +17,14 @@ std::string DrivePickupSubsystem::name(void){
 
 void DrivePickupSubsystem::robotInit(void){
 
-    	try {
-            ahrs = new AHRS(SerialPort::Port::kMXP);
-        } catch (std::exception ex ) {
-            std::string err_string = "Error instantiating navX-MXP:  ";
-            err_string += ex.what();
-            DriverStation::ReportError(err_string.c_str());
-        }
+
 
 	robot.outLog.appendLog("DriveSubsystem: RobotInit Success");
 }
 void DrivePickupSubsystem::teleopInit(void){
 
 
-    bool is_calibrating = ahrs->IsCalibrating();
-    if ( !is_calibrating ) {
-//        Wait( 0.3 );
-        ahrs->ZeroYaw();
-    }
+
 
 	robot.joystick.register_axis(DRIVE_ROT, 0, 2);
 	robot.joystick.register_axis(DRIVE_MAG, 0, 1);
@@ -63,11 +53,11 @@ void DrivePickupSubsystem::teleopInit(void){
 void DrivePickupSubsystem::teleop(void){
 
 if (robot.joystick.combo(COMBO5)){
-	ahrs->ZeroYaw();
+	robot.ahrs->ZeroYaw();
 	robot.outLog.appendLog("Manual Reset Gyro Yaw");
 }
 
-SmartDashboard::PutNumber(robot.sd.compass.n, ahrs->GetCompassHeading());
+SmartDashboard::PutNumber(robot.sd.compass.n, robot.ahrs->GetCompassHeading());
 
 	if (!robot.isHybrid){
 
@@ -94,7 +84,7 @@ SmartDashboard::PutNumber(robot.sd.compass.n, ahrs->GetCompassHeading());
 	}
 	if (resetQ != 0){
 		if (resetQ == 3){
-			ahrs->ZeroYaw();
+			robot.ahrs->ZeroYaw();
 //				gyroPID.setPoint = imu->GetYaw();
 		}
 		resetQ--;
@@ -123,11 +113,10 @@ SmartDashboard::PutNumber(robot.sd.compass.n, ahrs->GetCompassHeading());
 
 
 
-
 	///////////////////////////////////////
 	///////// GYRO CALCULATIONS ///////////
 	///////////////////////////////////////
-		double gyroRate = ahrs->GetYaw();
+		double gyroRate = robot.ahrs->GetYaw();
 		//Gyro PID
 		if((drive_rot==0.0 && resetQ == 0 && !SmartDashboard::GetBoolean("disableGyro",false))){
 			double gyroError =  gyroSet - gyroRate;
@@ -220,8 +209,20 @@ void DrivePickupSubsystem::bolderAlign(double lError, double rError, double dist
 
 }
 
-void DrivePickupSubsystem::setPickupSpeed(double speed){
+void DrivePickupSubsystem::setPickupMotor(double speed){
 	pickupMotor.Set(speed);
+}
+void DrivePickupSubsystem::setFrontLeftMotor(double speed){
+	frontLeft.Set(speed);
+}
+void DrivePickupSubsystem::setFrontRightMotor(double speed){
+	frontRight.Set(speed);
+}
+void DrivePickupSubsystem::setBackLeftMotor(double speed){
+	backLeft.Set(speed);
+}
+void DrivePickupSubsystem::setBackRightMotor(double speed){
+	backRight.Set(speed);
 }
 
 

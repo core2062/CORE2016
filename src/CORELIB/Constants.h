@@ -9,6 +9,8 @@
 #ifndef SRC_CORELIB_CONSTANTS_H_
 #define SRC_CORELIB_CONSTANTS_H_
 
+#define USE_NAVX
+
 #include <string>
 
 
@@ -57,7 +59,12 @@ enum digitalSensors{
 };
 
 enum analogSensors{
-
+	GYRO,
+	ACCELEROMETER,
+	FR_ENCODER,
+	FL_ENCODER,
+	BR_ENCODER,
+	BL_ENCODER
 };
 
 enum pneumatics{
