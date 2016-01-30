@@ -6,6 +6,7 @@
 #include <vector>
 #include <map>
 #include "CORELIB.h"
+#include <array>
 
 
 #if defined(USE_NAVX)
@@ -49,7 +50,6 @@ public:
 	JoystickCache joystick;
 	Log outLog;
 	Timer loopTimer;
-	smartDBValues sd;
 	bool loopStarted = false;
 	bool isHybrid = false;
 //	COREDash CD;
@@ -62,8 +62,7 @@ public:
 //		ahrs(),
 //#endif
 		joystick(),
-		outLog(),
-		sd()
+		outLog()
 //		autoControl()
 //		CD(outLog)
 	{}

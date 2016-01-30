@@ -36,6 +36,8 @@ public:
 	}
 
 	void RobotInit() {
+
+
 		robot.robotInit();
 
 	}
