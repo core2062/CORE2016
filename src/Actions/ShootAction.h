@@ -45,19 +45,19 @@ public:
 		timer.Stop();
 	}
 	ControlFlow autoCall(){
-		if(flag == false && robot.pneumaticMap[SHOOTER_LEFT_CYLINDER]->Get() == DoubleSolenoid::kForward) {
+		if(!flag && robot.pneumaticMap[SHOOTER_LEFT_CYLINDER]->Get() == DoubleSolenoid::kForward) {
 			robot.pneumaticMap[SHOOTER_LEFT_CYLINDER]->Set(DoubleSolenoid::kReverse);
 			robot.pneumaticMap[SHOOTER_RIGHT_CYLINDER]->Set(DoubleSolenoid::kReverse);
 			flag2 = true;
 			timer.Reset();
 		}
-		if(flag2 == true){
+		if(flag2){
 			if(timer.Get() >= loadTime){
-				if(!flag2 == false)
+				if(flag2)
 					flag2 = false;
 				return CONTINUE;
 			}
-		}else if(flag == false && flag2 == false){
+		}else if(!flag && !flag2){
 			timer.Reset();
 			robot.pneumaticMap[SHOOTER_LEFT_CYLINDER]->Set(DoubleSolenoid::kForward);
 			robot.pneumaticMap[SHOOTER_RIGHT_CYLINDER]->Set(DoubleSolenoid::kForward);
@@ -65,10 +65,9 @@ public:
 			return BACKGROUND;
 		}
 
-		if(timer.Get() >= loadTime && flag == true){
+		if(timer.Get() >= loadTime && flag){
 			robot.pneumaticMap[SHOOTER_LEFT_CYLINDER]->Set(DoubleSolenoid::kReverse);
 			robot.pneumaticMap[SHOOTER_RIGHT_CYLINDER]->Set(DoubleSolenoid::kReverse);
-			flag = false;
 			return END;
 		}
 

@@ -22,18 +22,12 @@ class CompassTurnAction : public OrderAction{
 
 	double targetAngle;
 
-	double drive_rot = robot.joystick.axis(DRIVE_ROT);
-	double drive_mag = robot.joystick.axis(DRIVE_MAG);
+	double drive_rot = 0;
 
-//	bool oldRot = 0.0;
-	double gyroRate = 0.0;
-	double unmodifiedMag = 0.0;
-	int resetQ = 0;
+	double compassVal = 0.0;
 	double gyroSet = 0.0;
 	double left = 0.0;
 	double right = 0.0;
-	double a = SmartDashboard::GetNumber(etherA.n, etherA.v);
-	double b = SmartDashboard::GetNumber(etherB.n, etherB.v);
 
 
 public:
@@ -49,50 +43,27 @@ public:
 	void end(){}
 	ControlFlow autoCall(){
 		if(!robot.ahrs->IsMagneticDisturbance() && robot.ahrs->IsMagnetometerCalibrated()){
-			unmodifiedMag = robot.ahrs->GetCompassHeading();
-			if(unmodifiedMag >180){
-				unmodifiedMag = -(180-(unmodifiedMag-180));
-				gyroRate = unmodifiedMag;
-			} else {
-				gyroRate = gyroSet;
-				robot.outLog.appendLog("[ERROR] Magnetometer Not Calibrated!!");
-			}
+			compassVal = robot.ahrs->GetCompassHeading();
+		}else{
+			return CONTINUE;
 		}
 
 
-				//Gyro PID
-		if((drive_rot==0.0 && resetQ == 0 && !SmartDashboard::GetBoolean("disableGyro",false))){
-			double gyroError =  gyroSet - gyroRate;
+			double gyroError =  compassVal - targetAngle;
 //			SmartDashboard::PutNumber("Gyro PID Error", gyroPID.mistake);
 
 			double gyroOutput = (SmartDashboard::GetNumber(rotationPValue.n, rotationPValue.v)*gyroError);
 //			SmartDashboard::PutNumber("Gyro PID Out before", gyroOutput);
 			gyroOutput = gyroOutput > 1.0 ? 1.0 : (gyroOutput < -1.0 ? -1.0 : gyroOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
 			drive_rot = gyroOutput;
-		}
 			if (drive_rot < .05 && drive_rot > -.05){
 				drive_rot = 0;
 			}
 
 
-			if (drive_mag>=0){
-				if (drive_rot>=0){
-					left = etherL(0, drive_rot, a, b);
-					right = etherR(0, drive_rot, a, b);
-				} else{
-					left = etherR(0, -drive_rot, a, b);
-					right = etherL(0, -drive_rot, a, b);
-				}
-			} else{
-				if (drive_rot>=0){
+			left = drive_rot;
+			right = -drive_rot;
 
-					left = -etherR(-0, drive_rot, a, b);
-					right = -etherL(0, drive_rot, a, b);
-				} else{
-					left = -etherL(0, -drive_rot, a, b);
-					right = -etherR(0, -drive_rot, a, b);
-				}
-			}
 			robot.motorMap[BACK_RIGHT]->Set(right);
 			robot.motorMap[FRONT_RIGHT]->Set(right);
 			robot.motorMap[FRONT_LEFT]->Set(left);

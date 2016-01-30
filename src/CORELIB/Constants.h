@@ -11,6 +11,10 @@
 
 #define USE_NAVX
 
+#define ETHER_DIRVE
+//#define TANK_DRIVE
+//#define MECANUM_DRIVE
+
 #include <string>
 #include <array>
 

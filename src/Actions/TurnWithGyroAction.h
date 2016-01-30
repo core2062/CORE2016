@@ -19,12 +19,9 @@
 
 using namespace CORE;
 
-class TurnWithGyroAction : public ConditionAction{
+class TurnWithGyroAction : public OrderAction{
 
 public:
-
-	double drive_rot = robot.joystick.axis(DRIVE_ROT);
-	double drive_mag = robot.joystick.axis(DRIVE_MAG);
 
 //	bool oldRot = 0.0;
 	int resetQ = 0;
@@ -49,40 +46,21 @@ public:
 	void end(){}
 	ControlFlow autoCall(){
 
-		double gyroRate = robot.ahrs->GetYaw();
+			double gyroRate = robot.ahrs->GetYaw();
 		//Gyro PID
-		if((drive_rot==0.0 && resetQ == 0 && !SmartDashboard::GetBoolean("disableGyro",false))){
 			double gyroError =  gyroSet - gyroRate;
 //			SmartDashboard::PutNumber("Gyro PID Error", gyroPID.mistake);
 
-			double gyroOutput = (SmartDashboard::GetNumber(rotationPValue.n, rotationPValue.v)*gyroError);
-//			SmartDashboard::PutNumber("Gyro PID Out before", gyroOutput);
-			gyroOutput = gyroOutput > 1.0 ? 1.0 : (gyroOutput < -1.0 ? -1.0 : gyroOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
-			drive_rot = gyroOutput;
-		}
+			double drive_rot = (SmartDashboard::GetNumber(rotationPValue.n, rotationPValue.v)*gyroError);
+			drive_rot = drive_rot > 1.0 ? 1.0 : (drive_rot < -1.0 ? -1.0 : drive_rot); //Conditional (Tenerary) Operator limiting values to between 1 and -1
 			if (drive_rot < .05 && drive_rot > -.05){
 				drive_rot = 0;
 			}
 
 
-			if (drive_mag>=0){
-				if (drive_rot>=0){
-					left = etherL(0, drive_rot, a, b);
-					right = etherR(0, drive_rot, a, b);
-				} else{
-					left = etherR(0, -drive_rot, a, b);
-					right = etherL(0, -drive_rot, a, b);
-				}
-			} else{
-				if (drive_rot>=0){
+			left = drive_rot;
+			right = -drive_rot;
 
-					left = -etherR(-0, drive_rot, a, b);
-					right = -etherL(0, drive_rot, a, b);
-				} else{
-					left = -etherL(0, -drive_rot, a, b);
-					right = -etherR(0, -drive_rot, a, b);
-				}
-			}
 			robot.motorMap[BACK_RIGHT]->Set(right);
 			robot.motorMap[FRONT_RIGHT]->Set(right);
 			robot.motorMap[FRONT_LEFT]->Set(left);

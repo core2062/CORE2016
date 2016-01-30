@@ -159,7 +159,9 @@ class AutoControl{
 	std::vector<Action*>& background;
 	bool queueEmpty = false;
 	int position = 1;
+
 public:
+
 	AutoControl(CORERobot& robot, std::queue<OrderAction*>& aQueue, std::vector<Action*>& aBackground):
 		robot(robot),
 		aqueue(aQueue),
