@@ -36,9 +36,9 @@ public:
 		Jaguar frontRight;
 		Jaguar backRight;
 		Jaguar pickupMotor;
-
-
-
+		DoubleSolenoid leftShooter;
+		DoubleSolenoid rightShooter;
+		Timer shooterTimer;
 
 	std::string name(void);
 	DrivePickupSubsystem(CORERobot& robot/*, VisionSubsystem& vision*/):
@@ -49,8 +49,10 @@ public:
 		backLeft(1),
 		frontRight(3),
 		backRight(0),
-		pickupMotor(5)
-
+		pickupMotor(5),
+		leftShooter(0,1),
+		rightShooter(2,3),
+		shooterTimer()
 		{
 
 //		robot.link(BACK_RIGHT, &backRight);
@@ -82,12 +84,4 @@ public:
 	void setPickupSpeed(double speed);
 };
 
-
-
-
-
-
-
-
 #endif
-

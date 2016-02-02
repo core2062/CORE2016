@@ -40,7 +40,8 @@ enum controllerInputs{
 	DRIVE_SPEED,
 	LIFT_LEVEL1,
 	LIFT_LEVEL2,
-	AUTO_PICKUP
+	AUTO_PICKUP,
+	SHOOTER_FIRE
 };
 
 enum digitalSensors{

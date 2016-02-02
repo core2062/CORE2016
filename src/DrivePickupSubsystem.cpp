@@ -23,6 +23,7 @@ void DrivePickupSubsystem::robotInit(void){
 	robot.joystick.register_axis(DRIVE_MAG2, 1, 3);
 	robot.joystick.register_button(DRIVE_SPEED, 1, 5);
 	robot.joystick.register_button(AUTO_PICKUP, 2, 8);
+	robot.joystick.register_button(SHOOTER_FIRE, 1, 2, JoystickCache::RISING);
 }
 void DrivePickupSubsystem::teleopInit(void){
 	robot.outLog.appendLog("DriveSubsystem: TeleopInit Success");
@@ -47,7 +48,9 @@ void DrivePickupSubsystem::teleopInit(void){
 	driveChooser.AddObject("arcade", arcade);
 	driveChooser.AddObject("tank", tank);
 
-	SmartDashboard::PutData("drive-chooser", &driveChooser);
+	SmartDashboard::PutData("drive-chooser", &driveChooser);\
+	shooterTimer.Reset();
+	shooterTimer.Start();
 
 }
 
@@ -55,13 +58,21 @@ void DrivePickupSubsystem::teleop(void){
 	double drive_mag = robot.joystick.axis(controllerInputs::DRIVE_MAG);
 	double drive_mag2 = robot.joystick.axis(controllerInputs::DRIVE_MAG2);
 	double drive_rot = robot.joystick.axis(controllerInputs::DRIVE_ROT);
+	if (robot.joystick.button(SHOOTER_FIRE) && shooterTimer.Get() >=2.5){
+		leftShooter.Set(DoubleSolenoid::kForward);
+		rightShooter.Set(DoubleSolenoid::kForward);
+		shooterTimer.Reset();
+	}
+	if (shooterTimer.Get() >= 1.5){
+		leftShooter.Set(DoubleSolenoid::kReverse);
+		rightShooter.Set(DoubleSolenoid::kReverse);
+	}
 //	drive_mag*=(robot.joystick.button(controllerInputs::DRIVE_SPEED))?1.0:NORMAL_SPEED;
 //	drive_rot*=(robot.joystick.button(controllerInputs::DRIVE_SPEED))?1.0:NORMAL_SPEED;
 
 //	bool autoPickupButton = robot.joystick.button(controllerInputs::AUTO_PICKUP);
 //	bool pickupOn = false;
 //	bool cycleLift = false;
-
 //Simple Dead-banding
 	if (drive_rot < 0.05 && drive_rot > -.05){
 		drive_rot = 0;
