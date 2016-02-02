@@ -54,6 +54,7 @@ public:
 //		autoControl.init();
 		while (IsAutonomous() and !IsDisabled()) {
 			autoControl.iter();
+			vision.teleop();
 			Wait(robot.getLoopWait());
 		}
 	}

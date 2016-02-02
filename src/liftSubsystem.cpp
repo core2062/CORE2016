@@ -25,7 +25,10 @@
 		liftPID.calculate();
 
 		if (!robot.isHybrid){
-			if(robot.joystick.axis(LIFT_AXIS) != 0) {
+			double liftAxis = robot.joystick.axis(LIFT_AXIS);
+			if(liftAxis < .05 && liftAxis > -.05)
+				liftAxis = 0;
+			if(liftAxis != 0) {
 				liftMotor.Set(robot.joystick.axis(LIFT_AXIS));
 			}
 			else if(robot.joystick.button(LIFT_LEVEL1)){
