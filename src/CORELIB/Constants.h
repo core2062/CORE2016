@@ -39,22 +39,31 @@ enum side {
 };
 
 enum controllerInputs{
-	LIFT_AXIS,
 	DRIVE_MAG,
 	DRIVE_ROT,
 	DRIVE_SPEED,
+
 	DRIVE_GOAL,
 	DRIVE_AUTO_PICKUP,
+
 	DRIVE_PICKUP_IN,
 	DRIVE_PICKUP_OUT,
+
 	LIFT_LEVEL1,
 	LIFT_LEVEL2,
+	LIFT_AXIS,
+
 	SHOOTER_FIRE,
+
+
 	COMBO1,
 	COMBO2,
 	COMBO3,
 	COMBO4,
-	COMBO5
+	COMBO5,
+
+
+	HYBRID_GOTO_SDXY
 };
 
 enum digitalSensors{
@@ -155,12 +164,25 @@ public:
  const smartDB blueTowerCompass(std::string("Blue Tower Compass"), 0.0);
  const smartDB compass(std::string("NavX Compass"), 0.0);
 
- const std::array<const smartDB *,5> sdPointers = {
+
+ const smartDB robotX(std::string("Robot Current X"), 0.0);
+ const smartDB robotY(std::string("Robot Current Y"), 0.0);
+ const smartDB robotToX(std::string("Robot Next X"), 0.0);
+ const smartDB robotToY(std::string("Robot Next Y"), 0.0);
+
+
+
+ const std::array<const smartDB *,9> sdPointers = {
 		 &rotationPValue,
 		 &etherA,
 		 &etherB,
 		 &blueTowerCompass,
-		 &compass
+		 &compass,
+
+		 &robotX,
+		 &robotY,
+		 &robotToX,
+		 &robotToY
  };
 
 
