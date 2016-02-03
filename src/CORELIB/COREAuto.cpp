@@ -6,9 +6,10 @@ using namespace CORE;
 void AutoControl::iter(){
 
 	if(aqueue.empty() && !queueEmpty){
-		robot.outLog.appendLog("Auto Queue Empty");
+//		robot.outLog.appendLog("Auto Queue Empty");
 		queueEmpty = true;
 	}
+	if(!aqueue.empty()){
 
 	Action* a = aqueue.front();
 
@@ -18,20 +19,20 @@ void AutoControl::iter(){
 	case CONTINUE:
 		break;
 	case BACKGROUND:
-		robot.outLog.appendLog("Adding to Background:");
-		robot.outLog.appendLog(a->name);
+//		robot.outLog.appendLog("Adding to Background:");
+//		robot.outLog.appendLog(a->name);
 		background.push_back(a);
-		/* no break */
+		///* no break
 	case END:
 		position++;
 		aqueue.pop();
 		if(!aqueue.empty()){
 			a = aqueue.front();
-			robot.outLog.appendLog(a->name);
+//			robot.outLog.appendLog(a->name);
 			a->init();
 		}
 		break;
-
+	if (!background.empty()){
 	std::vector<Action*>::iterator it = background.begin();
 	while(it != background.end()){
 		ControlFlow return_val = (*it)->call(position);
@@ -41,16 +42,16 @@ void AutoControl::iter(){
 			++it;
 		}
 	}
-
 	}
-
-	/*
+	}
+	}
+/*
 	std::vector<OrderAction*>::iterator it = actions.begin();
 	for(it = actions.begin(); it != actions.end(); ++it){
 //		cout << "tele init " << (*it)->name() << endl;
 		(*it)->call();
 	}
-	*/
+	//*/
 
 
 

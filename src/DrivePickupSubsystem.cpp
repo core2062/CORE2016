@@ -31,16 +31,16 @@ void DrivePickupSubsystem::teleopInit(void){
 	robot.joystick.register_button(DRIVE_PICKUP_OUT, 1, 8);
 	robot.joystick.register_combo(COMBO5, 0, 3);
 
-	frontLeft.SetSafetyEnabled(true);
-	backLeft.SetSafetyEnabled(true);
-	frontRight.SetSafetyEnabled(true);
-	backRight.SetSafetyEnabled(true);
-	pickupMotor.SetSafetyEnabled(true);
-	frontLeft.Set(0.0);
-	backLeft.Set(0.0);
-	frontRight.Set(0.0);
-	backRight.Set(0.0);
-	pickupMotor.Set(0.0);
+	//frontLeft.SetSafetyEnabled(true);
+	//backLeft.SetSafetyEnabled(true);
+	//frontRight.SetSafetyEnabled(true);
+	//backRight.SetSafetyEnabled(true);
+	//pickupMotor.SetSafetyEnabled(true);
+	//	frontLeft.Set(0.0);
+	//	backLeft.Set(0.0);
+	//	frontRight.Set(0.0);
+	//	backRight.Set(0.0);
+	//	pickupMotor.Set(0.0);
 
 	robot.outLog.appendLog("DriveSubsystem: TeleopInit Success");
 
@@ -200,19 +200,19 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 		}
 	}
 
-	frontLeft.Set(left);
-	backLeft.Set(left);
-	frontRight.Set(right);
-	backRight.Set(right);
-	pickupMotor.Set(pickup_val);
+	//frontLeft.Set(left);
+	//backLeft.Set(left);
+	//frontRight.Set(right);
+	//backRight.Set(right);
+	//pickupMotor.Set(pickup_val);
 
 
 	}else{
-		frontLeft.Set(0);
-		backLeft.Set(0);
-		frontRight.Set(0);
-		backRight.Set(0);
-		pickupMotor.Set(0);
+		//	frontLeft.Set(0);
+		//	backLeft.Set(0);
+		//	frontRight.Set(0);
+		//	backRight.Set(0);
+		//	pickupMotor.Set(0);
 	}
 
 
@@ -225,14 +225,14 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 
 void DrivePickupSubsystem::teleopEnd(void){
 	robot.outLog.appendLog("drive tele end");
-	frontLeft.SetSafetyEnabled(false);
-	frontRight.SetSafetyEnabled(false);
-	backLeft.SetSafetyEnabled(false);
-	backRight.SetSafetyEnabled(false);
-	frontLeft.Set(0.0);
-	frontRight.Set(0.0);
-	backLeft.Set(0.0);
-	backRight.Set(0.0);
+	//	frontLeft.SetSafetyEnabled(false);
+	//	frontRight.SetSafetyEnabled(false);
+	////	backLeft.SetSafetyEnabled(false);
+	//	backRight.SetSafetyEnabled(false);
+	//	frontLeft.Set(0.0);
+	//	frontRight.Set(0.0);
+	//	backLeft.Set(0.0);
+	//	backRight.Set(0.0);
 }
 
 void DrivePickupSubsystem::bolderAlign(double lError, double rError, double distAway){
@@ -242,5 +242,5 @@ void DrivePickupSubsystem::bolderAlign(double lError, double rError, double dist
 }
 
 void DrivePickupSubsystem::setPickupSpeed(double speed){
-	pickupMotor.Set(speed);
+	//pickupMotor.Set(speed);
 }

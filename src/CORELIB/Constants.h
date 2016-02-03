@@ -116,12 +116,6 @@ public:
 		b = base;
 		isBool = true;
 	}
-	void put(){
-		if (isBool)
-			SmartDashboard::PutBoolean(n,v);
-		else
-			SmartDashboard::PutNumber(n,b);
-	}
 
 
 };

@@ -18,18 +18,18 @@ using namespace CORE;
 
 class LiftSubsystem : public CORESubsystem {
 public:
-//	DrivePickupSubsystem* drive;
-	CANTalon liftMotor;
+//	DrivePickupSubsystem* drive;/*
+//	CANTalon liftMotor;
 	COREPID liftPID;
 
 	LiftSubsystem(CORERobot& robot/*, DrivePickupSubsystem& drive*/):
 		CORESubsystem(robot),
 //		drive(&drive),
-		liftMotor(14),
+//		liftMotor(14),
 		liftPID(0,0,0)
 
 	{
-		robot.link(LIFT_MOTOR, &liftMotor);
+//		robot.link(LIFT_MOTOR, &liftMotor);
 	}
 	void robotInit(void);
 	void teleopInit(void);

@@ -11,9 +11,9 @@
 		robot.outLog.appendLog("Lift Robot Init");
 	}
 	void LiftSubsystem::teleopInit(void){
-		liftMotor.SetSafetyEnabled(true);
-		liftMotor.Set(0);
-		liftMotor.SetExpiration(0.25);
+//		liftMotor.SetSafetyEnabled(true);
+//		liftMotor.Set(0);
+//		liftMotor.SetExpiration(0.25);
 		robot.outLog.appendLog("LiftSubsystem: TeleopInit Success");
 		robot.joystick.register_axis(LIFT_AXIS, 2, 1);
 		robot.joystick.register_button(LIFT_LEVEL1, 2, 1);
@@ -21,7 +21,7 @@
 	}
 	void LiftSubsystem::teleop(void){
 
-
+/*
 		liftPID.calculate();
 
 		if (!robot.isHybrid){
@@ -35,9 +35,9 @@
 				liftPID.setPoint(LIFT_LEVEL1);
 				liftMotor.Set(liftPID.getOutput());
 			}
-		}
+		}*/
 	}
 
 	void LiftSubsystem::changeLiftHeight(liftHeights level){
-		liftMotor.Set(level);
+//		liftMotor.Set(level);
 	}

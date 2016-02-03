@@ -27,22 +27,24 @@ public:
 		autoControl(robot, robot.aQueue, robot.aBackground),
 		teleControl(robot, robot.tQueue, robot.tBackground),
 		lift(robot),
-		drive(robot, vision),
-		shooter(robot),
-		vision(robot)
-	{
-		robot.add(lift);
+			drive(robot, vision),
+			shooter(robot),
+			vision(robot)
+		{
+				robot.add(lift);
 		robot.add(drive);
 		robot.add(shooter);
 		robot.add(vision);
 		robot.autoSeq = &autoControl;
 		robot.teleSeq = &teleControl;
+		std::cout << "Constructing done" << std::endl;
 	}
 
 	void RobotInit() {
 
-
+		std::cout << "trying robot init" << std::endl;
 		robot.robotInit();
+		std::cout << "robot init worked" << std::endl;
 
 	}
 
@@ -53,7 +55,7 @@ public:
 //		autoControl.add(test);
 //		autoControl.init();
 		while (IsAutonomous() and !IsDisabled()) {
-			autoControl.iter();
+//			autoControl.iter();
 			vision.teleop();
 			Wait(robot.getLoopWait());
 		}

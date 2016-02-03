@@ -7,6 +7,8 @@
 #include <map>
 #include "CORELIB.h"
 #include <array>
+#include <queue>
+#include "COREAuto.h"
 
 #if defined(USE_NAVX)
 //NavX stuff
@@ -22,13 +24,9 @@
 
 
 
-
 namespace CORE {
 
-class Action;
-class OrderAction/* : public Action*/;
-class ConditionAction/* : public Action*/;
-class AutoControl;
+
 
 class CORESubsystem;
 
@@ -45,14 +43,7 @@ public:
 	std::map<analogSensors,AnalogInput*> analogSensorMap;
 	std::map<pneumatics, DoubleSolenoid*> pneumaticMap;
 
-	AutoControl * autoSeq;
-	AutoControl * teleSeq;
 
-	std::queue<OrderAction*> aQueue;
-	std::vector<Action*> aBackground;
-
-	std::queue<OrderAction*> tQueue;
-	std::vector<Action*> tBackground;
 
 #if defined(USE_NAVX)
 #if defined(ENABLE_AHRS)
@@ -67,6 +58,8 @@ public:
 	JoystickCache joystick;
 	Log outLog;
 	Timer loopTimer;
+	AutoControl autoSeq;
+	AutoControl teleSeq;
 	bool loopStarted = false;
 	bool isHybrid = false;
 //	COREDash CD;
@@ -76,7 +69,9 @@ public:
 		subsystems(),
 		serial_port(),
 		joystick(),
-		outLog()
+		outLog(),
+		autoSeq(),
+		teleSeq()
 //		autoControl()
 //		CD(outLog)
 	{}
@@ -152,6 +147,10 @@ class CORESubsystem{
 		//nothing
 	}
 };
+
+
+
+
 
 }
 #endif
