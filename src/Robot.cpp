@@ -13,9 +13,9 @@ class Robot: public SampleRobot
 	CORERobot robot;
 	AutoControl autoControl;
 	AutoControl teleControl;
-	LiftSubsystem lift;
+//	LiftSubsystem lift;
 	DrivePickupSubsystem drive;
-	ShooterSubsystem shooter;
+//	ShooterSubsystem shooter;
 	VisionSubsystem vision;
 
 
@@ -24,19 +24,17 @@ public:
 
 	Robot() :
 		robot(),
-		autoControl(robot, robot.aQueue, robot.aBackground),
-		teleControl(robot, robot.tQueue, robot.tBackground),
-		lift(robot),
+		autoControl(robot),
+		teleControl(robot),
+//		lift(robot),
 		drive(robot, vision),
-		shooter(robot),
+//		shooter(robot),
 		vision(robot)
 	{
-		robot.add(lift);
+//		robot.add(lift);
 		robot.add(drive);
-		robot.add(shooter);
+//		robot.add(shooter);
 		robot.add(vision);
-		robot.autoSeq = &autoControl;
-		robot.teleSeq = &teleControl;
 	}
 
 	void RobotInit() {
@@ -53,7 +51,7 @@ public:
 //		autoControl.add(test);
 //		autoControl.init();
 		while (IsAutonomous() and !IsDisabled()) {
-			autoControl.iter();
+//			autoControl.iter();
 			vision.teleop();
 			Wait(robot.getLoopWait());
 		}
@@ -68,7 +66,7 @@ public:
 			robot.teleop();
 
 			if (robot.isHybrid){
-				teleControl.iter();
+//				teleControl.iter();
 			}
 //			SmartDashboard::PutNumber("topLiftLim", robot.digitalSensorMap[digitalSensors::BOT_LIFT_LIMIT]->Get());
 //			SmartDashboard::PutNumber("botLiftLim", robot.digitalSensorMap[digitalSensors::TOP_LIFT_LIMIT]->Get());

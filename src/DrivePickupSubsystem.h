@@ -26,6 +26,8 @@ class DrivePickupSubsystem: public CORESubsystem{
     	int oldBallX = -1;
     	int oldGoalX = -1;
 
+		SendableChooser driveChooser;
+
 public:
 
 
@@ -39,18 +41,19 @@ public:
 		CANTalon backLeft;
 		CANTalon frontRight;
 		CANTalon backRight;
-		CANTalon pickupMotor;
+//		CANTalon pickupMotor;
 
 
 	std::string name(void);
 	DrivePickupSubsystem(CORERobot& robot, VisionSubsystem& vision):
 		CORESubsystem(robot),
+		driveChooser(),
 		vision(&vision),
 		frontLeft(13),
-		backLeft(14),
-		frontRight(20),
-		backRight(16),
-		pickupMotor(-1)
+		backLeft(12),
+		frontRight(10),
+		backRight(11)//,
+//		pickupMotor(-1)
 
 		{
 
@@ -58,19 +61,21 @@ public:
 		robot.link(BACK_LEFT, &backLeft);
 		robot.link(FRONT_RIGHT, &frontRight);
 		robot.link(FRONT_LEFT, &frontLeft);
-		robot.link(PICKUP, &pickupMotor);
+//		robot.link(PICKUP, &pickupMotor);
 
 			//start false to avoid error
 			frontLeft.SetSafetyEnabled(false);
 			frontRight.SetSafetyEnabled(false);
 			backLeft.SetSafetyEnabled(false);
 			backRight.SetSafetyEnabled(false);
-			pickupMotor.SetSafetyEnabled(false);
+			frontRight.SetInverted(true);
+			backRight.SetInverted(true);
+//			pickupMotor.SetSafetyEnabled(false);
 			frontLeft.Set(0.0);
 			frontRight.Set(0.0);
 			backLeft.Set(0.0);
 			backRight.Set(0.0);
-			pickupMotor.Set(0.0);
+//			pickupMotor.Set(0.0);
 		}
 
 	void robotInit(void);

@@ -46,6 +46,10 @@ public:
 	}
 	void end(){
 		itrTimer.Stop();
+		robot.motorMap[BACK_RIGHT]->Set(0.0);
+		robot.motorMap[BACK_LEFT]->Set(0.0);
+		robot.motorMap[FRONT_RIGHT]->Set(0.0);
+		robot.motorMap[FRONT_LEFT]->Set(0.0);
 	}
 	ControlFlow autoCall(){
 		pitch = robot.ahrs->GetPitch();

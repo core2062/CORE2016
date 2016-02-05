@@ -40,7 +40,12 @@ public:
 	};
 
 	void init(){}
-	void end(){}
+	void end(){
+		robot.motorMap[BACK_RIGHT]->Set(0.0);
+		robot.motorMap[BACK_LEFT]->Set(0.0);
+		robot.motorMap[FRONT_RIGHT]->Set(0.0);
+		robot.motorMap[FRONT_LEFT]->Set(0.0);
+	}
 	ControlFlow autoCall(){
 		if(!robot.ahrs->IsMagneticDisturbance() && robot.ahrs->IsMagnetometerCalibrated()){
 			compassVal = robot.ahrs->GetCompassHeading();

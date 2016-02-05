@@ -155,17 +155,15 @@ class OrderAction : public Action{
 
 class AutoControl{
 	CORERobot& robot;
-	std::queue<OrderAction*>& aqueue;
-	std::vector<Action*>& background;
+	std::queue<OrderAction*> aqueue;
+	std::vector<Action*> background;
 	bool queueEmpty = false;
 	int position = 1;
 
 public:
 
-	AutoControl(CORERobot& robot, std::queue<OrderAction*>& aQueue, std::vector<Action*>& aBackground):
-		robot(robot),
-		aqueue(aQueue),
-		background(aBackground)
+	AutoControl(CORERobot& robot):
+		robot(robot)
 		{};
 
 	void iter (void);

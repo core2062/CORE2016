@@ -9,7 +9,7 @@ void AutoControl::iter(){
 		robot.outLog.appendLog("Auto Queue Empty");
 		queueEmpty = true;
 	}
-
+	if(!aqueue.empty()){
 	Action* a = aqueue.front();
 
 	ControlFlow returnVal = a->call(position);
@@ -31,7 +31,7 @@ void AutoControl::iter(){
 			a->init();
 		}
 		break;
-
+	if(!background.empty()){
 	std::vector<Action*>::iterator it = background.begin();
 	while(it != background.end()){
 		ControlFlow return_val = (*it)->call(position);
@@ -41,9 +41,9 @@ void AutoControl::iter(){
 			++it;
 		}
 	}
-
 	}
-
+	}
+	}
 	/*
 	std::vector<OrderAction*>::iterator it = actions.begin();
 	for(it = actions.begin(); it != actions.end(); ++it){

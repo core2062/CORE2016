@@ -9,7 +9,7 @@
 #ifndef SRC_CORELIB_CONSTANTS_H_
 #define SRC_CORELIB_CONSTANTS_H_
 
-#define USE_NAVX
+//#define USE_NAVX
 
 #define ETHER_DIRVE
 //#define TANK_DRIVE
@@ -41,6 +41,7 @@ enum side {
 enum controllerInputs{
 	LIFT_AXIS,
 	DRIVE_MAG,
+	DRIVE_MAG2,
 	DRIVE_ROT,
 	DRIVE_SPEED,
 	DRIVE_GOAL,
