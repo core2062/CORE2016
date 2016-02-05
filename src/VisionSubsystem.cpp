@@ -60,41 +60,49 @@ void VisionSubsystem::teleop(void){
 	rightAngleError = relativeRightAngle - cameraMountAngle; // Negative Error is towards chassis //
 */
 
-	std::vector<double> ballXCords = ballTable->GetNumberArray("xCord", llvm::ArrayRef<double>());
-	std::vector<double> goalXCords = goalTable->GetNumberArray("xCord", llvm::ArrayRef<double>());
-	std::vector<double> ballAreas = ballTable->GetNumberArray("area", llvm::ArrayRef<double>());
-	std::vector<double> goalAreas = goalTable->GetNumberArray("area", llvm::ArrayRef<double>());
+	double goalXCords[3] =
+	{
+			visionTable->GetNumber("goal1_x",-1),
+			visionTable->GetNumber("goal2_x",-1),
+			visionTable->GetNumber("goal3_x",-1)
+	};
+	double goalAreas[3] = {
+			visionTable->GetNumber("goal1_width",-1)*visionTable->GetNumber("goal1_height",-1),
+			visionTable->GetNumber("goal2_width",-1)*visionTable->GetNumber("goal2_height",-1),
+			visionTable->GetNumber("goal3_width",-1)*visionTable->GetNumber("goal3_height",-1)
+	};
+//	std::vector<double> ballXCords = ballTable->GetNumberArray("xCord", llvm::ArrayRef<double>());
+//	std::vector<double> goalXCords = goalTable->GetNumberArray("xCord", llvm::ArrayRef<double>());
+//	std::vector<double> ballAreas = ballTable->GetNumberArray("area", llvm::ArrayRef<double>());
+//	std::vector<double> goalAreas = goalTable->GetNumberArray("area", llvm::ArrayRef<double>());
 
-	if (ballXCords.size() == 0){
+
 		ballArea = -1;
 		ballX = -1;
-	}else{
-		ballArea = -1;
-		for (uint8_t i = 0; i < ballXCords.size(); i++){
-			if ((ballAreas[i] > ballArea) && ballAreas[i] < (VISION_WIDTH * VISION_HEIGHT )){
-				ballX = ballXCords[i];
-				ballArea =  ballAreas[i];
-			}
-		}
-	}
 
-	if (goalXCords.size() == 0){
+//		for (uint8_t i = 0; i < ballXCords.size(); i++){
+//			if ((ballAreas[i] > ballArea) && ballAreas[i] < (VISION_WIDTH * VISION_HEIGHT )){
+//				ballX = ballXCords[i];
+//				ballArea =  ballAreas[i];
+//			}
+//		}
+
+
 		goalX = -1;
-	}else{
-		double biggestArea = 0;
-		for (uint8_t i = 0; i < goalXCords.size(); i++){
+
+		double biggestArea = 5;
+		for (uint8_t i = 0; i < 3; i++){
 			if ((goalAreas[i] > biggestArea) && goalAreas[i] < (VISION_WIDTH * VISION_HEIGHT * .3333)){
 				goalX = goalXCords[i];
 				biggestArea = goalAreas[i];
 			}
 		}
-		if (biggestArea == 0){
+		if (biggestArea == 5){
 			goalX = -1;
 		}
 	}
 
 
-	}
 
 void VisionSubsystem::teleopEnd(void){
 	robot.outLog.appendLog("Vision tele end");
