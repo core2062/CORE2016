@@ -70,10 +70,14 @@ if (robot.joystick.combo(COMBO5)){
 //SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 
 	if (!robot.isHybrid){
+#ifdef SHOW_MOTORS
+  SmartDashboard::PutNumber(std::string("back right motor voltage"), robot.motorMap[BACK_RIGHT]->GetOutputVoltage());
+  SmartDashboard::PutNumber(std::string("front right motor voltage"), robot.motorMap[FRONT_RIGHT]->GetOutputVoltage());
+  SmartDashboard::PutNumber(std::string("back left motor voltage"), robot.motorMap[BACK_LEFT]->GetOutputVoltage());
+  SmartDashboard::PutNumber(std::string("front left motor voltage"), robot.motorMap[FRONT_LEFT]->GetOutputVoltage());
+#endif
 
 //	double pickup_val = (robot.joystick.button(DRIVE_PICKUP_IN))?PICKUP_SPEED:(robot.joystick.button(DRIVE_PICKUP_OUT))?-PICKUP_SPEED:0.0;
-
-
 
 	/////////////////////////////////////////
 	//////// FIND AND DEADBAND DRIVE ////////

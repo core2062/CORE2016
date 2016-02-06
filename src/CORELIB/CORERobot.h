@@ -35,7 +35,7 @@ class CORERobot {
 public:
 
 
-	std::map<motors,CANSpeedController*> motorMap;
+	std::map<motors,CANTalon*> motorMap;
 	std::map<digitalSensors,DigitalInput*> digitalSensorMap;
 	std::map<analogSensors,AnalogInput*> analogSensorMap;
 	std::map<pneumatics, DoubleSolenoid*> pneumaticMap;
@@ -72,7 +72,7 @@ public:
 	void teleopInit(void);
 	void teleop(void);
 	void teleopEnd(void);
-	void link(motors motorKey,CANSpeedController* motor);
+	void link(motors motorKey,CANTalon* motor);
 	void link(digitalSensors digitalSensorKey ,DigitalInput* sensor);
 	void link(analogSensors analogSensorKey ,AnalogInput* sensor);
 	void link(pneumatics pneumaticKey , DoubleSolenoid* cylinder);

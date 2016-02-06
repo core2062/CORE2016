@@ -10,7 +10,7 @@
 #define SRC_CORELIB_CONSTANTS_H_
 
 //#define USE_NAVX
-
+#define SHOW_MOTORS
 #define ETHER_DIRVE
 //#define TANK_DRIVE
 //#define MECANUM_DRIVE

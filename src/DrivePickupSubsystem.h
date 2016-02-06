@@ -1,6 +1,7 @@
 #ifndef DRIVEPICKUPSUBSYSTEM_H
 #define DRIVEPICKUPSUBSYSTEM_H
 
+
 #include "CORELIB/CORERobot.h"
 #include "WPILib.h"
 #include <cmath>
@@ -75,6 +76,14 @@ public:
 			frontRight.Set(0.0);
 			backLeft.Set(0.0);
 			backRight.Set(0.0);
+			frontLeft.SetFeedbackDevice(CANTalon::QuadEncoder);
+			backLeft.SetFeedbackDevice(CANTalon::QuadEncoder);
+			frontRight.SetFeedbackDevice(CANTalon::QuadEncoder);
+			backRight.SetFeedbackDevice(CANTalon::QuadEncoder);
+			frontLeft.ConfigEncoderCodesPerRev(1024);
+			backLeft.ConfigEncoderCodesPerRev(1024);
+			frontRight.ConfigEncoderCodesPerRev(1024);
+			backRight.ConfigEncoderCodesPerRev(1024);
 //			pickupMotor.Set(0.0);
 		}
 

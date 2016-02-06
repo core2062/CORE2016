@@ -111,8 +111,8 @@ void CORESubsystem::teleopInit(void){
 void CORESubsystem::teleop(){
 	printf("Unimplemented teleop function\n");
 }
-void CORERobot::link(motors motorKey,CANSpeedController* motor){
-	motorMap.insert(std::pair<motors,CANSpeedController*>(motorKey,motor));
+void CORERobot::link(motors motorKey,CANTalon* motor){
+	motorMap.insert(std::pair<motors,CANTalon*>(motorKey,motor));
 }
 void CORERobot::link(digitalSensors digitalSensorKey,DigitalInput* sensor){
 	digitalSensorMap.insert(std::pair<digitalSensors,DigitalInput*>(digitalSensorKey, sensor));
