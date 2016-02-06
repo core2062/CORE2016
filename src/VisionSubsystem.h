@@ -25,6 +25,8 @@ class VisionSubsystem: public CORESubsystem{
 	int goalX = -1;
 	int ballArea = -1;
 
+	bool errorStated = false;
+
 /*	//Camera Error Calc Values //
 	const double cameraFOV = 68.5;
 	const double cameraMountAngle = 10; // Angle center of camera makes with the chassis //

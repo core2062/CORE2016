@@ -15,7 +15,7 @@ class Robot: public SampleRobot
 	AutoControl teleControl;
 //	LiftSubsystem lift;
 	DrivePickupSubsystem drive;
-//	ShooterSubsystem shooter;
+	ShooterSubsystem shooter;
 	VisionSubsystem vision;
 
 
@@ -28,12 +28,12 @@ public:
 		teleControl(robot),
 //		lift(robot),
 		drive(robot, vision),
-//		shooter(robot),
+		shooter(robot),
 		vision(robot)
 	{
 //		robot.add(lift);
 		robot.add(drive);
-//		robot.add(shooter);
+		robot.add(shooter);
 		robot.add(vision);
 	}
 

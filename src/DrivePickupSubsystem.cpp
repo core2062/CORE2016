@@ -71,10 +71,10 @@ if (robot.joystick.combo(COMBO5)){
 
 	if (!robot.isHybrid){
 #ifdef SHOW_MOTORS
-  SmartDashboard::PutNumber(std::string("back right motor voltage"), robot.motorMap[BACK_RIGHT]->GetOutputVoltage());
-  SmartDashboard::PutNumber(std::string("front right motor voltage"), robot.motorMap[FRONT_RIGHT]->GetOutputVoltage());
-  SmartDashboard::PutNumber(std::string("back left motor voltage"), robot.motorMap[BACK_LEFT]->GetOutputVoltage());
-  SmartDashboard::PutNumber(std::string("front left motor voltage"), robot.motorMap[FRONT_LEFT]->GetOutputVoltage());
+  SmartDashboard::PutNumber(std::string("back right motor current"), robot.motorMap[BACK_RIGHT]->GetOutputCurrent());
+  SmartDashboard::PutNumber(std::string("front right motor current"), robot.motorMap[FRONT_RIGHT]->GetOutputCurrent());
+  SmartDashboard::PutNumber(std::string("back left motor current"), robot.motorMap[BACK_LEFT]->GetOutputCurrent());
+  SmartDashboard::PutNumber(std::string("front left motor current"), robot.motorMap[FRONT_LEFT]->GetOutputCurrent());
 #endif
 
 //	double pickup_val = (robot.joystick.button(DRIVE_PICKUP_IN))?PICKUP_SPEED:(robot.joystick.button(DRIVE_PICKUP_OUT))?-PICKUP_SPEED:0.0;
