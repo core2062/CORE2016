@@ -14,7 +14,7 @@ using namespace CORE;
 
 class DriveAction : public ConditionAction{
 
-
+	double avgDist = 0.0;
 	double targetDistance = 0;
 	double speed = 0;
 	//varriables
@@ -39,15 +39,22 @@ public:
 
 	void init(){
 		//getting sensor values
+		robot.motorMap[FRONT_LEFT]->SetEncPosition(0);
+		robot.motorMap[FRONT_RIGHT]->SetEncPosition(0);
+		robot.motorMap[BACK_LEFT]->SetEncPosition(0);
+		robot.motorMap[BACK_RIGHT]->SetEncPosition(0);
+
 
 	}
 	void end(){}
 	ControlFlow autoCall(){
-
-
+		avgDist = (robot.motorMap[FRONT_LEFT]->GetEncPosition()+robot.motorMap[FRONT_RIGHT]->GetEncPosition()+
+		robot.motorMap[BACK_LEFT]->GetEncPosition()+robot.motorMap[BACK_RIGHT]->GetEncPosition())/4;
+		if(avgDist < targetDistance)
+			return CONTINUE;
+		else
+			return END;
 		//main logic
-
-		return CONTINUE;
 	}
 
 	~DriveAction(){
