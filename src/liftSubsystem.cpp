@@ -32,7 +32,7 @@
 				liftMotor.Set(robot.joystick.axis(LIFT_AXIS));
 			}
 			else if(robot.joystick.button(LIFT_LEVEL1)){
-				liftPID.setPoint(LIFT_LEVEL1);
+				liftPID.setPoint(LEVEL1);
 				liftMotor.Set(liftPID.getOutput());
 			}
 		}
