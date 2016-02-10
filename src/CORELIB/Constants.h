@@ -156,12 +156,23 @@ public:
  const smartDB blueTowerCompass(std::string("Blue Tower Compass"), 0.0);
  const smartDB compass(std::string("NavX Compass"), 0.0);
 
+ const smartDB testAuto(std::string("Auto Test Value"), 5.0);
+ const smartDB mediumDistance(std::string("Medium Distance"), 5.0);
+ const smartDB secondaryMedium(std::string("Secondary Medium Distance"), 5.0);
+ const smartDB longDistance(std::string("Long Distance"), 5.0);
+ const smartDB secondaryLong(std::string("Secondary Long Distance"), 5.0);
+
  const std::array<const smartDB *,5> sdPointers = {
 		 &rotationPValue,
 		 &etherA,
 		 &etherB,
 		 &blueTowerCompass,
 		 &compass
+		 &testAuto,
+		 &mediumDistance,
+		 &secondaryMedium
+		 &longDistance
+		 &secondaryLong
  };
 
 

@@ -47,12 +47,15 @@ public:
 		robot.motorMap[FRONT_LEFT]->Set(0.0);
 	}
 	ControlFlow autoCall(){
+#ifdef USE_NAVX
 		if(!robot.ahrs->IsMagneticDisturbance() && robot.ahrs->IsMagnetometerCalibrated()){
 			compassVal = robot.ahrs->GetCompassHeading();
 		}else{
 			return CONTINUE;
 		}
-
+#else
+		return END;
+#endif
 
 			double gyroError =  compassVal - targetAngle;
 //			SmartDashboard::PutNumber("Gyro PID Error", gyroPID.mistake);

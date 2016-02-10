@@ -53,6 +53,7 @@ class Action{
 
 
 class ConditionAction : public Action{
+private:
 	CORERobot& robot;
 //	bool (conditions::*condition)(void);
 //	bool (conditions::*endCondition)(void);
@@ -107,6 +108,7 @@ class ConditionAction : public Action{
 };
 
 class OrderAction : public Action{
+private:
 	CORERobot& robot;
 //	bool (conditions::*condition)(void);
 //	bool (conditions::*endCondition)(void);
