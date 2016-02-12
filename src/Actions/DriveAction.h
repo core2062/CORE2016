@@ -52,17 +52,17 @@ public:
 		robot.motorMap[BACK_LEFT]->GetEncPosition()+robot.motorMap[BACK_RIGHT]->GetEncPosition())/4;
 		if(avgDist < targetDistance){
 			return CONTINUE;
-		robot.motormap[FRONT_LEFT]->Set(NORMAL_SPEED);
-		robot.motormap[FRONT_RIGHT]->Set(NORMAL_SPEED);
-		robot.motormap[BACK_LEFT]->Set(NORMAL_SPEED);
-		robot.motormap[BACK_RIGHT]->Set(NORMAL_SPEED);
+		robot.motorMap[FRONT_LEFT]->Set(NORMAL_SPEED);
+		robot.motorMap[FRONT_RIGHT]->Set(NORMAL_SPEED);
+		robot.motorMap[BACK_LEFT]->Set(NORMAL_SPEED);
+		robot.motorMap[BACK_RIGHT]->Set(NORMAL_SPEED);
 	}
 		else{
 
-		robot.motormap[FRONT_LEFT]->Set(0.0);
-		robot.motormap[FRONT_RIGHT]->Set(0.0);
-		robot.motormap[BACK_LEFT]->Set(0.0);
-		robot.motormap[BACK_RIGHT]->Set(0.0);
+		robot.motorMap[FRONT_LEFT]->Set(0.0);
+		robot.motorMap[FRONT_RIGHT]->Set(0.0);
+		robot.motorMap[BACK_LEFT]->Set(0.0);
+		robot.motorMap[BACK_RIGHT]->Set(0.0);
 			return END;
 		}
 		//main logic

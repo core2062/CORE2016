@@ -27,6 +27,12 @@ enum motors{
 	PICKUP
 };
 
+enum direction{
+	IN,
+	OUT
+
+};
+
 enum side {
 	LEFT,
 	RIGHT,

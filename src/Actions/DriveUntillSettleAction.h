@@ -52,7 +52,11 @@ public:
 		robot.motorMap[FRONT_LEFT]->Set(0.0);
 	}
 	ControlFlow autoCall(){
+#ifdef USE_NAVX
 		pitch = robot.ahrs->GetPitch();
+#else
+		return END;
+#endif
 		// Calc pitch rate
 		if(itrTimer.Get() > 1){
 			pitchRate = oldPitch-pitch;

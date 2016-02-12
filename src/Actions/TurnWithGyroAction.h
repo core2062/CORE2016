@@ -26,19 +26,14 @@ public:
 //	bool oldRot = 0.0;
 	int resetQ = 0;
 	double gyroSet = 0.0;
+	double gyroRate = 0.0;
 	double left = 0.0;
 	double right = 0.0;
 	double a = SmartDashboard::GetNumber(etherA.n, etherA.v);
 	double b = SmartDashboard::GetNumber(etherB.n, etherB.v);
 
-	virtual bool startCondition(){
-		return false;
-	}
-	virtual bool endCondition(){
-		return false;
-	}
 	TurnWithGyroAction(CORERobot& robot, double gyroSet):
-		ConditionAction(robot),
+		OrderAction(robot),
 		gyroSet(gyroSet){
 	};
 
@@ -50,8 +45,11 @@ public:
 		robot.motorMap[FRONT_LEFT]->Set(0.0);
 	}
 	ControlFlow autoCall(){
-
-			double gyroRate = robot.ahrs->GetYaw();
+#ifdef USE_NAVX
+			gyroRate = robot.ahrs->GetYaw();
+#else
+			return END;
+#endif
 		//Gyro PID
 			double gyroError =  gyroSet - gyroRate;
 //			SmartDashboard::PutNumber("Gyro PID Error", gyroPID.mistake);

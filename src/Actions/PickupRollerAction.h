@@ -19,11 +19,7 @@ using namespace CORE;//Added to commit, can be deleted later
 
 class PickupRollerAction : public OrderAction{
 
-		enum direction{
-			IN,
-			OUT
-
-		};
+	int directions;
 		Timer timer;
 		double duration;
 public:
@@ -31,9 +27,9 @@ public:
 
 
 
-	PickupRollerAction(CORERobot& robot, enum direction, double duration = 0.1):
+	PickupRollerAction(CORERobot& robot, direction dir, double duration = 0.1):
 		OrderAction(robot),
-		direction(direction),
+		directions(dir),
 		duration(duration)
 	{
 
@@ -49,17 +45,17 @@ public:
 	}
 	ControlFlow autoCall(){
 		if(timer.Get() > duration){
-			robot.motormap[PICKUP]->Set(0.0);
+			robot.motorMap[PICKUP]->Set(0.0);
 			return END;
 	}
 		else{
 
-			if(direction == IN){
-				robot.motormap[PICKUP]->Set(FORWARD);
+			if(directions == IN){
+				robot.motorMap[PICKUP]->Set(FORWARD);
 			}
 
 			else{
-				robot.motormap[PICKUP]->Set(REVERSE);
+				robot.motorMap[PICKUP]->Set(REVERSE);
 			}
 			return CONTINUE;
 

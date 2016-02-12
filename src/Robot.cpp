@@ -1,7 +1,7 @@
 #include "WPILib.h"
 #include "CoreLib/CORERobot.h"
 #include "CoreLib/CoreAuto.h"
-#include "Actions/TestAction.h"
+#include "Actions/Actions.h"
 #include "Subsytems.h"
 
 
@@ -59,15 +59,15 @@ public:
         std::cout<<"Auto mode:" <<choice<<std::endl;
         robot.outLog.appendLog(choice);
 
-					autoControl.add( new DriveAction(robot, 100, 10.0));
+//					autoControl.add( new DriveAction(robot, 100, 10.0));
 
 				if(choice=="Lowbar"){
 			//		getTicks(SmartDashboard::GetNumber(secondaryLong.n,secondaryLong.v));
 
-					autoControl.add( new DriveAction(CORERobot& robot, 95.75, NORMAL_SPEED));
-					autoControl.add( new DriveUntillSettleAction(CORERobot& robot, OFF));
-					autoControl.add( new TurnWithGyroAction(CORERobot& robot, 45.0));
-					autoControl.add( new ShootAction(CORERobot& robot));
+					autoControl.add( new DriveAction(robot, 95.75, NORMAL_SPEED));
+					autoControl.add( new DriveUntillSettleAction(robot, NORMAL_SPEED));
+					autoControl.add( new TurnWithGyroAction(robot, 45.0));
+					autoControl.add( new ShootAction(robot));
 
 				}
 				else if(choice=="Obstacle 2"){
