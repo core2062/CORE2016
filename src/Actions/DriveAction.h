@@ -50,10 +50,21 @@ public:
 	ControlFlow autoCall(){
 		avgDist = (robot.motorMap[FRONT_LEFT]->GetEncPosition()+robot.motorMap[FRONT_RIGHT]->GetEncPosition()+
 		robot.motorMap[BACK_LEFT]->GetEncPosition()+robot.motorMap[BACK_RIGHT]->GetEncPosition())/4;
-		if(avgDist < targetDistance)
+		if(avgDist < targetDistance){
 			return CONTINUE;
-		else
+		robot.motormap[FRONT_LEFT]->Set(NORMAL_SPEED);
+		robot.motormap[FRONT_RIGHT]->Set(NORMAL_SPEED);
+		robot.motormap[BACK_LEFT]->Set(NORMAL_SPEED);
+		robot.motormap[BACK_RIGHT]->Set(NORMAL_SPEED);
+	}
+		else{
+
+		robot.motormap[FRONT_LEFT]->Set(0.0);
+		robot.motormap[FRONT_RIGHT]->Set(0.0);
+		robot.motormap[BACK_LEFT]->Set(0.0);
+		robot.motormap[BACK_RIGHT]->Set(0.0);
 			return END;
+		}
 		//main logic
 	}
 
