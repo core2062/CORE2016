@@ -17,7 +17,7 @@ class DriveAction : public ConditionAction{
 	double avgDist = 0.0;
 	double targetDistance = 0;
 	double speed = 0;
-	//varriables
+	//variables
 
 public:
 
