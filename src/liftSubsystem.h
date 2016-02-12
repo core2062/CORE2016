@@ -35,7 +35,7 @@ public:
 	void teleopInit(void);
 	void teleop(void);
 	std::string name(){return "Lift";}
-	void changeLiftHeight(liftHeights level);
+	void changeLiftHeight(smartDB liftLevel);
 };
 
 #endif /* SRC_SUBSYSTEMS_LIFTSUBSYSTEM_H_ */

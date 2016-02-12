@@ -10,7 +10,7 @@
 #include "VisionSubsystem.h"
 #include "CORELIB/COREAuto.h"
 #include "Actions/DriveAction.h"
-
+#include "CORELIB/COREPID.h"
 
 
 
@@ -42,7 +42,9 @@ public:
 		CANTalon backLeft;
 		CANTalon frontRight;
 		CANTalon backRight;
-//		CANTalon pickupMotor;
+		CANTalon pickupMotor;
+
+		COREPID pickupPID;
 
 
 	std::string name(void);
@@ -53,8 +55,9 @@ public:
 		frontLeft(13),
 		backLeft(12),
 		frontRight(10),
-		backRight(11)//,
-//		pickupMotor(-1)
+		backRight(11),
+		pickupMotor(-1),
+		pickupPID(0,0,0)
 
 		{
 
@@ -62,7 +65,7 @@ public:
 		robot.link(BACK_LEFT, &backLeft);
 		robot.link(FRONT_RIGHT, &frontRight);
 		robot.link(FRONT_LEFT, &frontLeft);
-//		robot.link(PICKUP, &pickupMotor);
+		robot.link(PICKUP, &pickupMotor);
 
 			//start false to avoid error
 			frontLeft.SetSafetyEnabled(false);
@@ -71,7 +74,7 @@ public:
 			backRight.SetSafetyEnabled(false);
 			frontRight.SetInverted(true);
 			backRight.SetInverted(true);
-//			pickupMotor.SetSafetyEnabled(false);
+			pickupMotor.SetSafetyEnabled(false);
 			frontLeft.Set(0.0);
 			frontRight.Set(0.0);
 			backLeft.Set(0.0);
@@ -84,7 +87,7 @@ public:
 			backLeft.ConfigEncoderCodesPerRev(1024);
 			frontRight.ConfigEncoderCodesPerRev(1024);
 			backRight.ConfigEncoderCodesPerRev(1024);
-//			pickupMotor.Set(0.0);
+			pickupMotor.Set(0.0);
 		}
 
 	void robotInit(void);

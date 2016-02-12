@@ -28,8 +28,11 @@ void DrivePickupSubsystem::teleopInit(void){
 	robot.joystick.register_button(DRIVE_SPEED, 0, 5);
 	robot.joystick.register_button(DRIVE_AUTO_PICKUP, 0, 2);
 	robot.joystick.register_button(DRIVE_GOAL, 0 , 1);
-	robot.joystick.register_button(DRIVE_PICKUP_IN, 1, 7);
-	robot.joystick.register_button(DRIVE_PICKUP_OUT, 1, 8);
+	robot.joystick.register_button(DRIVE_PICKUP_HEIGHT1, 1, 6);
+	robot.joystick.register_button(DRIVE_PICKUP_HEIGHT2, 1, 7);
+	robot.joystick.register_button(DRIVE_PICKUP_HEIGHT3, 1, 8);
+	robot.joystick.register_button(DRIVE_PICKUP_HEIGHT4, 1, 9);
+	robot.joystick.register_button(DRIVE_PICKUP_HEIGHT5, 1, 10);
 	robot.joystick.register_combo(COMBO5, 0, 3);
 
 	frontLeft.SetSafetyEnabled(true);
@@ -250,6 +253,27 @@ if (robot.joystick.combo(COMBO5)){
 //		pickupMotor.Set(0);
 	}
 
+	pickupPID.calculate();
+	if(robot.joystick.button(DRIVE_PICKUP_HEIGHT1)){
+		pickupPID.setPoint(SmartDashboard::GetNumber(pickupHeight1.n,pickupHeight1.v));
+		pickupMotor.Set(pickupPID.getOutput());
+	}
+	else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT2)){
+		pickupPID.setPoint(SmartDashboard::GetNumber(pickupHeight2.n,pickupHeight2.v));
+		pickupMotor.Set(pickupPID.getOutput());
+	}
+	else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT3)){
+		pickupPID.setPoint(SmartDashboard::GetNumber(pickupHeight3.n,pickupHeight3.v));
+		pickupMotor.Set(pickupPID.getOutput());
+	}
+	else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT4)){
+		pickupPID.setPoint(SmartDashboard::GetNumber(pickupHeight4.n,pickupHeight4.v));
+		pickupMotor.Set(pickupPID.getOutput());
+	}
+	else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT5)){
+		pickupPID.setPoint(SmartDashboard::GetNumber(pickupHeight5.n,pickupHeight5.v));
+		pickupMotor.Set(pickupPID.getOutput());
+	}
 
 
 

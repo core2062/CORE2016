@@ -62,49 +62,49 @@ public:
 					autoControl.add( new DriveAction(robot, 100, 10.0));
 
 				if(choice=="Lowbar"){
-					getTicks(SmartDashboard::GetNumber(secondaryLong.n,secondaryLong.v));
+			//		getTicks(SmartDashboard::GetNumber(secondaryLong.n,secondaryLong.v));
 
 					autoControl.add( new DriveAction(CORERobot& robot, 95.75, NORMAL_SPEED));
 					autoControl.add( new DriveUntillSettleAction(CORERobot& robot, OFF));
 					autoControl.add( new TurnWithGyroAction(CORERobot& robot, 45.0));
-					autoControl.add( new ShootAction(CORERobot& robot, LOAD_TIME));
+					autoControl.add( new ShootAction(CORERobot& robot));
 
 				}
 				else if(choice=="Obstacle 2"){
 
-					getTicks(SmartDashboard::GetNumber(secondaryMedium.n,secondaryMedium.v));
+					//getTicks(SmartDashboard::GetNumber(secondaryMedium.n,secondaryMedium.v));
 
 					autoControl.add( new DriveAction(CORERobot& robot, 47.875, NORMAL_SPEED));
 					autoControl.add( new DriveUntillSettleAction(CORERobot& robot, OFF));
 					autoControl.add( new TurnWithGyroAction(CORERobot& robot, 30.0));
-					autoControl.add( new ShootAction(CORERobot& robot, LOAD_TIME));
+					autoControl.add( new ShootAction(CORERobot& robot));
 
 				}
 				else if(choice=="Obstacle 3"){
-					getTicks(SmartDashboard::GetNumber(testAuto.n,testAuto.v));
+				//	getTicks(SmartDashboard::GetNumber(testAuto.n,testAuto.v));
 
 					autoControl.add( new DriveAction(CORERobot& robot, 74, NORMAL_SPEED));
 					autoControl.add( new DriveUntillSettleAction(CORERobot& robot, OFF));
-					autoControl.add( new ShootAction(CORERobot& robot, LOAD_TIME));
+					autoControl.add( new ShootAction(CORERobot& robot));
 
 				}
 				else if(choice=="Obstacle 4"){
 
-					getTicks(SmartDashboard::GetNumber(mediumDistance.n,mediumDistance.v));
+				//	getTicks(SmartDashboard::GetNumber(mediumDistance.n,mediumDistance.v));
 
 					autoControl.add( new DriveAction(CORERobot& robot, 47.875, NORMAL_SPEED));
 					autoControl.add( new DriveUntillSettleAction(CORERobot& robot, OFF));
 					autoControl.add( new TurnWithGyroAction(CORERobot& robot, -30.0));
-					autoControl.add( new ShootAction(CORERobot& robot, LOAD_TIME));
+					autoControl.add( new ShootAction(CORERobot& robot));
 
 				}
 				else if(choice=="Obstacle 5"){
-					getTicks(SmartDashboard::GetNumber(longDistance.n,longDistance.v));
+				//	getTicks(SmartDashboard::GetNumber(longDistance.n,longDistance.v));
 
 					autoControl.add( new DriveAction(CORERobot& robot, 95.75, NORMAL_SPEED));
 					autoControl.add( new DriveUntillSettleAction(CORERobot& robot, OFF));
 					autoControl.add( new TurnWithGyroAction(CORERobot& robot, -45.0));
-					autoControl.add( new ShootAction(CORERobot& robot, LOAD_TIME));
+					autoControl.add( new ShootAction(CORERobot& robot));
 
 				}
 

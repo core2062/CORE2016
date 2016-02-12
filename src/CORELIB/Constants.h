@@ -27,10 +27,6 @@ enum motors{
 	PICKUP
 };
 
-enum liftHeights {
-	LEVEL1 = 0,
-	LEVEL2 = 12
-};
 enum side {
 	LEFT,
 	RIGHT,
@@ -46,8 +42,11 @@ enum controllerInputs{
 	DRIVE_SPEED,
 	DRIVE_GOAL,
 	DRIVE_AUTO_PICKUP,
-	DRIVE_PICKUP_IN,
-	DRIVE_PICKUP_OUT,
+	DRIVE_PICKUP_HEIGHT1,
+	DRIVE_PICKUP_HEIGHT2,
+	DRIVE_PICKUP_HEIGHT3,
+	DRIVE_PICKUP_HEIGHT4,
+	DRIVE_PICKUP_HEIGHT5,
 	LIFT_LEVEL1,
 	LIFT_LEVEL2,
 	SHOOTER_FIRE,
@@ -161,18 +160,34 @@ public:
  const smartDB secondaryMedium(std::string("Secondary Medium Distance"), 5.0);
  const smartDB longDistance(std::string("Long Distance"), 5.0);
  const smartDB secondaryLong(std::string("Secondary Long Distance"), 5.0);
+ const smartDB pickupHeight1(std::string("Pickup Height 1"), 0.0);
+ const smartDB pickupHeight2(std::string("Pickup Height 2"), 12.0);
+ const smartDB pickupHeight3(std::string("Pickup Height 3"), 24.0);
+ const smartDB pickupHeight4(std::string("Pickup Height 4"), 36.0);
+ const smartDB pickupHeight5(std::string("Pickup Height 5"), 48.0);
+ const smartDB liftLevel1(std::string("Lift Level 1"), 0.0);
+ const smartDB liftLevel2(std::string("Lift Level 2"), 12.0);
 
- const std::array<const smartDB *,5> sdPointers = {
+
+ const std::array<const smartDB *,17> sdPointers = {
 		 &rotationPValue,
 		 &etherA,
 		 &etherB,
 		 &blueTowerCompass,
-		 &compass
+		 &compass,
 		 &testAuto,
 		 &mediumDistance,
-		 &secondaryMedium
-		 &longDistance
-		 &secondaryLong
+		 &secondaryMedium,
+		 &longDistance,
+		 &secondaryLong,
+		 &pickupHeight1,
+		 &pickupHeight2,
+		 &pickupHeight3,
+		 &pickupHeight4,
+		 &pickupHeight5,
+		 &liftLevel1,
+		 &liftLevel2
+
  };
 
 

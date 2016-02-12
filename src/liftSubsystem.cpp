@@ -32,12 +32,12 @@
 				liftMotor.Set(robot.joystick.axis(LIFT_AXIS));
 			}
 			else if(robot.joystick.button(LIFT_LEVEL1)){
-				liftPID.setPoint(LEVEL1);
+				liftPID.setPoint(SmartDashboard::GetNumber(liftLevel1.n,liftLevel1.v));
 				liftMotor.Set(liftPID.getOutput());
 			}
 		}
 	}
 
-	void LiftSubsystem::changeLiftHeight(liftHeights level){
-		liftMotor.Set(level);
+	void LiftSubsystem::changeLiftHeight(smartDB liftLevel){
+		liftMotor.Set(liftLevel.v);
 	}
