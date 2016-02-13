@@ -42,9 +42,12 @@ public:
 		CANTalon backLeft;
 		CANTalon frontRight;
 		CANTalon backRight;
-		CANTalon pickupMotor;
+		CANTalon leftPickupMotor;
+		CANTalon rightPickupMotor;
+		CANTalon rollerMotor;
 
-		COREPID pickupPID;
+		COREPID leftPickupPID;
+		COREPID rightPickupPID;
 
 
 	std::string name(void);
@@ -56,8 +59,11 @@ public:
 		backLeft(12),
 		frontRight(10),
 		backRight(11),
-		pickupMotor(-1),
-		pickupPID(0,0,0)
+		leftPickupMotor(-1),
+		rightPickupMotor(-1),
+		rollerMotor(-1),
+		leftPickupPID(0,0,0),
+		rightPickupPID(0,0,0)
 
 		{
 
@@ -65,16 +71,24 @@ public:
 		robot.link(BACK_LEFT, &backLeft);
 		robot.link(FRONT_RIGHT, &frontRight);
 		robot.link(FRONT_LEFT, &frontLeft);
-		robot.link(PICKUP, &pickupMotor);
+		robot.link(RIGHT_PICKUP, &rightPickupMotor);
+		robot.link(LEFT_PICKUP, &leftPickupMotor);
+		robot.link(ROLLER, &rollerMotor);
 
 			//start false to avoid error
+			rightPickupMotor.SetSafetyEnabled(false);
+			leftPickupMotor.SetSafetyEnabled(false);
+			rollerMotor.SetSafetyEnabled(false);
 			frontLeft.SetSafetyEnabled(false);
 			frontRight.SetSafetyEnabled(false);
 			backLeft.SetSafetyEnabled(false);
 			backRight.SetSafetyEnabled(false);
 			frontRight.SetInverted(true);
 			backRight.SetInverted(true);
-			pickupMotor.SetSafetyEnabled(false);
+
+			rightPickupMotor.Set(0.0);
+			leftPickupMotor.Set(0.0);
+			rollerMotor.Set(0.0);
 			frontLeft.Set(0.0);
 			frontRight.Set(0.0);
 			backLeft.Set(0.0);
@@ -87,7 +101,6 @@ public:
 			backLeft.ConfigEncoderCodesPerRev(1024);
 			frontRight.ConfigEncoderCodesPerRev(1024);
 			backRight.ConfigEncoderCodesPerRev(1024);
-			pickupMotor.Set(0.0);
 		}
 
 	void robotInit(void);
@@ -101,6 +114,7 @@ public:
 	void setBackRightMotor(double speed);
 	void setPickupMotor(double speed);
 	void setPickupSpeed(double speed);
+	void setPickupHeight(smartDB height);
 };
 
 

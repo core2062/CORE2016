@@ -24,7 +24,9 @@ enum motors{
 	BACK_LEFT,
 	FRONT_RIGHT,
 	FRONT_LEFT,
-	PICKUP
+	LEFT_PICKUP,
+	RIGHT_PICKUP,
+	ROLLER
 };
 
 enum direction{
