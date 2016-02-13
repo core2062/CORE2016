@@ -82,7 +82,7 @@ enum pneumatics{
 	SHOOTER_RIGHT_CYLINDER
 };
 
-
+const double PI = 3.1415923565;
 
 
 //  Motor Speed Values //
@@ -92,6 +92,10 @@ const double REVERSE =-.99;
 const double NORMAL_SPEED = .5;
 const double HALF_SPEED_REVERSE =-.5;
 const double PICKUP_SPEED = .85;
+
+
+const double WHEEL_DIA = 7.95;
+const double ENCODER_CONST = 1.0/4.0;
 
 //	Vision Things	//
 const int VISION_WIDTH = 960;
