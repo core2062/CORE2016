@@ -31,6 +31,8 @@ class DrivePickupSubsystem: public CORESubsystem{
 
 public:
 
+		double drive_mag = 0.0;
+		double drive_rot = 0.0;
 
 		CANSpeedController::ControlMode mode = CANSpeedController::kPercentVbus;
 //		CANSpeedController::ControlMode mode = CANSpeedController::kVoltage;
@@ -45,15 +47,12 @@ public:
 		CANTalon leftPickupMotor;
 		CANTalon rightPickupMotor;
 		CANTalon rollerMotor;
-		AnalogInput leftPot;
-		AnalogInput rightPot;
+//		AnalogInput leftPot;
+//		AnalogInput rightPot;
 		DigitalInput upperLeftLimit;
 		DigitalInput lowerLeftLimit;
 		DigitalInput upperRightLimit;
 		DigitalInput lowerRightLimit;
-
-		COREPID leftPickupPID;
-		COREPID rightPickupPID;
 
 
 	std::string name(void);
@@ -68,14 +67,12 @@ public:
 		leftPickupMotor(21),
 		rightPickupMotor(22),
 		rollerMotor(23),
-		leftPot(1),
-		rightPot(2),
+//		leftPot(1),
+//		rightPot(2),
 		upperLeftLimit(1),
 		lowerLeftLimit(2),
 		upperRightLimit(3),
-		lowerRightLimit(4),
-		leftPickupPID(0,0,0),
-		rightPickupPID(0,0,0)
+		lowerRightLimit(4)
 
 		{
 
@@ -86,8 +83,8 @@ public:
 		robot.link(RIGHT_PICKUP, &rightPickupMotor);
 		robot.link(LEFT_PICKUP, &leftPickupMotor);
 		robot.link(ROLLER, &rollerMotor);
-		robot.link(LEFT_POT, &leftPot);
-		robot.link(RIGHT_POT, &rightPot);
+//		robot.link(LEFT_POT, &leftPot);
+//		robot.link(RIGHT_POT, &rightPot);
 		robot.link(PICKUP_UPPER_LEFT_LIMIT, &upperLeftLimit);
 		robot.link(PICKUP_LOWER_LEFT_LIMIT, &lowerLeftLimit);
 		robot.link(PICKUP_UPPER_RIGHT_LIMIT, &upperRightLimit);
@@ -112,14 +109,20 @@ public:
 			frontRight.Set(0.0);
 			backLeft.Set(0.0);
 			backRight.Set(0.0);
+
 			frontLeft.SetFeedbackDevice(CANTalon::QuadEncoder);
-			backLeft.SetFeedbackDevice(CANTalon::QuadEncoder);
 			frontRight.SetFeedbackDevice(CANTalon::QuadEncoder);
-			backRight.SetFeedbackDevice(CANTalon::QuadEncoder);
-			frontLeft.ConfigEncoderCodesPerRev(1024);
-			backLeft.ConfigEncoderCodesPerRev(1024);
-			frontRight.ConfigEncoderCodesPerRev(1024);
-			backRight.ConfigEncoderCodesPerRev(1024);
+
+			rightPickupMotor.SetFeedbackDevice(CANTalon::AnalogPot);
+			rightPickupMotor.SetControlMode(CANSpeedController::kPosition);
+			rightPickupMotor.SetP(SmartDashboard::GetNumber(pickupP.n,pickupP.v));
+
+			leftPickupMotor.SetFeedbackDevice(CANTalon::AnalogPot);
+			leftPickupMotor.SetControlMode(CANSpeedController::kPosition);
+			leftPickupMotor.SetP(SmartDashboard::GetNumber(pickupP.n,pickupP.v));
+
+			frontLeft.ConfigEncoderCodesPerRev(ENCODER_RES);
+			frontRight.ConfigEncoderCodesPerRev(ENCODER_RES);
 		}
 
 	void robotInit(void);

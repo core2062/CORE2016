@@ -10,12 +10,8 @@ double inline etherR(double fwd, double rcw, double a, double b){
 }
 
 void DrivePickupSubsystem::setPickupHeight(smartDB height){
-	leftPickupPID.calculate();
-	rightPickupPID.calculate();
-	leftPickupPID.setPoint(SmartDashboard::GetNumber(height.n,height.v));
-	rightPickupPID.setPoint(SmartDashboard::GetNumber(height.n,height.v));
-	leftPickupMotor.Set(leftPickupPID.getOutput());
-	rightPickupMotor.Set(rightPickupPID.getOutput());
+	leftPickupMotor.Set(height.v);
+	rightPickupMotor.Set(height.v);
 };
 
 
@@ -34,7 +30,7 @@ void DrivePickupSubsystem::teleopInit(void){
 	robot.joystick.register_axis(DRIVE_ROT, 0, 2);
 	robot.joystick.register_axis(DRIVE_MAG, 0, 1);
 	robot.joystick.register_axis(DRIVE_MAG2, 0, 3);
-	robot.joystick.register_button(DRIVE_SPEED, 0, 5);
+	robot.joystick.register_button(DRIVE_SPEED, 0, 7);
 	robot.joystick.register_button(DRIVE_AUTO_PICKUP, 0, 2);
 	robot.joystick.register_button(DRIVE_GOAL, 0 , 1);
 	robot.joystick.register_button(DRIVE_PICKUP_HEIGHT1, 1, 6);
@@ -59,13 +55,17 @@ void DrivePickupSubsystem::teleopInit(void){
 	rightPickupMotor.Set(0.0);
 	rollerMotor.Set(0.0);
 
+
+
 	std::string* arcade = new std::string("arcade");
 	std::string* tank = new std::string("tank");
 	std::string* ether = new std::string("ether");
+	std::string* cord = new std::string("cord test");
 
 	driveChooser.AddDefault("ether", ether);
 	driveChooser.AddObject("arcade", arcade);
 	driveChooser.AddObject("tank", tank);
+	driveChooser.AddObject("cord test", cord);
 
 	SmartDashboard::PutData("drive-chooser", &driveChooser);
 
@@ -76,14 +76,19 @@ void DrivePickupSubsystem::teleopInit(void){
 
 void DrivePickupSubsystem::teleop(void){
 
+
+
+
+
 if (robot.joystick.combo(COMBO5)){
-//	robot.ahrs->ZeroYaw();
+	robot.ahrs->ZeroYaw();
 	robot.outLog.appendLog("Manual Reset Gyro Yaw");
+	std::cout << "WARNING: Manual Reset Gyro Yaw" << std::endl;
 //	DriveAction driveThing(robot, 5, 1.0);
 //	robot.teleSeq->add(driveThing);
 }
 
-//SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
+SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 
 	if (!robot.isHybrid){
 #ifdef SHOW_MOTORS
@@ -92,14 +97,15 @@ if (robot.joystick.combo(COMBO5)){
   SmartDashboard::PutNumber(std::string("back left motor current"), robot.motorMap[BACK_LEFT]->GetOutputCurrent());
   SmartDashboard::PutNumber(std::string("front left motor current"), robot.motorMap[FRONT_LEFT]->GetOutputCurrent());
 #endif
-
+  	SmartDashboard::PutNumber(leftPickupPos.n,leftPickupMotor.Get());
+  	SmartDashboard::PutNumber(rightPickupPos.n,rightPickupMotor.Get());
 //	double pickup_val = (robot.joystick.button(DRIVE_PICKUP_IN))?PICKUP_SPEED:(robot.joystick.button(DRIVE_PICKUP_OUT))?-PICKUP_SPEED:0.0;
 
 	/////////////////////////////////////////
 	//////// FIND AND DEADBAND DRIVE ////////
 	/////////////////////////////////////////
-	double drive_mag = robot.joystick.axis(DRIVE_MAG);
-	double drive_rot = robot.joystick.axis(DRIVE_ROT);
+	drive_mag = robot.joystick.axis(DRIVE_MAG);
+	drive_rot = robot.joystick.axis(DRIVE_ROT);
 	double drive_mag2 = robot.joystick.axis(DRIVE_MAG2);
 
 	//Simple Dead-banding
@@ -120,7 +126,7 @@ if (robot.joystick.combo(COMBO5)){
 	}
 	if (resetQ != 0){
 		if (resetQ == 3){
-//			robot.ahrs->ZeroYaw();
+			robot.ahrs->ZeroYaw();
 //				gyroPID.setPoint = imu->GetYaw();
 		}
 		resetQ--;
@@ -185,7 +191,7 @@ if (robot.joystick.combo(COMBO5)){
 	///////////////////////////////////////
 	///////// GYRO CALCULATIONS ///////////
 	///////////////////////////////////////
-	/*
+
 		double gyroRate = robot.ahrs->GetYaw();
 		//Gyro PID
 		if((drive_rot==0.0 && resetQ == 0 && !SmartDashboard::GetBoolean("disableGyro",false))){
@@ -201,7 +207,7 @@ if (robot.joystick.combo(COMBO5)){
 				drive_rot = 0;
 			}
 
-*/
+
 
 	// AutoPickup //
 //	double angleTollerance = 3;
@@ -223,28 +229,36 @@ if (robot.joystick.combo(COMBO5)){
 	if (choice == "ether"){
 		if (drive_mag>0){
 			if (drive_rot>=0){
-				left = etherL(drive_mag, drive_rot, a, b);
-				right = etherR(drive_mag, drive_rot, a, b);
+				left = etherL(drive_mag, drive_rot, a, b * (robot.joystick.button(DRIVE_SPEED)?2:1));
+				right = etherR(drive_mag, drive_rot, a, b * (robot.joystick.button(DRIVE_SPEED)?2:1));
 			} else{
-				left = etherR(drive_mag, -drive_rot, a, b);
-				right = etherL(drive_mag, -drive_rot, a, b);
+				left = etherR(drive_mag, -drive_rot, a, b * (robot.joystick.button(DRIVE_SPEED)?2:1));
+				right = etherL(drive_mag, -drive_rot, a, b * (robot.joystick.button(DRIVE_SPEED)?2:1));
 			}
 		} else if (drive_mag < 0){
 			if (drive_rot>=0){
 
-				left = -etherR(-drive_mag, drive_rot, a, b);
-				right = -etherL(-drive_mag, drive_rot, a, b);
+				left = -etherR(-drive_mag, drive_rot, a, b * (robot.joystick.button(DRIVE_SPEED)?2:1));
+				right = -etherL(-drive_mag, drive_rot, a, b * (robot.joystick.button(DRIVE_SPEED)?2:1));
 			} else{
-				left = -etherL(-drive_mag, -drive_rot, a, b);
-				right = -etherR(-drive_mag, -drive_rot, a, b);
+				left = -etherL(-drive_mag, -drive_rot, a, b * (robot.joystick.button(DRIVE_SPEED)?2:1));
+				right = -etherR(-drive_mag, -drive_rot, a, b * (robot.joystick.button(DRIVE_SPEED)?2:1));
 			}
 		} else {
-			left = (drive_rot);
-			right = (-drive_rot);
+			left = (drive_rot * (robot.joystick.button(DRIVE_SPEED)?1:SmartDashboard::GetNumber(quickTurn.n,quickTurn.v)));
+			right = (-drive_rot * (robot.joystick.button(DRIVE_SPEED)?1:SmartDashboard::GetNumber(quickTurn.n,quickTurn.v)));
 		}
 	}else if (choice == "tank"){
 		left = drive_mag;
 		right = drive_mag2;
+	}else if (choice == "cord test"){
+		if (drive_mag != 0){
+			left = (drive_mag);
+			right = (drive_mag);
+		}else{
+			left = (drive_rot * (robot.joystick.button(DRIVE_SPEED)?1:SmartDashboard::GetNumber(quickTurn.n,quickTurn.v)));
+			right = (-drive_rot * (robot.joystick.button(DRIVE_SPEED)?1:SmartDashboard::GetNumber(quickTurn.n,quickTurn.v)));
+		}
 	}
 
 

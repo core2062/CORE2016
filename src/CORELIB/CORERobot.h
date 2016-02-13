@@ -43,7 +43,7 @@ public:
 
 #if defined(USE_NAVX)
 #if defined(ENABLE_AHRS)
-       AHRS *ahrs;
+    AHRS *ahrs;
 #elif defined(ENABLE_IMU_ADVANCED)
         IMUAdvanced *ahrs;
 #elif defined(ENABLE_IMU) // ENABLE_IMU

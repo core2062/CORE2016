@@ -9,7 +9,7 @@
 #ifndef SRC_CORELIB_CONSTANTS_H_
 #define SRC_CORELIB_CONSTANTS_H_
 
-//#define USE_NAVX
+#define USE_NAVX
 #define SHOW_MOTORS
 #define ETHER_DIRVE
 //#define TANK_DRIVE
@@ -110,6 +110,7 @@ const double PICKUP_SPEED = .85;
 
 const double WHEEL_DIA = 7.95;
 const double ENCODER_CONST = 1.0/4.0;
+const double ENCODER_RES = 1024;
 
 //	Vision Things	//
 const int VISION_WIDTH = 960;
@@ -170,10 +171,11 @@ public:
 
  const smartDB rotationPValue(std::string("Rotation P"), .05);
  const smartDB etherA(std::string("Ether A"), 1.0);
- const smartDB etherB(std::string("Ether B"), 0.0);
+ const smartDB etherB(std::string("Ether B"), 0.25);
  const smartDB blueTowerCompass(std::string("Blue Tower Compass"), 0.0);
  const smartDB compass(std::string("NavX Compass"), 0.0);
  const smartDB shooterReturn(std::string("Shooter Return Time"), .5);
+ const smartDB quickTurn(std::string("Quick Turn Speed"), .5);
 
  const smartDB testAuto(std::string("Auto Test Value"), 5.0);
  const smartDB mediumDistance(std::string("Medium Distance"), 5.0);
@@ -185,6 +187,9 @@ public:
  const smartDB pickupHeight3(std::string("Pickup Height 3"), 24.0);
  const smartDB pickupHeight4(std::string("Pickup Height 4"), 36.0);
  const smartDB pickupHeight5(std::string("Pickup Height 5"), 48.0);
+ const smartDB leftPickupPos(std::string("Left Pickup Position"), 0.0);
+ const smartDB rightPickupPos(std::string("Right Pickup Position"), 0.0);
+ const smartDB pickupP(std::string("Pickup P"), 0.0);
  const smartDB liftLevel1(std::string("Lift Level 1"), 0.0);
  const smartDB liftLevel2(std::string("Lift Level 2"), 12.0);
 
@@ -197,6 +202,7 @@ public:
 		 &compass,
 		 &testAuto,
 		 &shooterReturn,
+		 &quickTurn,
 		 &mediumDistance,
 		 &secondaryMedium,
 		 &longDistance,
@@ -206,6 +212,8 @@ public:
 		 &pickupHeight3,
 		 &pickupHeight4,
 		 &pickupHeight5,
+		 &leftPickupPos,
+		 &rightPickupPos,
 		 &liftLevel1,
 		 &liftLevel2
  };
