@@ -4,7 +4,7 @@
  *  Created on: Dec 8, 2015
  *      Author: core
  */
-#include "liftSubsystem.h"
+#include <LiftSubsystem.h>
 
 
 	void LiftSubsystem::robotInit(void){
@@ -22,7 +22,7 @@
 	void LiftSubsystem::teleop(void){
 
 
-		liftPID.calculate();
+
 
 		if (!robot.isHybrid){
 			double liftAxis = robot.joystick.axis(LIFT_AXIS);
@@ -30,14 +30,16 @@
 				liftAxis = 0;
 			if(liftAxis != 0) {
 				liftMotor.Set(robot.joystick.axis(LIFT_AXIS));
-			}
-			else if(robot.joystick.button(LIFT_LEVEL1)){
-				liftPID.setPoint(SmartDashboard::GetNumber(liftLevel1.n,liftLevel1.v));
-				liftMotor.Set(liftPID.getOutput());
+			} else if(robot.joystick.button(LIFT_LEVEL1)) {
+				setLiftHeight(liftLevel1);
+			} else if(robot.joystick.button(LIFT_LEVEL2)) {
+				setLiftHeight(liftLevel2);
 			}
 		}
 	}
 
-	void LiftSubsystem::changeLiftHeight(smartDB liftLevel){
-		liftMotor.Set(liftLevel.v);
+	void LiftSubsystem::setLiftHeight(smartDB liftLevel){
+		liftPID.calculate();
+		liftPID.setPoint(SmartDashboard::GetNumber(liftLevel.n,liftLevel.v));
+		liftMotor.Set(liftPID.getOutput());
 	}
