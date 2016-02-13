@@ -59,7 +59,7 @@ void VisionSubsystem::teleop(void){
 	leftAngleError = relativeLeftAngle - cameraMountAngle; // Positive Error is away from chassis //
 	rightAngleError = relativeRightAngle - cameraMountAngle; // Negative Error is towards chassis //
 */
-
+/*
 	double goalXCords[3] =
 	{
 			visionTable->GetNumber("goal1_x",-1),
@@ -71,11 +71,12 @@ void VisionSubsystem::teleop(void){
 			visionTable->GetNumber("goal2_width",-1)*visionTable->GetNumber("goal2_height",-1),
 			visionTable->GetNumber("goal3_width",-1)*visionTable->GetNumber("goal3_height",-1)
 	};
-
-	std::string debug = visionTable->GetString("debug", "NoTable");
-
+*/
+//	std::string debug = visionTable->GetString("debug", "NoTable");
+	std::string debug = "NoTable";
 	if (debug == "NoTable"){
 		std::cout << "ERROR: Vision table not found!, check PIs" << std::endl;
+		return;
 	}
 //	std::vector<double> ballXCords = ballTable->GetNumberArray("xCord", llvm::ArrayRef<double>());
 //	std::vector<double> goalXCords = goalTable->GetNumberArray("xCord", llvm::ArrayRef<double>());
@@ -95,10 +96,10 @@ void VisionSubsystem::teleop(void){
 
 
 		goalX = -1;
-
+/*
 		double biggestArea = 5;
 		for (uint8_t i = 0; i < 3; i++){
-			if ((goalAreas[i] > biggestArea) /*&& goalAreas[i] < (VISION_WIDTH * VISION_HEIGHT * .9333)*/){
+			if ((goalAreas[i] > biggestArea) /*&& goalAreas[i] < (VISION_WIDTH * VISION_HEIGHT * .9333)*//*){
 				goalX = goalXCords[i];
 //				std::cout << "WARNING: new goalx found" << std::endl;
 				biggestArea = goalAreas[i];
@@ -110,6 +111,7 @@ void VisionSubsystem::teleop(void){
 
 		SmartDashboard::PutNumber("Goal Area", goalAreas[0]);
 		SmartDashboard::PutNumber("Goal X", goalX);
+	*/
 	}
 
 

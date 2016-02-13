@@ -67,7 +67,11 @@ enum controllerInputs{
 
 enum digitalSensors{
 	BOT_LIFT_LIMIT,
-	TOP_LIFT_LIMIT
+	TOP_LIFT_LIMIT,
+	PICKUP_UPPER_RIGHT_LIMIT,
+	PICKUP_LOWER_RIGHT_LIMIT,
+	PICKUP_UPPER_LEFT_LIMIT,
+	PICKUP_LOWER_LEFT_LIMIT
 };
 
 enum analogSensors{
@@ -76,7 +80,9 @@ enum analogSensors{
 	FR_ENCODER,
 	FL_ENCODER,
 	BR_ENCODER,
-	BL_ENCODER
+	BL_ENCODER,
+	LEFT_POT,
+	RIGHT_POT
 };
 
 enum pneumatics{
@@ -166,6 +172,7 @@ public:
  const smartDB etherB(std::string("Ether B"), 0.0);
  const smartDB blueTowerCompass(std::string("Blue Tower Compass"), 0.0);
  const smartDB compass(std::string("NavX Compass"), 0.0);
+ const smartDB shooterReturn(std::string("Shooter Return Time"), .5);
 
  const smartDB testAuto(std::string("Auto Test Value"), 5.0);
  const smartDB mediumDistance(std::string("Medium Distance"), 5.0);
@@ -181,13 +188,14 @@ public:
  const smartDB liftLevel2(std::string("Lift Level 2"), 12.0);
 
 
- const std::array<const smartDB *,17> sdPointers = {
+ const std::array<const smartDB *,18> sdPointers = {
 		 &rotationPValue,
 		 &etherA,
 		 &etherB,
 		 &blueTowerCompass,
 		 &compass,
 		 &testAuto,
+		 &shooterReturn,
 		 &mediumDistance,
 		 &secondaryMedium,
 		 &longDistance,

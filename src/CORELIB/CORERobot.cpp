@@ -16,9 +16,9 @@ void CORERobot::robotInit(void){
 	outLog.appendLog("---------Robot Init---------");
 	for (uint16_t i = 0; i < sdPointers.size(); i++){
 		if (sdPointers[i]->isBool)
-			SmartDashboard::PutBoolean(sdPointers[i]->n,sdPointers[i]->v);
+			SmartDashboard::PutBoolean(sdPointers[i]->n,sdPointers[i]->b);
 		else
-			SmartDashboard::PutNumber(sdPointers[i]->n,sdPointers[i]->b);
+			SmartDashboard::PutNumber(sdPointers[i]->n,sdPointers[i]->v);
 	}
 	std::vector<CORESubsystem*>::iterator it;
 		for(it = subsystems.begin(); it != subsystems.end(); ++it){

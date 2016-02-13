@@ -3,7 +3,7 @@
 #include "CoreLib/CoreAuto.h"
 #include "Actions/Actions.h"
 #include "Subsytems.h"
-
+#include <iostream>
 
 using namespace CORE;
 
@@ -16,7 +16,6 @@ int toEnc(double inches){
 
 class Robot: public SampleRobot
 {
-
 	CORERobot robot;
 	AutoControl autoControl;
 	AutoControl teleControl;
@@ -25,7 +24,6 @@ class Robot: public SampleRobot
 	ShooterSubsystem shooter;
 	VisionSubsystem vision;
 	SendableChooser autoChooser;
-
 public:
 
 
@@ -58,6 +56,7 @@ public:
 
 	void Autonomous()
 	{
+
 //		TestAction test(robot,&conditions::testStart,&conditions::testEnd);
 //		TestAction test(robot);
 //		autoControl.add(test);
@@ -116,7 +115,7 @@ public:
 				}
 				autoControl.init();
 		while (IsAutonomous() and !IsDisabled()) {
-			autoControl.iter();
+//			autoControl.iter();
 			vision.teleop();
 			Wait(robot.getLoopWait());
 		}

@@ -30,7 +30,7 @@ void ShooterSubsystem::teleop(void){
 			shooterTimer.Reset();
 		}
 	}
-	if (shooterTimer.Get() >= 1.5){
+	if (shooterTimer.Get() >= SmartDashboard::GetNumber(shooterReturn.n, shooterReturn.v)){
 		leftShooter.Set(DoubleSolenoid::kReverse);
 		rightShooter.Set(DoubleSolenoid::kReverse);
 	}

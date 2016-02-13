@@ -17,6 +17,8 @@ private:
 		bool calculated,enabled = false;
 		Timer timer;
 	}PID;
+//	double& input;
+	bool usePointer = false;
 public:
 	COREPID(double pProfile1Value, double iProfile1Value, double dProfile1Value, double pProfile2Value = 0, double iProfile2Value = 0, double dProfile2Value = 0, int integralAccuracy = 1) {
 		PID1.P = pProfile1Value;
@@ -33,11 +35,39 @@ public:
 		PID2.mistake.reserve(integralAccuracy);
 		PID2.mistake[1] = 0;
 		PID.timer.Reset();
+//		double a = 0;
+//		input = a;
 	}
+/*	COREPID(bool usePointer, double& in, double pProfile1Value, double iProfile1Value, double dProfile1Value, double pProfile2Value = 0, double iProfile2Value = 0, double dProfile2Value = 0, int integralAccuracy = 1):
+		input(in)
+		{
+		usePointer = true;
+		PID1.P = pProfile1Value;
+		PID1.I = iProfile1Value;
+		PID1.D = dProfile1Value;
+		PID2.P = pProfile2Value;
+		PID2.I = iProfile2Value;
+		PID2.D = dProfile2Value;
+		if(integralAccuracy < 1) {
+			integralAccuracy = 1;
+		}
+		PID1.mistake.reserve(integralAccuracy);
+		PID1.mistake[1] = 0;
+		PID2.mistake.reserve(integralAccuracy);
+		PID2.mistake[1] = 0;
+		PID.timer.Reset();
+		}*/
 	void calculate(int profile = 1);
+	void calculate(double newPos, int profile = 1);
 	void setPoint(double setPoint);
-	void setActualPosition(double actualPosition);
+	void setActualPosition(double actualPosition){
+		PID.actualPosition = actualPosition;
+	}
 	double getSetPoint();
+/*	void setPointer(double& in){
+		usePointer = true;
+		input = in;
+	}*/
 	double getP(int profile = 1);
 	double getI(int profile = 1);
 	double getD(int profile = 1);

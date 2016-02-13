@@ -70,7 +70,7 @@ public:
 				return END;
 			}
 		}else{
-			//Enocoder must be added to finnish this
+			//Encoder must be added to finish this
 			leftPickupPID.calculate();
 			rightPickupPID.calculate();
 			leftPickupPID.setPoint(SmartDashboard::GetNumber(height->n,height->v));

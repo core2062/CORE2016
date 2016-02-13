@@ -19,7 +19,7 @@ using namespace CORE;
 
 class VisionSubsystem: public CORESubsystem{
 
-	std::shared_ptr<NetworkTable> visionTable;
+//	std::shared_ptr<NetworkTable> visionTable;
 
 	int ballX = -1;
 	int goalX = -1;
@@ -55,7 +55,7 @@ public:
 		CORESubsystem(robot)
 
 		{
-			visionTable = NetworkTable::GetTable("Vision");
+//			visionTable = NetworkTable::GetTable("Vision");
 		}
 
 	void robotInit(void);
