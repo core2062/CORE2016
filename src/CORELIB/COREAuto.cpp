@@ -6,7 +6,7 @@ using namespace CORE;
 void AutoControl::iter(){
 
 	if(aqueue.empty() && !queueEmpty){
-		robot.outLog.appendLog("Auto Queue Empty");
+		outLog.appendLog("Auto Queue Empty");
 		queueEmpty = true;
 	}
 	if(!aqueue.empty()){
@@ -18,8 +18,8 @@ void AutoControl::iter(){
 	case CONTINUE:
 		break;
 	case BACKGROUND:
-		robot.outLog.appendLog("Adding to Background:");
-		robot.outLog.appendLog(a->name);
+		outLog.appendLog("Adding to Background:");
+		outLog.appendLog(a->name);
 		background.push_back(a);
 		/* no break */
 	case END:
@@ -27,7 +27,7 @@ void AutoControl::iter(){
 		aqueue.pop();
 		if(!aqueue.empty()){
 			a = aqueue.front();
-			robot.outLog.appendLog(a->name);
+			outLog.appendLog(a->name);
 			a->init();
 		}
 		break;

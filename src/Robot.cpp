@@ -31,8 +31,8 @@ public:
 
 	Robot() :
 		robot(),
-		autoControl(robot),
-		teleControl(robot),
+		autoControl(robot.outLog),
+		teleControl(robot.outLog),
 //		lift(robot),
 		drive(robot, vision),
 		shooter(robot),
@@ -114,9 +114,9 @@ public:
 					autoControl.add( new ShootAction(robot));
 
 				}
-
+				autoControl.init();
 		while (IsAutonomous() and !IsDisabled()) {
-//			autoControl.iter();
+			autoControl.iter();
 			vision.teleop();
 			Wait(robot.getLoopWait());
 		}
@@ -131,7 +131,7 @@ public:
 			robot.teleop();
 
 			if (robot.isHybrid){
-//				teleControl.iter();
+				teleControl.iter();
 			}
 //			SmartDashboard::PutNumber("topLiftLim", robot.digitalSensorMap[digitalSensors::BOT_LIFT_LIMIT]->Get());
 //			SmartDashboard::PutNumber("botLiftLim", robot.digitalSensorMap[digitalSensors::TOP_LIFT_LIMIT]->Get());
