@@ -6,6 +6,7 @@
 #include <string>
 #include <queue>
 #include "CORERobot.h"
+#include "log.h"
 
 namespace CORE{
 
@@ -156,16 +157,15 @@ protected:
 
 
 class AutoControl{
-	CORERobot& robot;
 	std::queue<OrderAction*> aqueue;
 	std::vector<Action*> background;
 	bool queueEmpty = false;
 	int position = 1;
-
+	Log& outLog;
 public:
 
-	AutoControl(CORERobot& robot):
-		robot(robot)
+	AutoControl(Log& log):
+		outLog(log)
 		{};
 
 	void iter (void);

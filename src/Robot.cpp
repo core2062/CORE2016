@@ -7,6 +7,13 @@
 
 using namespace CORE;
 
+int toEnc(double inches){
+	return (inches/(PI*WHEEL_DIA)) * ENCODER_CONST;
+}
+
+
+
+
 class Robot: public SampleRobot
 {
 
@@ -24,8 +31,8 @@ public:
 
 	Robot() :
 		robot(),
-		autoControl(robot),
-		teleControl(robot),
+		autoControl(robot.outLog),
+		teleControl(robot.outLog),
 //		lift(robot),
 		drive(robot, vision),
 		shooter(robot),
@@ -64,7 +71,7 @@ public:
 				if(choice=="Lowbar"){
 			//		getTicks(SmartDashboard::GetNumber(secondaryLong.n,secondaryLong.v));
 
-					autoControl.add( new DriveAction(robot, 95.75, NORMAL_SPEED));
+					autoControl.add( new DriveAction(robot, toEnc(95.75), NORMAL_SPEED));
 					autoControl.add( new DriveUntillSettleAction(robot, NORMAL_SPEED));
 					autoControl.add( new TurnWithGyroAction(robot, 45.0));
 					autoControl.add( new ShootAction(robot));
@@ -74,42 +81,42 @@ public:
 
 					//getTicks(SmartDashboard::GetNumber(secondaryMedium.n,secondaryMedium.v));
 
-					autoControl.add( new DriveAction(CORERobot& robot, 47.875, NORMAL_SPEED));
-					autoControl.add( new DriveUntillSettleAction(CORERobot& robot, OFF));
-					autoControl.add( new TurnWithGyroAction(CORERobot& robot, 30.0));
-					autoControl.add( new ShootAction(CORERobot& robot));
+					autoControl.add( new DriveAction(robot, toEnc(47.875), NORMAL_SPEED));
+					autoControl.add( new DriveUntillSettleAction(robot, NORMAL_SPEED));
+					autoControl.add( new TurnWithGyroAction(robot, 30.0));
+					autoControl.add( new ShootAction(robot));
 
 				}
 				else if(choice=="Obstacle 3"){
 				//	getTicks(SmartDashboard::GetNumber(testAuto.n,testAuto.v));
 
-					autoControl.add( new DriveAction(CORERobot& robot, 74, NORMAL_SPEED));
-					autoControl.add( new DriveUntillSettleAction(CORERobot& robot, OFF));
-					autoControl.add( new ShootAction(CORERobot& robot));
+					autoControl.add( new DriveAction(robot, toEnc(74), NORMAL_SPEED));
+					autoControl.add( new DriveUntillSettleAction(robot, NORMAL_SPEED));
+					autoControl.add( new ShootAction(robot));
 
 				}
 				else if(choice=="Obstacle 4"){
 
 				//	getTicks(SmartDashboard::GetNumber(mediumDistance.n,mediumDistance.v));
 
-					autoControl.add( new DriveAction(CORERobot& robot, 47.875, NORMAL_SPEED));
-					autoControl.add( new DriveUntillSettleAction(CORERobot& robot, OFF));
-					autoControl.add( new TurnWithGyroAction(CORERobot& robot, -30.0));
-					autoControl.add( new ShootAction(CORERobot& robot));
+					autoControl.add( new DriveAction(robot, toEnc(47.875), NORMAL_SPEED));
+					autoControl.add( new DriveUntillSettleAction(robot, NORMAL_SPEED));
+					autoControl.add( new TurnWithGyroAction(robot, -30.0));
+					autoControl.add( new ShootAction(robot));
 
 				}
 				else if(choice=="Obstacle 5"){
 				//	getTicks(SmartDashboard::GetNumber(longDistance.n,longDistance.v));
 
-					autoControl.add( new DriveAction(CORERobot& robot, 95.75, NORMAL_SPEED));
-					autoControl.add( new DriveUntillSettleAction(CORERobot& robot, OFF));
-					autoControl.add( new TurnWithGyroAction(CORERobot& robot, -45.0));
-					autoControl.add( new ShootAction(CORERobot& robot));
+					autoControl.add( new DriveAction(robot, toEnc(95.75), NORMAL_SPEED));
+					autoControl.add( new DriveUntillSettleAction(robot, NORMAL_SPEED));
+					autoControl.add( new TurnWithGyroAction(robot, -45.0));
+					autoControl.add( new ShootAction(robot));
 
 				}
-
+				autoControl.init();
 		while (IsAutonomous() and !IsDisabled()) {
-//			autoControl.iter();
+			autoControl.iter();
 			vision.teleop();
 			Wait(robot.getLoopWait());
 		}
@@ -124,7 +131,7 @@ public:
 			robot.teleop();
 
 			if (robot.isHybrid){
-//				teleControl.iter();
+				teleControl.iter();
 			}
 //			SmartDashboard::PutNumber("topLiftLim", robot.digitalSensorMap[digitalSensors::BOT_LIFT_LIMIT]->Get());
 //			SmartDashboard::PutNumber("botLiftLim", robot.digitalSensorMap[digitalSensors::TOP_LIFT_LIMIT]->Get());
