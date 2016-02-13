@@ -8,7 +8,7 @@
 #include <iostream>
 #include <math.h>
 #include "VisionSubsystem.h"
-#include "CORELIB/COREAuto.h"
+//#include "CORELIB/COREAuto.h"
 #include "Actions/DriveAction.h"
 #include "CORELIB/COREPID.h"
 
@@ -110,19 +110,19 @@ public:
 			backLeft.Set(0.0);
 			backRight.Set(0.0);
 
-			frontLeft.SetFeedbackDevice(CANTalon::QuadEncoder);
-			frontRight.SetFeedbackDevice(CANTalon::QuadEncoder);
-
-			rightPickupMotor.SetFeedbackDevice(CANTalon::AnalogPot);
-			rightPickupMotor.SetControlMode(CANSpeedController::kPosition);
-			rightPickupMotor.SetP(SmartDashboard::GetNumber(pickupP.n,pickupP.v));
-
-			leftPickupMotor.SetFeedbackDevice(CANTalon::AnalogPot);
-			leftPickupMotor.SetControlMode(CANSpeedController::kPosition);
-			leftPickupMotor.SetP(SmartDashboard::GetNumber(pickupP.n,pickupP.v));
-
-			frontLeft.ConfigEncoderCodesPerRev(ENCODER_RES);
-			frontRight.ConfigEncoderCodesPerRev(ENCODER_RES);
+//			frontLeft.SetFeedbackDevice(CANTalon::QuadEncoder);
+//			frontRight.SetFeedbackDevice(CANTalon::QuadEncoder);
+//
+//			rightPickupMotor.SetFeedbackDevice(CANTalon::AnalogPot);
+//			rightPickupMotor.SetControlMode(CANSpeedController::kPosition);
+//			rightPickupMotor.SetP(SmartDashboard::GetNumber(pickupP.n,pickupP.v));
+//
+//			leftPickupMotor.SetFeedbackDevice(CANTalon::AnalogPot);
+//			leftPickupMotor.SetControlMode(CANSpeedController::kPosition);
+//			leftPickupMotor.SetP(SmartDashboard::GetNumber(pickupP.n,pickupP.v));
+//
+//			frontLeft.ConfigEncoderCodesPerRev(ENCODER_RES);
+//			frontRight.ConfigEncoderCodesPerRev(ENCODER_RES);
 		}
 
 	void robotInit(void);

@@ -47,8 +47,9 @@ if(run){
 
 	std::string debug = visionTable->GetString("debug", "NoTable");
 //	std::string debug = "NoTable";
-	if (debug == "NoTable"){
+	if (debug == "NoTable" && !flag){
 		std::cout << "ERROR: Vision table not found!, check PIs" << std::endl;
+		flag = true;
 		return;
 	}
 //	std::vector<double> ballXCords = ballTable->GetNumberArray("xCord", llvm::ArrayRef<double>());

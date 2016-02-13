@@ -42,7 +42,7 @@ class VisionSubsystem: public CORESubsystem{
 	double precentRightAngle = 0;
 	double rightAngleError = 0;
 	double leftAngleError = 0;*/
-
+	bool flag = false;
 	Timer checkTimer;
 
 public:
