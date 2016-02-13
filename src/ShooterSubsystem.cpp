@@ -31,8 +31,8 @@ void ShooterSubsystem::teleop(void){
 		}
 	}
 	if (shooterTimer.Get() >= SmartDashboard::GetNumber(shooterReturn.n, shooterReturn.v)){
-		leftShooter.Set(DoubleSolenoid::kReverse);
-		rightShooter.Set(DoubleSolenoid::kReverse);
+		leftShooter.Set(DoubleSolenoid::kOff);
+		rightShooter.Set(DoubleSolenoid::kOff);
 	}
 
 }

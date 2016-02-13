@@ -24,6 +24,9 @@ class Robot: public SampleRobot
 	ShooterSubsystem shooter;
 	VisionSubsystem vision;
 	SendableChooser autoChooser;
+#if defined(ULTIMATE_MODE)
+	TeleSubsystem teleSubsystem;
+#endif
 public:
 
 
@@ -35,11 +38,17 @@ public:
 		drive(robot, vision),
 		shooter(robot),
 		vision(robot)
+#if defined(ULTIMATE_MODE)
+		,teleSubsystem(robot,teleControl)
+#endif
 	{
 //		robot.add(lift);
 		robot.add(drive);
 		robot.add(shooter);
 		robot.add(vision);
+#if defined(ULTIMATE_MODE)
+		robot.add(teleSubsystem);
+#endif
 	}
 
 	void RobotInit() {

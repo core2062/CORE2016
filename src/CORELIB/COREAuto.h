@@ -184,7 +184,17 @@ public:
 	void add (ConditionAction* a){
 		background.push_back(a);
 	}
+	int size(){
+		return aqueue.size();
+	}
 
+	void reset(){
+		while (aqueue.size()>0){
+			aqueue.pop();
+		}
+		background.clear();
+
+	}
 };
 
 }

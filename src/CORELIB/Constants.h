@@ -14,6 +14,7 @@
 #define ETHER_DIRVE
 //#define TANK_DRIVE
 //#define MECANUM_DRIVE
+#define ULTIMATE_MODE
 
 #include <string>
 #include <array>
@@ -58,6 +59,11 @@ enum controllerInputs{
 	LIFT_LEVEL1,
 	LIFT_LEVEL2,
 	SHOOTER_FIRE,
+
+
+	HYBRID_GOTO_SDXY,
+
+
 	COMBO1,
 	COMBO2,
 	COMBO3,
@@ -117,7 +123,7 @@ const double VISION_SLOW = NORMAL_SPEED / 2.5;
 
 
 /* SMART DASHBOARD CONSTANTS */
- class smartDB{
+class smartDB{
 public:
 	std::string n;
 	double v = 0.0;
@@ -134,12 +140,7 @@ public:
 		b = base;
 		isBool = true;
 	}
-	void put(){
-		if (isBool)
-			SmartDashboard::PutBoolean(n,v);
-		else
-			SmartDashboard::PutNumber(n,b);
-	}
+
 
 
 };
@@ -188,7 +189,7 @@ public:
  const smartDB liftLevel2(std::string("Lift Level 2"), 12.0);
 
 
- const std::array<const smartDB *,18> sdPointers = {
+ const std::vector<const smartDB *> sdPointers = {
 		 &rotationPValue,
 		 &etherA,
 		 &etherB,
@@ -207,7 +208,6 @@ public:
 		 &pickupHeight5,
 		 &liftLevel1,
 		 &liftLevel2
-
  };
 
 
