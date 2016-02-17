@@ -141,10 +141,20 @@ public:
 			if (robot.isHybrid){
 				teleControl.iter();
 			}
-//			SmartDashboard::PutNumber("topLiftLim", robot.digitalSensorMap[digitalSensors::BOT_LIFT_LIMIT]->Get());
-//			SmartDashboard::PutNumber("botLiftLim", robot.digitalSensorMap[digitalSensors::TOP_LIFT_LIMIT]->Get());
-//			SmartDashboard::PutNumber("motorVal", robot.motorMap[motors::LIFT_MOTOR]->Get());
-//			SmartDashboard::PutNumber("joyval", robot.joystick.axis(controllerInputs::LIFT_AXIS));
+#ifdef SHOW_MOTORS
+  SmartDashboard::PutNumber(std::string("back right motor voltage"), robot.motorMap[BACK_RIGHT]->GetOutputCurrent());
+  SmartDashboard::PutNumber(std::string("front right motor voltage"), robot.motorMap[FRONT_RIGHT]->GetOutputCurrent());
+  SmartDashboard::PutNumber(std::string("back left motor voltage"), robot.motorMap[BACK_LEFT]->GetOutputCurrent());
+  SmartDashboard::PutNumber(std::string("front left motor voltage"), robot.motorMap[FRONT_LEFT]->GetOutputCurrent());
+  SmartDashboard::PutNumber(std::string("right pickup motor voltage"), robot.motorMap[ROLLER]->GetOutputCurrent());
+  SmartDashboard::PutNumber(std::string("left pickup motor voltage"), robot.motorMap[LEFT_PICKUP]->GetOutputCurrent());
+  SmartDashboard::PutNumber(std::string("roller motor voltage"), robot.motorMap[RIGHT_PICKUP]->GetOutputCurrent());
+  SmartDashboard::PutNumber(std::string("lift motor voltage"), robot.motorMap[LIFT_MOTOR]->GetOutputCurrent());
+#endif
+#ifdef SHOW_SENSORS
+ // SmartDashboard::PutNumber(std::string("Left Pickup Pot"), robot.analogSensors[LEFT_POT]->getAnalogAverageVoltage());
+#endif
+
 			Wait(robot.getLoopWait());				// wait for a motor update time
 		}
 		robot.teleopEnd();

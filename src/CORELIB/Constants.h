@@ -12,6 +12,7 @@
 //#define USE_NAVX
 #define SHOW_MOTORS
 #define ETHER_DIRVE
+#define SHOW_SENSORS
 //#define TANK_DRIVE
 //#define MECANUM_DRIVE
 #define ULTIMATE_MODE
