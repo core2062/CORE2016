@@ -19,7 +19,9 @@ using namespace CORE;
 
 class VisionSubsystem: public CORESubsystem{
 
-//	std::shared_ptr<NetworkTable> visionTable;
+	std::shared_ptr<NetworkTable> visionTable;
+
+	bool run = true;
 
 	int ballX = -1;
 	int goalX = -1;
@@ -40,6 +42,8 @@ class VisionSubsystem: public CORESubsystem{
 	double precentRightAngle = 0;
 	double rightAngleError = 0;
 	double leftAngleError = 0;*/
+	bool flag = false;
+	Timer checkTimer;
 
 public:
 
@@ -55,7 +59,15 @@ public:
 		CORESubsystem(robot)
 
 		{
-//			visionTable = NetworkTable::GetTable("Vision");
+		try{
+			visionTable = NetworkTable::GetTable("Vision");
+		}catch(...){
+			std::cout << "ERROR: Failed to pull network tables!" << std::endl;
+			run = false;
+			checkTimer.Reset();
+			checkTimer.Start();
+
+		}
 		}
 
 	void robotInit(void);

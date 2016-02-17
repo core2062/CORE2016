@@ -39,7 +39,7 @@ public:
 		shooter(robot),
 		vision(robot)
 #if defined(ULTIMATE_MODE)
-		,teleSubsystem(robot,teleControl)
+		,teleSubsystem(robot, teleControl, drive)
 #endif
 	{
 //		robot.add(lift);

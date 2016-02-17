@@ -70,7 +70,7 @@ public:
 			robot.pneumaticMap[SHOOTER_RIGHT_CYLINDER]->Set(DoubleSolenoid::kReverse);
 			return END;
 		}
-
+		return CONTINUE;
 	}
 
 	~ShootAction(){
