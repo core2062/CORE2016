@@ -26,8 +26,6 @@ class CompassTurnAction : public OrderAction{
 
 	double compassVal = 0.0;
 	double gyroSet = 0.0;
-	double left = 0.0;
-	double right = 0.0;
 
 
 public:
@@ -47,40 +45,39 @@ public:
 		robot.motorMap[FRONT_LEFT]->Set(0.0);
 	}
 	ControlFlow autoCall(){
-#ifdef USE_NAVX
-		if(!robot.ahrs->IsMagneticDisturbance() && robot.ahrs->IsMagnetometerCalibrated()){
-			compassVal = robot.ahrs->GetCompassHeading();
+
+#if defined(USE_NAVX)
+		DriverStation::Alliance color;
+		color = DriverStation::GetInstance().GetAlliance();
+		if(color == DriverStation::Alliance::kBlue){
+			double total = (robot.ahrs->GetCompassHeading()+SmartDashboard::GetNumber(blueTowerCompass.n,blueTowerCompass.v));
+			compassVal = total>=360?total-360:total;
 		}else{
-			return CONTINUE;
+			double total = (robot.ahrs->GetCompassHeading()+SmartDashboard::GetNumber(blueTowerCompass.n,blueTowerCompass.v) + 180);
+			compassVal = total>=360?(total-360>=360?total-720:total-360):total;
 		}
-#else
-		return END;
 #endif
 
-			double gyroError =  compassVal - targetAngle;
+		double gyroError =  (fabs(compassVal - targetAngle) <= fabs(compassVal>180?compassVal-360:compassVal - targetAngle>180?targetAngle-360:targetAngle))?(compassVal - targetAngle):(compassVal>180?compassVal-360:compassVal - targetAngle>180?targetAngle-360:targetAngle);
 //			SmartDashboard::PutNumber("Gyro PID Error", gyroPID.mistake);
-
-			double gyroOutput = (SmartDashboard::GetNumber(rotationPValue.n, rotationPValue.v)*gyroError);
+		double gyroOutput = (SmartDashboard::GetNumber(rotationPValue.n, rotationPValue.v)*gyroError);
 //			SmartDashboard::PutNumber("Gyro PID Out before", gyroOutput);
-			gyroOutput = gyroOutput > 1.0 ? 1.0 : (gyroOutput < -1.0 ? -1.0 : gyroOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
-			drive_rot = gyroOutput;
-			if (drive_rot < .05 && drive_rot > -.05){
-				drive_rot = 0;
-			}
+		gyroOutput = gyroOutput > 1.0 ? 1.0 : (gyroOutput < -1.0 ? -1.0 : gyroOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
+		double drive_rot = gyroOutput;
+		if (drive_rot < .05 && drive_rot > -.05){
+			drive_rot = 0;
+		}
 
+		double left = drive_rot;
+		double right = -drive_rot;
 
-			left = drive_rot;
-			right = -drive_rot;
-
-			robot.motorMap[BACK_RIGHT]->Set(right);
-			robot.motorMap[FRONT_RIGHT]->Set(right);
-			robot.motorMap[FRONT_LEFT]->Set(left);
-			robot.motorMap[BACK_LEFT]->Set(left);
-
-			if(drive_rot == 0)
-				return END;
-			else
-				return CONTINUE;
+		robot.motorMap[BACK_RIGHT]->Set(right);
+		robot.motorMap[FRONT_RIGHT]->Set(right);
+		robot.motorMap[FRONT_LEFT]->Set(left);
+		robot.motorMap[BACK_LEFT]->Set(left);
+		if (drive_rot == 0){
+			return END;
+		}
 			return CONTINUE;
 	}
 

@@ -91,9 +91,7 @@ if (robot.joystick.combo(COMBO5)){
 SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 
 	if (!robot.isHybrid){
-<<<<<<< HEAD
 
-=======
 #ifdef SHOW_MOTORS
   SmartDashboard::PutNumber(std::string("back right motor current"), robot.motorMap[BACK_RIGHT]->GetOutputCurrent());
   SmartDashboard::PutNumber(std::string("front right motor current"), robot.motorMap[FRONT_RIGHT]->GetOutputCurrent());
@@ -102,7 +100,7 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 #endif
   	SmartDashboard::PutNumber(leftPickupPos.n,leftPickupMotor.Get());
   	SmartDashboard::PutNumber(rightPickupPos.n,rightPickupMotor.Get());
->>>>>>> origin/master
+
 //	double pickup_val = (robot.joystick.button(DRIVE_PICKUP_IN))?PICKUP_SPEED:(robot.joystick.button(DRIVE_PICKUP_OUT))?-PICKUP_SPEED:0.0;
 
 	/////////////////////////////////////////
