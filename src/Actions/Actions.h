@@ -9,6 +9,7 @@
 #define SRC_ACTIONS_ACTIONS_H_
 
 #include "CompassTurnAction.h"
+#include "CoordinateAction.h"
 #include "DriveAction.h"
 #include "DriveUntillSettleAction.h"
 #include "PickupArmAction.h"

@@ -8,7 +8,7 @@
 using namespace CORE;
 
 int toEnc(double inches){
-	return (inches/(PI*WHEEL_DIA)) * ENCODER_CONST;
+	return (inches/((PI)*WHEEL_DIA)) * ENCODER_CONST;
 }
 
 

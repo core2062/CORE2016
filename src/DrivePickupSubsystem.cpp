@@ -303,6 +303,8 @@ void DrivePickupSubsystem::teleopEnd(void){
 	frontRight.Set(0.0);
 	backLeft.Set(0.0);
 	backRight.Set(0.0);
+	drive_rot = 0.0;
+	drive_mag = 0.0;
 }
 
 void DrivePickupSubsystem::bolderAlign(double lError, double rError, double distAway){
