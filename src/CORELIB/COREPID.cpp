@@ -14,10 +14,16 @@ using namespace CORE;
 			sum += currentProfile->mistake[i];
 		}
 		double time = PID.timer.Get();
-		currentProfile->integral += (sum * time) * currentProfile->I;
-		currentProfile->derivative = ((currentProfile->mistake[0] - currentProfile->mistake[1]) / time) * currentProfile->D;
-		PID.timer.Reset();
-		currentProfile->output = currentProfile->porportional + currentProfile->integral + currentProfile->derivative;
+		if(time == 0) {
+			currentProfile->output = PID.actualPosition;
+		}
+		else {
+			currentProfile->integral += (sum * time) * currentProfile->I;
+			currentProfile->derivative = ((currentProfile->mistake[0] - currentProfile->mistake[1]) / time) * currentProfile->D;
+			PID.timer.Reset();
+			PID.timer.Start();
+			currentProfile->output = currentProfile->porportional + currentProfile->integral + currentProfile->derivative;
+		}
 	}
 	void COREPID::calculate(double newSet, int profile){
 		setActualPosition(newSet);

@@ -35,6 +35,7 @@ public:
 		PID2.mistake.reserve(integralAccuracy);
 		PID2.mistake[1] = 0;
 		PID.timer.Reset();
+		PID.timer.Start();
 //		double a = 0;
 //		input = a;
 	}
