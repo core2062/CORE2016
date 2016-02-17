@@ -47,8 +47,8 @@ public:
 		CANTalon leftPickupMotor;
 		CANTalon rightPickupMotor;
 		CANTalon rollerMotor;
-//		AnalogInput leftPot;
-//		AnalogInput rightPot;
+		AnalogInput leftPot;
+		AnalogInput rightPot;
 		DigitalInput upperLeftLimit;
 		DigitalInput lowerLeftLimit;
 		DigitalInput upperRightLimit;
@@ -67,8 +67,8 @@ public:
 		leftPickupMotor(21),
 		rightPickupMotor(22),
 		rollerMotor(23),
-//		leftPot(1),
-//		rightPot(2),
+		leftPot(1),
+		rightPot(2),
 		upperLeftLimit(1),
 		lowerLeftLimit(2),
 		upperRightLimit(3),
@@ -83,8 +83,8 @@ public:
 		robot.link(RIGHT_PICKUP, &rightPickupMotor);
 		robot.link(LEFT_PICKUP, &leftPickupMotor);
 		robot.link(ROLLER, &rollerMotor);
-//		robot.link(LEFT_POT, &leftPot);
-//		robot.link(RIGHT_POT, &rightPot);
+		robot.link(LEFT_POT, &leftPot);
+		robot.link(RIGHT_POT, &rightPot);
 		robot.link(PICKUP_UPPER_LEFT_LIMIT, &upperLeftLimit);
 		robot.link(PICKUP_LOWER_LEFT_LIMIT, &lowerLeftLimit);
 		robot.link(PICKUP_UPPER_RIGHT_LIMIT, &upperRightLimit);

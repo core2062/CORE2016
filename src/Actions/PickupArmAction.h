@@ -70,13 +70,31 @@ public:
 				return END;
 			}
 		}else{
-			//Encoder must be added to finish this
-			leftPickupPID.calculate();
-			rightPickupPID.calculate();
-			leftPickupPID.setPoint(SmartDashboard::GetNumber(height->n,height->v));
-			rightPickupPID.setPoint(SmartDashboard::GetNumber(height->n,height->v));
-			robot.motorMap[LEFT_PICKUP]->Set(leftPickupPID.getOutput());
-			robot.motorMap[RIGHT_PICKUP]->Set(rightPickupPID.getOutput());
+			double rightPickupError =  robot.analogSensorMap[RIGHT_POT]->GetValue() - robot.analogSensorMap[LEFT_POT]->GetValue() ;
+				double rightPickupOutput = (SmartDashboard::GetNumber(pickupPValue.n, pickupPValue.v)*rightPickupError);
+				rightPickupOutput = rightPickupOutput > 0.3 ? 0.3 : (rightPickupOutput < -0.3 ? -0.3 : rightPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
+				if (rightPickupOutput < .05 && rightPickupOutput > -.05){
+					rightPickupOutput = 0;
+				}
+
+
+				double leftPickupError =  robot.analogSensorMap[LEFT_POT]->GetValue() - robot.analogSensorMap[RIGHT_POT]->GetValue() ;
+				double leftPickupOutput = (SmartDashboard::GetNumber(pickupPValue.n, pickupPValue.v)*leftPickupError);
+				leftPickupOutput = leftPickupOutput > 0.3 ? 0.3 : (leftPickupOutput < -0.3 ? -0.3 : leftPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
+				if (leftPickupOutput < .05 && leftPickupOutput > -.05){
+					leftPickupOutput = 0;
+				}
+
+
+
+				double otherPickupError =  ((robot.analogSensorMap[LEFT_POT]->GetValue() + robot.analogSensorMap[RIGHT_POT]->GetValue()) / 2) - height.v;
+				double otherPickupOutput = (SmartDashboard::GetNumber(otherPickupP.n, otherPickupP.v)*otherPickupError);
+				otherPickupOutput = otherPickupOutput > 0.8 ? 0.8 : (otherPickupOutput < -0.8 ? -0.8 : otherPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
+				if (otherPickupOutput < .05 && otherPickupOutput > -.05){
+					otherPickupOutput = 0;
+				}
+				robot.motorMap[LEFT_PICKUP]->Set(otherPickupOutput + leftPickupOutput);
+				robot.motorMap[RIGHT_PICKUP]->Set(otherPickupOutput + rightPickupOutput);
 		}
 	}
 		~PickupArmAction(){}

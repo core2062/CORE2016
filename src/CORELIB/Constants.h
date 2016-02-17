@@ -60,7 +60,9 @@ enum controllerInputs{
 	LIFT_LEVEL1,
 	LIFT_LEVEL2,
 	SHOOTER_FIRE,
-
+	PICKUP_AXIS,
+	ROLLER_UP,
+	ROLLER_DOWN,
 
 	HYBRID_GOTO_SDXY,
 
@@ -193,6 +195,9 @@ public:
  const smartDB pickupP(std::string("Pickup P"), 0.0);
  const smartDB liftLevel1(std::string("Lift Level 1"), 0.0);
  const smartDB liftLevel2(std::string("Lift Level 2"), 12.0);
+ const smartDB pickupPValue(std::string("Pickup P Mainly"), 0.0);
+ const smartDB otherPickupP(std::string("Pickup P Sub loop"), 0.0);
+ const smartDB pickupVoltThresh(std::string("Pickup Voltage Threshold"), 0.0);
 
 
  const std::vector<const smartDB *> sdPointers = {
@@ -216,7 +221,10 @@ public:
 		 &leftPickupPos,
 		 &rightPickupPos,
 		 &liftLevel1,
-		 &liftLevel2
+		 &liftLevel2,
+		 &pickupPValue,
+		 &otherPickupP,
+		 &pickupVoltThresh
  };
 
 
