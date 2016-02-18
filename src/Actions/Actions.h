@@ -17,5 +17,6 @@
 #include "ShootAction.h"
 #include "TestAction.h"
 #include "TurnWithGyroAction.h"
+#include "AutoPickupAction.h"
 
 #endif /* SRC_ACTIONS_ACTIONS_H_ */
