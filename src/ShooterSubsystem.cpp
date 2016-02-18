@@ -23,16 +23,26 @@ void ShooterSubsystem::teleopInit(void){
 
 void ShooterSubsystem::teleop(void){
 
+	double fireTime = SmartDashboard::GetNumber(shooterReturn.n, shooterReturn.v);
 	if (!robot.isHybrid){
-		if (robot.joystick.button(SHOOTER_FIRE) && shooterTimer.Get() >=2.5){
-			leftShooter.Set(DoubleSolenoid::kForward);
-			rightShooter.Set(DoubleSolenoid::kForward);
+		if (robot.joystick.button(SHOOTER_FIRE) && shooterTimer.Get() >=8.5){
+			leftShooter.Set(true);
+			rightShooter.Set(true);
+			backShooter.Set(false);
+			exhaustShooter.Set(false);
 			shooterTimer.Reset();
 		}
 	}
-	if (shooterTimer.Get() >= SmartDashboard::GetNumber(shooterReturn.n, shooterReturn.v)){
-		leftShooter.Set(DoubleSolenoid::kOff);
-		rightShooter.Set(DoubleSolenoid::kOff);
+	if (shooterTimer.Get() >= fireTime && shooterTimer.Get() <= fireTime+4.0){
+		leftShooter.Set(false);
+		rightShooter.Set(false);
+		backShooter.Set(true);
+		exhaustShooter.Set(false);
+	}else if (shooterTimer.Get() >= fireTime+4.0 && shooterTimer.Get() <= fireTime+5.0){
+		leftShooter.Set(false);
+		rightShooter.Set(false);
+		backShooter.Set(false);
+		exhaustShooter.Set(true);
 	}
 
 }
