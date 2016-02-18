@@ -11,31 +11,31 @@ double inline etherR(double fwd, double rcw, double a, double b){
 
 void DrivePickupSubsystem::setPickupHeight(smartDB height){
 
-	double rightPickupError =  rightPot.GetValue() - leftPot.GetValue() ;
-	double rightPickupOutput = (SmartDashboard::GetNumber(pickupPValue.n, pickupPValue.v)*rightPickupError);
-	rightPickupOutput = rightPickupOutput > 0.3 ? 0.3 : (rightPickupOutput < -0.3 ? -0.3 : rightPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
-	if (rightPickupOutput < .05 && rightPickupOutput > -.05){
-		rightPickupOutput = 0;
-	}
-
-
-	double leftPickupError =  leftPot.GetValue() - rightPot.GetValue() ;
-	double leftPickupOutput = (SmartDashboard::GetNumber(pickupPValue.n, pickupPValue.v)*leftPickupError);
-	leftPickupOutput = leftPickupOutput > 0.3 ? 0.3 : (leftPickupOutput < -0.3 ? -0.3 : leftPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
-	if (leftPickupOutput < .05 && leftPickupOutput > -.05){
-		leftPickupOutput = 0;
-	}
-
-
-
-	double otherPickupError =  ((leftPot.GetValue() + rightPot.GetValue()) / 2) - height.v;
-	double otherPickupOutput = (SmartDashboard::GetNumber(otherPickupP.n, otherPickupP.v)*otherPickupError);
-	otherPickupOutput = otherPickupOutput > 0.8 ? 0.8 : (otherPickupOutput < -0.8 ? -0.8 : otherPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
-	if (otherPickupOutput < .05 && otherPickupOutput > -.05){
-		otherPickupOutput = 0;
-	}
-	leftPickupMotor.Set(otherPickupOutput + leftPickupOutput);
-	rightPickupMotor.Set(otherPickupOutput + rightPickupOutput);
+//	double rightPickupError =  rightPot.GetValue() - leftPot.GetValue() ;
+//	double rightPickupOutput = (SmartDashboard::GetNumber(pickupPValue.n, pickupPValue.v)*rightPickupError);
+//	rightPickupOutput = rightPickupOutput > 0.3 ? 0.3 : (rightPickupOutput < -0.3 ? -0.3 : rightPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
+//	if (rightPickupOutput < .05 && rightPickupOutput > -.05){
+//		rightPickupOutput = 0;
+//	}
+//
+//
+//	double leftPickupError =  leftPot.GetValue() - rightPot.GetValue() ;
+//	double leftPickupOutput = (SmartDashboard::GetNumber(pickupPValue.n, pickupPValue.v)*leftPickupError);
+//	leftPickupOutput = leftPickupOutput > 0.3 ? 0.3 : (leftPickupOutput < -0.3 ? -0.3 : leftPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
+//	if (leftPickupOutput < .05 && leftPickupOutput > -.05){
+//		leftPickupOutput = 0;
+//	}
+//
+//
+//
+//	double otherPickupError =  ((leftPot.GetValue() + rightPot.GetValue()) / 2) - height.v;
+//	double otherPickupOutput = (SmartDashboard::GetNumber(otherPickupP.n, otherPickupP.v)*otherPickupError);
+//	otherPickupOutput = otherPickupOutput > 0.8 ? 0.8 : (otherPickupOutput < -0.8 ? -0.8 : otherPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
+//	if (otherPickupOutput < .05 && otherPickupOutput > -.05){
+//		otherPickupOutput = 0;
+//	}
+//	leftPickupMotor.Set(otherPickupOutput + leftPickupOutput);
+//	rightPickupMotor.Set(otherPickupOutput + rightPickupOutput);
 };
 
 
@@ -54,8 +54,8 @@ void DrivePickupSubsystem::teleopInit(void){
 	robot.joystick.register_axis(DRIVE_ROT, 0, 2);
 	robot.joystick.register_axis(DRIVE_MAG, 0, 1);
 	robot.joystick.register_axis(DRIVE_MAG2, 0, 3);
-	robot.joystick.register_axis(PICKUP_AXIS, 1, -1);
-	robot.joystick.register_button(DRIVE_SPEED, 0, 7);
+//	robot.joystick.register_axis(PICKUP_AXIS, 1, -1);
+	robot.joystick.register_button(DRIVE_SPEED, 0, 5);
 	robot.joystick.register_button(DRIVE_AUTO_PICKUP, 0, 2);
 	robot.joystick.register_button(DRIVE_GOAL, 0 , 1);
 	robot.joystick.register_button(DRIVE_PICKUP_HEIGHT1, 1, 6);
@@ -64,23 +64,23 @@ void DrivePickupSubsystem::teleopInit(void){
 	robot.joystick.register_button(DRIVE_PICKUP_HEIGHT4, 1, 9);
 	robot.joystick.register_button(DRIVE_PICKUP_HEIGHT5, 1, 10);
 	robot.joystick.register_combo(COMBO5, 0, 3);
-	robot.joystick.register_button(ROLLER_UP, 1, -1);
-	robot.joystick.register_button(ROLLER_DOWN, 1, -1);
+	robot.joystick.register_button(ROLLER_UP, 1, 5);
+	robot.joystick.register_button(ROLLER_DOWN, 1, 5);
 
 	frontLeft.SetSafetyEnabled(true);
 	backLeft.SetSafetyEnabled(true);
 	frontRight.SetSafetyEnabled(true);
 	backRight.SetSafetyEnabled(true);
-	leftPickupMotor.SetSafetyEnabled(true);
-	rightPickupMotor.SetSafetyEnabled(true);
-	rollerMotor.SetSafetyEnabled(true);
+//	leftPickupMotor.SetSafetyEnabled(true);
+//	rightPickupMotor.SetSafetyEnabled(true);
+//	rollerMotor.SetSafetyEnabled(true);
 	frontLeft.Set(0.0);
 	backLeft.Set(0.0);
 	frontRight.Set(0.0);
 	backRight.Set(0.0);
-	leftPickupMotor.Set(0.0);
-	rightPickupMotor.Set(0.0);
-	rollerMotor.Set(0.0);
+//	leftPickupMotor.Set(0.0);
+//	rightPickupMotor.Set(0.0);
+//	rollerMotor.Set(0.0);
 
 
 
@@ -108,14 +108,14 @@ void DrivePickupSubsystem::teleop(void){
 
 
 if (robot.joystick.combo(COMBO5)){
-	robot.ahrs->ZeroYaw();
+//	robot.ahrs->ZeroYaw();
 	robot.outLog.appendLog("Manual Reset Gyro Yaw");
 	std::cout << "WARNING: Manual Reset Gyro Yaw" << std::endl;
 //	DriveAction driveThing(robot, 5, 1.0);
 //	robot.teleSeq->add(driveThing);
 }
 
-SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
+//SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 
 	if (!robot.isHybrid){
 
@@ -127,8 +127,8 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
   SmartDashboard::PutNumber(std::string("front left motor current"), robot.motorMap[FRONT_LEFT]->GetOutputCurrent());
 #endif
 
-  	SmartDashboard::PutNumber(leftPickupPos.n,leftPickupMotor.Get());
-  	SmartDashboard::PutNumber(rightPickupPos.n,rightPickupMotor.Get());
+//  	SmartDashboard::PutNumber(leftPickupPos.n,leftPickupMotor.Get());
+//  	SmartDashboard::PutNumber(rightPickupPos.n,rightPickupMotor.Get());
 
 //	double pickup_val = (robot.joystick.button(DRIVE_PICKUP_IN))?PICKUP_SPEED:(robot.joystick.button(DRIVE_PICKUP_OUT))?-PICKUP_SPEED:0.0;
 
@@ -157,7 +157,7 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 	}
 	if (resetQ != 0){
 		if (resetQ == 3){
-			robot.ahrs->ZeroYaw();
+//			robot.ahrs->ZeroYaw();
 //				gyroPID.setPoint = imu->GetYaw();
 		}
 		resetQ--;
@@ -223,7 +223,8 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 	///////// GYRO CALCULATIONS ///////////
 	///////////////////////////////////////
 
-		double gyroRate = robot.ahrs->GetYaw();
+//		double gyroRate = robot.ahrs->GetYaw();
+		double gyroRate = 0.0;
 		//Gyro PID
 		if((drive_rot==0.0 && resetQ == 0 && !SmartDashboard::GetBoolean("disableGyro",false))){
 			double gyroError =  gyroSet - gyroRate;
@@ -305,9 +306,9 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 	}
 
 //Pickup Height's buttons
-	if(robot.joystick.axis(PICKUP_AXIS)){
-		leftPickupMotor.Set(robot.joystick.axis(PICKUP_AXIS));
-		rightPickupMotor.Set(robot.joystick.axis(PICKUP_AXIS));
+	if(/*robot.joystick.axis(PICKUP_AXIS)*/true){
+//		leftPickupMotor.Set(robot.joystick.axis(PICKUP_AXIS));
+//		rightPickupMotor.Set(robot.joystick.axis(PICKUP_AXIS));
 	}
 	else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT1))
 		setPickupHeight(pickupHeight1);
@@ -323,7 +324,7 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 double rollerUp = robot.joystick.button(ROLLER_UP);
 double rollerDown = robot.joystick.button(ROLLER_DOWN);
 
-rollerMotor.Set(rollerUp ? FORWARD:(rollerDown ? REVERSE:0.0));
+//rollerMotor.Set(rollerUp ? FORWARD:(rollerDown ? REVERSE:0.0));
 
 }
 

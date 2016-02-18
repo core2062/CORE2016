@@ -17,8 +17,10 @@
 
 	}
 	void TeleSubsystem::teleop(){
-		double leftEnc = robot.motorMap[FRONT_LEFT]->GetEncPosition();
-		double rightEnc = robot.motorMap[FRONT_RIGHT]->GetEncPosition();
+//		double leftEnc = robot.motorMap[FRONT_LEFT]->GetEncPosition();
+//		double rightEnc = robot.motorMap[FRONT_RIGHT]->GetEncPosition();
+		double leftEnc = 0.0;
+		double rightEnc = 0.0;
 		double compassVal = getHeading();
 
 		if (!robot.isHybrid){

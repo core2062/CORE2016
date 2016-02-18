@@ -7,7 +7,7 @@
 
 #ifndef SRC_ACTIONS_AUTOPICKUPACTION_H_
 #define SRC_ACTIONS_AUTOPICKUPACTION_H_
-
+/*
 #include "CoreLIB/COREAuto.h"
 #include "CORELIB/CORERobot.h"
 #include "WPILib.h"
@@ -22,9 +22,9 @@ class AutoPickupAction : public OrderAction{
 
 	double leftPot = robot.analogSensorMap[LEFT_POT]->GetValue();
 	double rightPot = robot.analogSensorMap[RIGHT_POT]->GetValue();
-	double rollerMotor = robot.motorMap[ROLLER];
-	double leftMotor = robot.motorMap[LEFT_PICKUP];
-	double rightMotor = robot.motorMap[RIGHT_PICKUP];
+//	double rollerMotor = robot.motorMap[ROLLER];
+//	double leftMotor = robot.motorMap[LEFT_PICKUP];
+//	double rightMotor = robot.motorMap[RIGHT_PICKUP];
 	bool flag = false;
 
 
@@ -52,5 +52,5 @@ public:
 
 	}
 };
-
+*/
 #endif /* SRC_ACTIONS_AUTOPICKUPACTION_H_ */

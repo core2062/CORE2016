@@ -36,6 +36,7 @@ public:
 	std::string name(void);
 	ShooterSubsystem(CORERobot& robot):
 		CORESubsystem(robot),
+//		rightShooter(4,5),
 		leftShooter(0),
 		rightShooter(1),
 		backShooter(2),

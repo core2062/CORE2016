@@ -9,13 +9,13 @@
 #ifndef SRC_CORELIB_CONSTANTS_H_
 #define SRC_CORELIB_CONSTANTS_H_
 
-#define USE_NAVX
-#define SHOW_MOTORS
+//#define USE_NAVX
+//#define SHOW_MOTORS
 #define ETHER_DIRVE
-#define SHOW_SENSORS
+//#define SHOW_SENSORS
 //#define TANK_DRIVE
 //#define MECANUM_DRIVE
-#define ULTIMATE_MODE
+//#define ULTIMATE_MODE
 
 #define PI 3.1415923565
 #define RADIANS(d) ((d*PI)/180.0)
@@ -177,7 +177,7 @@ public:
 
  const smartDB rotationPValue(std::string("Rotation P"), .05);
  const smartDB etherA(std::string("Ether A"), 1.0);
- const smartDB etherB(std::string("Ether B"), 0.25);
+ const smartDB etherB(std::string("Ether B"), 0.5);
  const smartDB blueTowerCompass(std::string("Blue Tower Compass"), 0.0);
  const smartDB compass(std::string("NavX Compass"), 0.0);
  const smartDB shooterReturn(std::string("Shooter Return Time"), .5);

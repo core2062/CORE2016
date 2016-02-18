@@ -44,11 +44,11 @@ public:
 		CANTalon backLeft;
 		CANTalon frontRight;
 		CANTalon backRight;
-		CANTalon leftPickupMotor;
-		CANTalon rightPickupMotor;
-		CANTalon rollerMotor;
-		AnalogInput leftPot;
-		AnalogInput rightPot;
+//		CANTalon leftPickupMotor;
+//		CANTalon rightPickupMotor;
+//		CANTalon rollerMotor;
+//		AnalogInput leftPot;
+//		AnalogInput rightPot;
 		DigitalInput upperLeftLimit;
 		DigitalInput lowerLeftLimit;
 		DigitalInput upperRightLimit;
@@ -64,11 +64,11 @@ public:
 		backLeft(12),
 		frontRight(10),
 		backRight(11),
-		leftPickupMotor(21),
-		rightPickupMotor(22),
-		rollerMotor(23),
-		leftPot(1),
-		rightPot(2),
+//		leftPickupMotor(21),
+//		rightPickupMotor(22),
+//		rollerMotor(23),
+//		leftPot(1),
+//		rightPot(2),
 		upperLeftLimit(1),
 		lowerLeftLimit(2),
 		upperRightLimit(3),
@@ -80,11 +80,11 @@ public:
 		robot.link(BACK_LEFT, &backLeft);
 		robot.link(FRONT_RIGHT, &frontRight);
 		robot.link(FRONT_LEFT, &frontLeft);
-		robot.link(RIGHT_PICKUP, &rightPickupMotor);
-		robot.link(LEFT_PICKUP, &leftPickupMotor);
-		robot.link(ROLLER, &rollerMotor);
-		robot.link(LEFT_POT, &leftPot);
-		robot.link(RIGHT_POT, &rightPot);
+//		robot.link(RIGHT_PICKUP, &rightPickupMotor);
+//		robot.link(LEFT_PICKUP, &leftPickupMotor);
+//		robot.link(ROLLER, &rollerMotor);
+//		robot.link(LEFT_POT, &leftPot);
+//		robot.link(RIGHT_POT, &rightPot);
 		robot.link(PICKUP_UPPER_LEFT_LIMIT, &upperLeftLimit);
 		robot.link(PICKUP_LOWER_LEFT_LIMIT, &lowerLeftLimit);
 		robot.link(PICKUP_UPPER_RIGHT_LIMIT, &upperRightLimit);
@@ -92,9 +92,9 @@ public:
 
 
 			//start false to avoid error
-			rightPickupMotor.SetSafetyEnabled(false);
-			leftPickupMotor.SetSafetyEnabled(false);
-			rollerMotor.SetSafetyEnabled(false);
+//			rightPickupMotor.SetSafetyEnabled(false);
+//			leftPickupMotor.SetSafetyEnabled(false);
+//			rollerMotor.SetSafetyEnabled(false);
 			frontLeft.SetSafetyEnabled(false);
 			frontRight.SetSafetyEnabled(false);
 			backLeft.SetSafetyEnabled(false);
@@ -102,9 +102,9 @@ public:
 			frontRight.SetInverted(true);
 			backRight.SetInverted(true);
 
-			rightPickupMotor.Set(0.0);
-			leftPickupMotor.Set(0.0);
-			rollerMotor.Set(0.0);
+//			rightPickupMotor.Set(0.0);
+//			leftPickupMotor.Set(0.0);
+//			rollerMotor.Set(0.0);
 			frontLeft.Set(0.0);
 			frontRight.Set(0.0);
 			backLeft.Set(0.0);
