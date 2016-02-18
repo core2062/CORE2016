@@ -14,6 +14,7 @@
 #include <iostream>
 #include <math.h>
 #include "CORELIB/COREAuto.h"
+#include "Actions/Actions.h"
 #include "DrivePickupSubsystem.h"
 
 using namespace CORE;
@@ -21,20 +22,23 @@ using namespace CORE;
 
 class TeleSubsystem: public CORESubsystem{
 
-	double currentX = 0.0;
-	double currentY = 0.0;
+
 
 	double setX = 0.0;
 	double setY = 0.0;
 
-	double oldGyro = 0.0;
+	double oldCompass = 0.0;
+
+	double oldLeftEnc = 0.0;
+	double oldRightEnc = 0.0;
 
 	AutoControl& seq;
 	DrivePickupSubsystem& drive;
 
 public:
 
-
+	double currentX = 0.0;
+	double currentY = 0.0;
 
 
 
@@ -61,10 +65,11 @@ public:
 		DriverStation::Alliance color;
 		color = DriverStation::GetInstance().GetAlliance();
 		if(color == DriverStation::Alliance::kBlue){
-			double total = (robot.ahrs->GetCompassHeading()-SmartDashboard::GetNumber(blueTowerCompass.n,blueTowerCompass.v));
-			return total>360?360-total:total;
+			double total = (robot.ahrs->GetCompassHeading()+SmartDashboard::GetNumber(blueTowerCompass.n,blueTowerCompass.v));
+			return total>=360?total-360:total;
 		}else{
-			return (robot.ahrs->GetCompassHeading());
+			double total = (robot.ahrs->GetCompassHeading()+SmartDashboard::GetNumber(blueTowerCompass.n,blueTowerCompass.v) + 180);
+			return total>=360?(total-360>=360?total-720:total-360):total;
 		}
 
 #else

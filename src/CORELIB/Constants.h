@@ -17,6 +17,10 @@
 //#define MECANUM_DRIVE
 #define ULTIMATE_MODE
 
+#define PI 3.1415923565
+#define RADIANS(d) ((d*PI)/180.0)
+#define DEGREES(r) ((r*180.0)/PI)
+
 #include <string>
 #include <array>
 
@@ -99,7 +103,6 @@ enum pneumatics{
 	SHOOTER_RIGHT_CYLINDER
 };
 
-const double PI = 3.1415923565;
 
 
 //  Motor Speed Values //
@@ -180,6 +183,12 @@ public:
  const smartDB shooterReturn(std::string("Shooter Return Time"), .5);
  const smartDB quickTurn(std::string("Quick Turn Speed"), .5);
 
+ const smartDB testTargetX(std::string("Coordinate Target X"), 0.0);
+ const smartDB testTargetY(std::string("Coordinate Target Y"), 0.0);
+ const smartDB testTargetAngle(std::string("Coordinate Target Angle"), 0.0);
+
+
+
  const smartDB testAuto(std::string("Auto Test Value"), 5.0);
  const smartDB mediumDistance(std::string("Medium Distance"), 5.0);
  const smartDB secondaryMedium(std::string("Secondary Medium Distance"), 5.0);
@@ -209,6 +218,11 @@ public:
 		 &testAuto,
 		 &shooterReturn,
 		 &quickTurn,
+
+		 &testTargetX,
+		 &testTargetY,
+		 &testTargetAngle,
+
 		 &mediumDistance,
 		 &secondaryMedium,
 		 &longDistance,

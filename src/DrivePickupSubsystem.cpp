@@ -119,8 +119,17 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 
 	if (!robot.isHybrid){
 
+<<<<<<< HEAD
 
 
+=======
+#ifdef SHOW_MOTORS
+  SmartDashboard::PutNumber(std::string("back right motor current"), robot.motorMap[BACK_RIGHT]->GetOutputCurrent());
+  SmartDashboard::PutNumber(std::string("front right motor current"), robot.motorMap[FRONT_RIGHT]->GetOutputCurrent());
+  SmartDashboard::PutNumber(std::string("back left motor current"), robot.motorMap[BACK_LEFT]->GetOutputCurrent());
+  SmartDashboard::PutNumber(std::string("front left motor current"), robot.motorMap[FRONT_LEFT]->GetOutputCurrent());
+#endif
+>>>>>>> origin/master
   	SmartDashboard::PutNumber(leftPickupPos.n,leftPickupMotor.Get());
   	SmartDashboard::PutNumber(rightPickupPos.n,rightPickupMotor.Get());
 
@@ -331,6 +340,8 @@ void DrivePickupSubsystem::teleopEnd(void){
 	frontRight.Set(0.0);
 	backLeft.Set(0.0);
 	backRight.Set(0.0);
+	drive_rot = 0.0;
+	drive_mag = 0.0;
 }
 
 void DrivePickupSubsystem::bolderAlign(double lError, double rError, double distAway){
