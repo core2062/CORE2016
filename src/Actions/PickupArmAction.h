@@ -28,23 +28,20 @@ public:
 	double speed = 0.0;
 	double duration = 0.0;
 	smartDB* height = (new smartDB (std::string("null"), 0.0));
-	COREPID leftPickupPID;
-	COREPID rightPickupPID;
+	bool bkrd;
 
 
 
-	PickupArmAction(CORERobot& robot, double speed, double duration):
+	PickupArmAction(CORERobot& robot, double speed, double duration, bool backround = true):
 		OrderAction(robot),
 		speed(speed),
-		leftPickupPID(0,0,0),
-		rightPickupPID(0,0,0)
+		bkrd(backround)
 	{
 	};
-	PickupArmAction(CORERobot& robot, smartDB height):
+	PickupArmAction(CORERobot& robot, smartDB height, bool backround = true):
 		OrderAction(robot),
 		height(&height),
-		leftPickupPID(0,0,0),
-		rightPickupPID(0,0,0)
+		bkrd(backround)
 	{
 	};
 
@@ -63,7 +60,10 @@ public:
 			if(timer.Get() < duration){
 				robot.motorMap[LEFT_PICKUP]->Set(speed);
 				robot.motorMap[RIGHT_PICKUP]->Set(speed);
-				return CONTINUE;
+				if(bkrd)
+					return BACKGROUND;
+				else
+					return CONTINUE;
 			}else{
 				robot.motorMap[LEFT_PICKUP]->Set(0.0);
 				robot.motorMap[RIGHT_PICKUP]->Set(0.0);
@@ -95,6 +95,10 @@ public:
 				}
 				robot.motorMap[LEFT_PICKUP]->Set(otherPickupOutput + leftPickupOutput);
 				robot.motorMap[RIGHT_PICKUP]->Set(otherPickupOutput + rightPickupOutput);
+				if(bkrd)
+					return BACKGROUND;
+				else
+					return CONTINUE;
 		}
 	}
 		~PickupArmAction(){}

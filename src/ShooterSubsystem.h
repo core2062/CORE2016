@@ -19,12 +19,13 @@ using namespace CORE;
 
 class ShooterSubsystem: public CORESubsystem{
 
-//	DoubleSolenoid leftShooter;
-//	DoubleSolenoid rightShooter;
-	Solenoid leftShooter;
-	Solenoid rightShooter;
-	Solenoid backShooter;
-	Solenoid exhaustShooter;
+	DoubleSolenoid rightShooter;
+	DoubleSolenoid leftShooter;
+
+//	Solenoid leftShooter;
+//	Solenoid rightShooter;
+//	Solenoid backShooter;
+//	Solenoid exhaustShooter;
 	Timer shooterTimer;
 
 public:
@@ -36,22 +37,22 @@ public:
 	std::string name(void);
 	ShooterSubsystem(CORERobot& robot):
 		CORESubsystem(robot),
-//		rightShooter(4,5),
-		leftShooter(0),
-		rightShooter(1),
-		backShooter(2),
-		exhaustShooter(3),
+		rightShooter(1,2),
+		leftShooter(3,4),
+//		rightShooter(1),
+//		backShooter(2),
+//		exhaustShooter(3),
 		shooterTimer()
 
 		{
-			leftShooter.Set(false);
-			rightShooter.Set(false);
-			backShooter.Set(false);
-			exhaustShooter.Set(false);
-//			leftShooter.Set(DoubleSolenoid::kReverse);
-//			rightShooter.Set(DoubleSolenoid::kReverse);
-//			robot.link(SHOOTER_LEFT_CYLINDER, &leftShooter);
-//			robot.link(SHOOTER_RIGHT_CYLINDER, &rightShooter);
+//			leftShooter.Set(false);
+//			rightShooter.Set(false);
+//			backShooter.Set(false);
+//			exhaustShooter.Set(false);
+			leftShooter.Set(DoubleSolenoid::kReverse);
+			rightShooter.Set(DoubleSolenoid::kReverse);
+			robot.link(SHOOTER_LEFT_CYLINDER, &leftShooter);
+			robot.link(SHOOTER_RIGHT_CYLINDER, &rightShooter);
 		}
 
 	void robotInit(void);

@@ -23,9 +23,10 @@ class DrivePickupSubsystem: public CORESubsystem{
     	bool oldRot = 0.0;
     	int resetQ = 0;
     	double gyroSet = 0.0;
-
     	int oldBallX = -1;
     	int oldGoalX = -1;
+    	bool autoPickupFlag = false;
+    	Timer autoPickupTimer;
 
 		SendableChooser driveChooser;
 
@@ -137,6 +138,7 @@ public:
 	void setPickupMotor(double speed);
 	void setPickupSpeed(double speed);
 	void setPickupHeight(smartDB height);
+	bool autoPickup(void);
 };
 
 

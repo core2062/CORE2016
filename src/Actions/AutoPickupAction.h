@@ -76,7 +76,7 @@ public:
 
 
 
-					double otherPickupError =  ((robot.analogSensorMap[LEFT_POT]->GetValue() + robot.analogSensorMap[RIGHT_POT]->GetValue()) / 2) - pickupHeight5.v;// This might need to be changed
+					double otherPickupError =  ((robot.analogSensorMap[LEFT_POT]->GetValue() + robot.analogSensorMap[RIGHT_POT]->GetValue()) / 2) - SmartDashboard::GetNumber(pickupHeight5.n, pickupHeight5.v);// This might need to be changed
 					double otherPickupOutput = (SmartDashboard::GetNumber(otherPickupP.n, otherPickupP.v)*otherPickupError);
 					otherPickupOutput = otherPickupOutput > 0.8 ? 0.8 : (otherPickupOutput < -0.8 ? -0.8 : otherPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
 					if (otherPickupOutput < .05 && otherPickupOutput > -.05){

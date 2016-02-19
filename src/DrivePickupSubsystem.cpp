@@ -28,7 +28,7 @@ void DrivePickupSubsystem::setPickupHeight(smartDB height){
 //
 //
 //
-//	double otherPickupError =  ((leftPot.GetValue() + rightPot.GetValue()) / 2) - height.v;
+//	double otherPickupError =  ((leftPot.GetValue() + rightPot.GetValue()) / 2) - SmartDashboard::GetNumber(height.n, height.v);
 //	double otherPickupOutput = (SmartDashboard::GetNumber(otherPickupP.n, otherPickupP.v)*otherPickupError);
 //	otherPickupOutput = otherPickupOutput > 0.8 ? 0.8 : (otherPickupOutput < -0.8 ? -0.8 : otherPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
 //	if (otherPickupOutput < .05 && otherPickupOutput > -.05){
@@ -38,7 +38,57 @@ void DrivePickupSubsystem::setPickupHeight(smartDB height){
 //	rightPickupMotor.Set(otherPickupOutput + rightPickupOutput);
 };
 
-
+bool DrivePickupSubsystem::autoPickup(void){
+//	if(rollerMotor.GetOutputVoltage() > SmartDashboard::GetNumber(pickupVoltThresh.n, pickupVoltThresh.v) || autoPickupflag == true){
+//		if(!autoPickupFlag){
+//			autoPickupFlag = true;
+//			autoPickupTimer.Reset();
+//			autoPickupTimer.Start();
+//		}
+//		if(autoPickupTimer.Get() > 1.0){
+//			if(((leftPot.GetValue() + rightPot.GetValue()) / 2) >= SmartDashboard::GetNumber(pickupHeight5.n, pickupHeight5.v)){ //pickup height & direction will have to be tuned
+//				robot.motorMap[LEFT_PICKUP]->Set(0.0);
+//				robot.motorMap[RIGHT_PICKUP]->Set(0.0);
+//				autoPickupFlag = false;
+//				autoPickupTimer.Stop();
+//				autoPickupTimer.Reset();
+//				return true;
+//			} else {
+//				robot.motorMap[ROLLER]->Set(0.0);
+//				double rightPickupError =  rightPot.GetValue() - leftPot.GetValue() ;
+//				double rightPickupOutput = (SmartDashboard::GetNumber(pickupPValue.n, pickupPValue.v)*rightPickupError);
+//				rightPickupOutput = rightPickupOutput > 0.3 ? 0.3 : (rightPickupOutput < -0.3 ? -0.3 : rightPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
+//				if (rightPickupOutput < .05 && rightPickupOutput > -.05){
+//					rightPickupOutput = 0;
+//				}
+//
+//
+//				double leftPickupError =  leftPot.GetValue() - rightPot.GetValue() ;
+//				double leftPickupOutput = (SmartDashboard::GetNumber(pickupPValue.n, pickupPValue.v)*leftPickupError);
+//				leftPickupOutput = leftPickupOutput > 0.3 ? 0.3 : (leftPickupOutput < -0.3 ? -0.3 : leftPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
+//				if (leftPickupOutput < .05 && leftPickupOutput > -.05){
+//					leftPickupOutput = 0;
+//				}
+//
+//
+//
+//				double otherPickupError =  ((leftPot.GetValue() + rightPot.GetValue()) / 2) - SmartDashboard::GetNumber(pickupHeight5.n, pickupHeight5.v);
+//				double otherPickupOutput = (SmartDashboard::GetNumber(otherPickupP.n, otherPickupP.v)*otherPickupError);
+//				otherPickupOutput = otherPickupOutput > 0.8 ? 0.8 : (otherPickupOutput < -0.8 ? -0.8 : otherPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
+//				if (otherPickupOutput < .05 && otherPickupOutput > -.05){
+//					otherPickupOutput = 0;
+//				}
+//				leftPickupMotor.Set(otherPickupOutput + leftPickupOutput);
+//				rightPickupMotor.Set(otherPickupOutput + rightPickupOutput);
+//			}
+//		} else {
+//			return false;
+//		}
+//	} else {
+//		robot.motorMap[ROLLER]->Set(FORWARD);
+//		return false;
+//	}
+}
 
 std::string DrivePickupSubsystem::name(void){
 	return "Drive";

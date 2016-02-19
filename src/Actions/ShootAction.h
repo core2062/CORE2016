@@ -23,8 +23,10 @@ class ShootAction : public OrderAction{
 
 public:
 	Timer timer;
+	Timer timer2;
 	bool flag = false;
 	bool flag2 = false;
+	bool flag3 = false;
 	double loadTime;
 
 
@@ -66,11 +68,24 @@ public:
 		}
 
 		if(timer.Get() >= loadTime && flag){
-			robot.pneumaticMap[SHOOTER_LEFT_CYLINDER]->Set(DoubleSolenoid::kReverse);
-			robot.pneumaticMap[SHOOTER_RIGHT_CYLINDER]->Set(DoubleSolenoid::kReverse);
-			return END;
+			if(flag3 == false){
+				timer2.Reset();
+				timer2.Start();
+				flag3 = true;
+			}
+			if(timer2.Get() > 2.0){// wait time after  reverse for off
+				robot.pneumaticMap[SHOOTER_LEFT_CYLINDER]->Set(DoubleSolenoid::kOff);
+				robot.pneumaticMap[SHOOTER_RIGHT_CYLINDER]->Set(DoubleSolenoid::kOff);
+				return END;
+			} else {
+				robot.pneumaticMap[SHOOTER_LEFT_CYLINDER]->Set(DoubleSolenoid::kReverse);
+				robot.pneumaticMap[SHOOTER_RIGHT_CYLINDER]->Set(DoubleSolenoid::kReverse);
+				return BACKGROUND;
+			}
+
+		} else {
+			return BACKGROUND;
 		}
-		return CONTINUE;
 	}
 
 	~ShootAction(){
