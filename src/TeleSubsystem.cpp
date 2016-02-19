@@ -17,6 +17,16 @@
 
 	}
 	void TeleSubsystem::teleop(){
+#if !defined(USE_NAVX)
+robot.outLog.appendLog("[ERROR] NAVX NOT DEFINED!! (some things may not work as intended)");
+#endif
+#if defined(SHOW_MOTORS) // cuz for some reason && / || dont work
+#if defined(SHOW_SENSORS)
+robot.outLog.appendLog("[NOTE] Showing motor / sensor values on SmartDB");
+#endif
+#else
+robot.outLog.appendLog("[NOTE] Not Showing motor / sensor values on SmartDB");
+#endif
 //		double leftEnc = robot.motorMap[FRONT_LEFT]->GetEncPosition();
 //		double rightEnc = robot.motorMap[FRONT_RIGHT]->GetEncPosition();
 		double leftEnc = 0.0;

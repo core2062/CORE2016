@@ -165,17 +165,21 @@ if (robot.joystick.combo(COMBO5)){
 //	robot.teleSeq->add(driveThing);
 }
 
-//SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
-
-	if (!robot.isHybrid){
-
-
+#if USE_NAVX && SHOW_SENSORS
+SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
+#endif
 #ifdef SHOW_MOTORS
   SmartDashboard::PutNumber(std::string("back right motor current"), robot.motorMap[BACK_RIGHT]->GetOutputCurrent());
   SmartDashboard::PutNumber(std::string("front right motor current"), robot.motorMap[FRONT_RIGHT]->GetOutputCurrent());
   SmartDashboard::PutNumber(std::string("back left motor current"), robot.motorMap[BACK_LEFT]->GetOutputCurrent());
   SmartDashboard::PutNumber(std::string("front left motor current"), robot.motorMap[FRONT_LEFT]->GetOutputCurrent());
 #endif
+#ifdef SHOW_SENSORS
+  SmartDashboard::PutNumber(std::string("Left Pot Value"), leftPot.GetValue());
+  SmartDashboard::PutNumber(std::string("Right Pot Value"), rightPot.GetValue());
+#endif
+	if (!robot.isHybrid){
+
 
 //  	SmartDashboard::PutNumber(leftPickupPos.n,leftPickupMotor.Get());
 //  	SmartDashboard::PutNumber(rightPickupPos.n,rightPickupMotor.Get());
@@ -207,8 +211,10 @@ if (robot.joystick.combo(COMBO5)){
 	}
 	if (resetQ != 0){
 		if (resetQ == 3){
-//			robot.ahrs->ZeroYaw();
-//				gyroPID.setPoint = imu->GetYaw();
+#if USE_NAVX
+			robot.ahrs->ZeroYaw();
+				gyroPID.setPoint = imu->GetYaw();
+#endif
 		}
 		resetQ--;
 	}
@@ -272,9 +278,11 @@ if (robot.joystick.combo(COMBO5)){
 	///////////////////////////////////////
 	///////// GYRO CALCULATIONS ///////////
 	///////////////////////////////////////
-
-//		double gyroRate = robot.ahrs->GetYaw();
+#ifdef USE_NAVX
+		double gyroRate = robot.ahrs->GetYaw();
+#else
 		double gyroRate = 0.0;
+#endif
 		//Gyro PID
 		if((drive_rot==0.0 && resetQ == 0 && !SmartDashboard::GetBoolean("disableGyro",false))){
 			double gyroError =  gyroSet - gyroRate;

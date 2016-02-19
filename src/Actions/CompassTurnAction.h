@@ -56,6 +56,8 @@ public:
 			double total = (robot.ahrs->GetCompassHeading()+SmartDashboard::GetNumber(blueTowerCompass.n,blueTowerCompass.v) + 180);
 			compassVal = total>=360?(total-360>=360?total-720:total-360):total;
 		}
+#else
+		return END;
 #endif
 
 		double gyroError =  (fabs(compassVal - targetAngle) <= fabs(compassVal>180?compassVal-360:compassVal - targetAngle>180?targetAngle-360:targetAngle))?(compassVal - targetAngle):(compassVal>180?compassVal-360:compassVal - targetAngle>180?targetAngle-360:targetAngle);
