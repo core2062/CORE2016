@@ -365,8 +365,23 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 
 //Pickup Height's buttons
 	if(/*robot.joystick.axis(PICKUP_AXIS)*/true){
-//		leftPickupMotor.Set(robot.joystick.axis(PICKUP_AXIS));
-//		rightPickupMotor.Set(robot.joystick.axis(PICKUP_AXIS));
+	//	double rightPickupError =  rightPot.GetValue() - leftPot.GetValue() ;
+	//	double rightPickupOutput = (SmartDashboard::GetNumber(pickupPValue.n, pickupPValue.v)*rightPickupError);
+	//	rightPickupOutput = rightPickupOutput > 0.3 ? 0.3 : (rightPickupOutput < -0.3 ? -0.3 : rightPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
+	//	if (rightPickupOutput < .05 && rightPickupOutput > -.05){
+	//		rightPickupOutput = 0;
+	//	}
+	//
+	//
+	//	double leftPickupError =  leftPot.GetValue() - rightPot.GetValue() ;
+	//	double leftPickupOutput = (SmartDashboard::GetNumber(pickupPValue.n, pickupPValue.v)*leftPickupError);
+	//	leftPickupOutput = leftPickupOutput > 0.3 ? 0.3 : (leftPickupOutput < -0.3 ? -0.3 : leftPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
+	//	if (leftPickupOutput < .05 && leftPickupOutput > -.05){
+	//		leftPickupOutput = 0;
+	//	}
+
+//		leftPickupMotor.Set((robot.joystick.axis(PICKUP_AXIS)*.8) + leftPickupOutput);
+//		rightPickupMotor.Set((robot.joystick.axis(PICKUP_AXIS)*.8)+ rightPickupOutput);
 	}
 	else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT1))
 		setPickupHeight(pickupHeight1);
