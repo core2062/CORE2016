@@ -45,11 +45,11 @@ public:
 		CANTalon backLeft;
 		CANTalon frontRight;
 		CANTalon backRight;
-//		CANTalon leftPickupMotor;
-//		CANTalon rightPickupMotor;
-//		CANTalon rollerMotor;
-//		AnalogInput leftPot;
-//		AnalogInput rightPot;
+		CANTalon leftPickupMotor;
+		CANTalon rightPickupMotor;
+		CANTalon rollerMotor;
+		AnalogInput leftPot;
+		AnalogInput rightPot;
 		DigitalInput upperLeftLimit;
 		DigitalInput lowerLeftLimit;
 		DigitalInput upperRightLimit;
@@ -65,11 +65,11 @@ public:
 		backLeft(12),
 		frontRight(10),
 		backRight(11),
-//		leftPickupMotor(21),
-//		rightPickupMotor(22),
-//		rollerMotor(23),
-//		leftPot(1),
-//		rightPot(2),
+		leftPickupMotor(14),
+		rightPickupMotor(15),
+		rollerMotor(16),
+		leftPot(0),
+		rightPot(1),
 		upperLeftLimit(1),
 		lowerLeftLimit(2),
 		upperRightLimit(3),
@@ -93,9 +93,10 @@ public:
 
 
 			//start false to avoid error
-//			rightPickupMotor.SetSafetyEnabled(false);
-//			leftPickupMotor.SetSafetyEnabled(false);
-//			rollerMotor.SetSafetyEnabled(false);
+			rightPickupMotor.SetSafetyEnabled(false);
+			leftPickupMotor.SetSafetyEnabled(false);
+			rollerMotor.SetSafetyEnabled(false);
+
 			frontLeft.SetSafetyEnabled(false);
 			frontRight.SetSafetyEnabled(false);
 			backLeft.SetSafetyEnabled(false);
@@ -103,9 +104,11 @@ public:
 			frontRight.SetInverted(true);
 			backRight.SetInverted(true);
 
-//			rightPickupMotor.Set(0.0);
-//			leftPickupMotor.Set(0.0);
-//			rollerMotor.Set(0.0);
+
+
+			rightPickupMotor.Set(0.0);
+			leftPickupMotor.Set(0.0);
+			rollerMotor.Set(0.0);
 			frontLeft.Set(0.0);
 			frontRight.Set(0.0);
 			backLeft.Set(0.0);

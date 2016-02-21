@@ -46,7 +46,7 @@ void CORERobot::teleopInit(void){
 	outLog.appendLog("--------- Teleop Init---------");
 	outLog.startTime();
 //	outLog.Mode = Log::TELE;
-	joystick.register_combo(COMBO3, 0, 1);
+	joystick.register_combo(COMBO3, 0, 4);
 	joystick.register_combo(COMBO4, 0, 2);
 #if defined(USE_NAVX)
     if (!ahrs->IsCalibrating()) {

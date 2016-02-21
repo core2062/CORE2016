@@ -12,7 +12,7 @@
 //#define USE_NAVX
 //#define SHOW_MOTORS
 #define ETHER_DIRVE
-//#define SHOW_SENSORS
+#define SHOW_SENSORS
 //#define TANK_DRIVE
 //#define MECANUM_DRIVE
 //#define ULTIMATE_MODE
@@ -20,6 +20,7 @@
 #define PI 3.1415923565
 #define RADIANS(d) ((d*PI)/180.0)
 #define DEGREES(r) ((r*180.0)/PI)
+#define DEADBAND(v,a) ((v<a && v>-a)?0:v)
 
 #include <string>
 #include <array>
@@ -65,8 +66,7 @@ enum controllerInputs{
 	LIFT_LEVEL2,
 	SHOOTER_FIRE,
 	PICKUP_AXIS,
-	ROLLER_UP,
-	ROLLER_DOWN,
+	ROLLER_AXIS,
 
 	HYBRID_GOTO_SDXY,
 
@@ -206,7 +206,7 @@ public:
  const smartDB liftLevel2(std::string("Lift Level 2"), 12.0);
  const smartDB pickupPValue(std::string("Pickup P Mainly"), 0.0);
  const smartDB otherPickupP(std::string("Pickup P Sub loop"), 0.0);
- const smartDB pickupVoltThresh(std::string("Pickup Voltage Threshold"), 0.0);
+ const smartDB pickupCurrentThresh(std::string("Pickup Current Threshold"), 0.0);
 
 
  const std::vector<const smartDB *> sdPointers = {
@@ -238,7 +238,7 @@ public:
 		 &liftLevel2,
 		 &pickupPValue,
 		 &otherPickupP,
-		 &pickupVoltThresh
+		 &pickupCurrentThresh
  };
 
 

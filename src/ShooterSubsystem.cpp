@@ -11,7 +11,7 @@ std::string ShooterSubsystem::name(void){
 }
 
 void ShooterSubsystem::robotInit(void){
-	robot.joystick.register_button(SHOOTER_FIRE, 1, 2, JoystickCache::RISING);
+	robot.joystick.register_button(SHOOTER_FIRE, 1, 5, JoystickCache::RISING);
 	robot.outLog.appendLog("ShooterSubsystem: RobotInit Success");
 }
 void ShooterSubsystem::teleopInit(void){
