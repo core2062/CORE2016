@@ -9,9 +9,27 @@ double inline etherR(double fwd, double rcw, double a, double b){
 	return fwd-b*rcw + fwd*rcw*(b-a-1);
 }
 
+int DrivePickupSubsystem::leftPotValue(){
+	int base = SmartDashboard::GetNumber(leftMagPotBase.n,leftMagPotBase.v);
+	int max = SmartDashboard::GetNumber(magneticPotMax.n,magneticPotMax.v);
+	int raw = base<0?max-leftPot.GetValue():leftPot.GetValue();
+	base = fabs(base);
+
+	return raw<base?max+raw-base:raw-base;
+}
+int DrivePickupSubsystem::rightPotValue(){
+	int base = SmartDashboard::GetNumber(rightMagPotBase.n,rightMagPotBase.v);
+	int max = SmartDashboard::GetNumber(magneticPotMax.n,magneticPotMax.v);
+	int raw = base<0?max-rightPot.GetValue():rightPot.GetValue();
+	base = fabs(base);
+
+	return raw<base?max+raw-base:raw-base;
+}
+
 void DrivePickupSubsystem::setPickupHeight(smartDB height){
 
-	double rightPickupError =  rightPot.GetValue() - (4098-leftPot.GetValue()) ;
+	double rightPickupError =  rightPotValue() - leftPotValue() ;
+	SmartDashboard::PutNumber("Right Pickup Error", rightPickupError);
 	double rightPickupOutput = (SmartDashboard::GetNumber(pickupPValue.n, pickupPValue.v)*rightPickupError);
 	rightPickupOutput = rightPickupOutput > 0.3 ? 0.3 : (rightPickupOutput < -0.3 ? -0.3 : rightPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
 	if (rightPickupOutput < .05 && rightPickupOutput > -.05){
@@ -19,7 +37,8 @@ void DrivePickupSubsystem::setPickupHeight(smartDB height){
 	}
 
 
-	double leftPickupError =  (4098-leftPot.GetValue()) - rightPot.GetValue() ;
+	double leftPickupError =  leftPotValue() - rightPotValue();
+	SmartDashboard::PutNumber("Left Pickup Error", leftPickupError);
 	double leftPickupOutput = (SmartDashboard::GetNumber(pickupPValue.n, pickupPValue.v)*leftPickupError);
 	leftPickupOutput = leftPickupOutput > 0.3 ? 0.3 : (leftPickupOutput < -0.3 ? -0.3 : leftPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
 	if (leftPickupOutput < .05 && leftPickupOutput > -.05){
@@ -28,7 +47,8 @@ void DrivePickupSubsystem::setPickupHeight(smartDB height){
 
 
 
-	double otherPickupError =  (((4098-leftPot.GetValue()) + rightPot.GetValue()) / 2) - SmartDashboard::GetNumber(height.n, height.v);
+	double otherPickupError =  ((leftPotValue() + rightPotValue()) / 2) - SmartDashboard::GetNumber(height.n, height.v);
+	SmartDashboard::PutNumber("Main Pickup Error", otherPickupError);
 	double otherPickupOutput = (SmartDashboard::GetNumber(otherPickupP.n, otherPickupP.v)*otherPickupError);
 	otherPickupOutput = otherPickupOutput > 0.8 ? 0.8 : (otherPickupOutput < -0.8 ? -0.8 : otherPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
 	if (otherPickupOutput < .05 && otherPickupOutput > -.05){
@@ -37,6 +57,10 @@ void DrivePickupSubsystem::setPickupHeight(smartDB height){
 	leftPickupMotor.Set(otherPickupOutput + leftPickupOutput);
 	rightPickupMotor.Set(otherPickupOutput + rightPickupOutput);
 };
+void DrivePickupSubsystem::setPickupHeight(double height){
+	smartDB temp((std::string)"NULL",height);
+	setPickupHeight(temp);
+	}
 
 bool DrivePickupSubsystem::autoPickup(void){
 	if(rollerMotor.GetOutputCurrent() > SmartDashboard::GetNumber(pickupCurrentThresh.n, pickupCurrentThresh.v) || autoPickupFlag){
@@ -46,7 +70,7 @@ bool DrivePickupSubsystem::autoPickup(void){
 			autoPickupTimer.Start();
 		}
 		if(autoPickupTimer.Get() > 1.0){
-			if((((4098-leftPot.GetValue()) + rightPot.GetValue()) / 2) >= SmartDashboard::GetNumber(pickupHeight5.n, pickupHeight5.v)){ //pickup height & direction will have to be tuned
+			if(((leftPotValue() + rightPotValue()) / 2) >= SmartDashboard::GetNumber(pickupHeight5.n, pickupHeight5.v)){ //pickup height & direction will have to be tuned
 				robot.motorMap[LEFT_PICKUP]->Set(0.0);
 				robot.motorMap[RIGHT_PICKUP]->Set(0.0);
 				autoPickupFlag = false;
@@ -55,7 +79,7 @@ bool DrivePickupSubsystem::autoPickup(void){
 				return true;
 			} else {
 				robot.motorMap[ROLLER]->Set(0.0);
-				double rightPickupError =  rightPot.GetValue() - (4098-leftPot.GetValue()) ;
+				double rightPickupError =  rightPotValue() - leftPotValue() ;
 				double rightPickupOutput = (SmartDashboard::GetNumber(pickupPValue.n, pickupPValue.v)*rightPickupError);
 				rightPickupOutput = rightPickupOutput > 0.3 ? 0.3 : (rightPickupOutput < -0.3 ? -0.3 : rightPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
 				if (rightPickupOutput < .05 && rightPickupOutput > -.05){
@@ -63,7 +87,7 @@ bool DrivePickupSubsystem::autoPickup(void){
 				}
 
 
-				double leftPickupError =  (4098-leftPot.GetValue()) - rightPot.GetValue() ;
+				double leftPickupError =  leftPotValue() - rightPotValue() ;
 				double leftPickupOutput = (SmartDashboard::GetNumber(pickupPValue.n, pickupPValue.v)*leftPickupError);
 				leftPickupOutput = leftPickupOutput > 0.3 ? 0.3 : (leftPickupOutput < -0.3 ? -0.3 : leftPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
 				if (leftPickupOutput < .05 && leftPickupOutput > -.05){
@@ -72,7 +96,7 @@ bool DrivePickupSubsystem::autoPickup(void){
 
 
 
-				double otherPickupError =  (((4098-leftPot.GetValue()) + rightPot.GetValue()) / 2) - SmartDashboard::GetNumber(pickupHeight5.n, pickupHeight5.v);
+				double otherPickupError =  ((leftPotValue() + rightPotValue()) / 2) - SmartDashboard::GetNumber(pickupHeight5.n, pickupHeight5.v);
 				double otherPickupOutput = (SmartDashboard::GetNumber(otherPickupP.n, otherPickupP.v)*otherPickupError);
 				otherPickupOutput = otherPickupOutput > 0.8 ? 0.8 : (otherPickupOutput < -0.8 ? -0.8 : otherPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
 				if (otherPickupOutput < .05 && otherPickupOutput > -.05){
@@ -107,8 +131,9 @@ void DrivePickupSubsystem::teleopInit(void){
 	robot.joystick.register_axis(DRIVE_MAG2, 0, 3);
 	robot.joystick.register_axis(PICKUP_AXIS, 1, 1);
 	robot.joystick.register_button(DRIVE_SPEED, 0, 5);
-	robot.joystick.register_button(DRIVE_AUTO_PICKUP, 0, 6);
+	robot.joystick.register_button(DRIVE_AUTO_PICKUP, 0, 7);
 	robot.joystick.register_button(DRIVE_GOAL, 0 , 1);
+	robot.joystick.register_button(DRIVE_REVERSE, 0, 6, JoystickCache::RISING);
 	robot.joystick.register_button(DRIVE_PICKUP_HEIGHT1, 1, 1);
 	robot.joystick.register_button(DRIVE_PICKUP_HEIGHT2, 1, 2);
 	robot.joystick.register_button(DRIVE_PICKUP_HEIGHT3, 1, 3);
@@ -165,7 +190,12 @@ if (robot.joystick.combo(COMBO5)){
 //	robot.teleSeq->add(driveThing);
 }
 
-#if USE_NAVX
+if (robot.joystick.button(DRIVE_REVERSE)){
+	driveDirection *= -1;
+}
+
+
+#if defined(USE_NAVX)
 SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 #endif
 #ifdef SHOW_MOTORS
@@ -175,14 +205,16 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
   SmartDashboard::PutNumber(std::string("front left motor current"), robot.motorMap[FRONT_LEFT]->GetOutputCurrent());
 #endif
 #ifdef SHOW_SENSORS
-  SmartDashboard::PutNumber(std::string("Left Pot Value"), (4098-leftPot.GetValue()));
-  SmartDashboard::PutNumber(std::string("Right Pot Value"), rightPot.GetValue());
+  SmartDashboard::PutNumber("Left Pot Raw", leftPot.GetValue());
+  SmartDashboard::PutNumber("Right Pot Raw", rightPot.GetValue());
+  SmartDashboard::PutNumber(std::string("Left Pot Value"), leftPotValue());
+  SmartDashboard::PutNumber(std::string("Right Pot Value"), rightPotValue());
 #endif
 	if (!robot.isHybrid){
 
 
-  	SmartDashboard::PutNumber(leftPickupPos.n,(4098-leftPot.GetValue()));
-  	SmartDashboard::PutNumber(rightPickupPos.n,rightPot.GetValue());
+  	SmartDashboard::PutNumber(leftPickupPos.n,leftPotValue());
+  	SmartDashboard::PutNumber(rightPickupPos.n,rightPotValue());
 
 //	double pickup_val = (robot.joystick.button(DRIVE_PICKUP_IN))?PICKUP_SPEED:(robot.joystick.button(DRIVE_PICKUP_OUT))?-PICKUP_SPEED:0.0;
 
@@ -214,9 +246,9 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 	}
 	if (resetQ != 0){
 		if (resetQ == 3){
-#if USE_NAVX
-			robot.ahrs->ZeroYaw();
-				gyroPID.setPoint = imu->GetYaw();
+#if defined(USE_NAVX)
+		robot.ahrs->ZeroYaw();
+		gyroSet = robot.ahrs->GetYaw();
 #endif
 		}
 		resetQ--;
@@ -281,7 +313,7 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 	///////////////////////////////////////
 	///////// GYRO CALCULATIONS ///////////
 	///////////////////////////////////////
-#ifdef USE_NAVX
+#if defined(USE_NAVX)
 		double gyroRate = robot.ahrs->GetYaw();
 #else
 		double gyroRate = 0.0;
@@ -307,7 +339,8 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 //	if(autoPickupButton == true){
 //		if(vision->angleError(LEFT))
 //	}
-
+			drive_mag*=driveDirection;
+			drive_rot*=driveDirection;
 
 /////////////////////////////
 /////   Motor Outputs   /////
@@ -368,7 +401,7 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 
 //Pickup Height's buttons
 	if(DEADBAND(robot.joystick.axis(PICKUP_AXIS),.05) != 0){
-		double rightPickupError =  rightPot.GetValue() - (4098-leftPot.GetValue()) ;
+		double rightPickupError =  rightPotValue() - leftPotValue() ;
 		double rightPickupOutput = (SmartDashboard::GetNumber(pickupPValue.n, pickupPValue.v)*rightPickupError);
 		rightPickupOutput = rightPickupOutput > 0.3 ? 0.3 : (rightPickupOutput < -0.3 ? -0.3 : rightPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
 		if (rightPickupOutput < .05 && rightPickupOutput > -.05){
@@ -376,7 +409,7 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 		}
 
 
-		double leftPickupError =  (4098-leftPot.GetValue()) - rightPot.GetValue() ;
+		double leftPickupError =  leftPotValue() - rightPotValue() ;
 		double leftPickupOutput = (SmartDashboard::GetNumber(pickupPValue.n, pickupPValue.v)*leftPickupError);
 		leftPickupOutput = leftPickupOutput > 0.3 ? 0.3 : (leftPickupOutput < -0.3 ? -0.3 : leftPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
 		if (leftPickupOutput < .05 && leftPickupOutput > -.05){
@@ -400,6 +433,9 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 	}
 	else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT5))
 		setPickupHeight(pickupHeight5);
+	else{
+		setPickupHeight((leftPotValue() + rightPotValue()) / 2.0);
+	}
 
 
 

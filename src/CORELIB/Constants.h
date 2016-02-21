@@ -56,6 +56,7 @@ enum controllerInputs{
 	DRIVE_ROT,
 	DRIVE_SPEED,
 	DRIVE_GOAL,
+	DRIVE_REVERSE,
 	DRIVE_AUTO_PICKUP,
 	DRIVE_PICKUP_HEIGHT1,
 	DRIVE_PICKUP_HEIGHT2,
@@ -201,12 +202,17 @@ public:
  const smartDB pickupHeight5(std::string("Pickup Height 5"), 48.0);
  const smartDB leftPickupPos(std::string("Left Pickup Position"), 0.0);
  const smartDB rightPickupPos(std::string("Right Pickup Position"), 0.0);
- const smartDB pickupP(std::string("Pickup P"), 0.0);
  const smartDB liftLevel1(std::string("Lift Level 1"), 0.0);
  const smartDB liftLevel2(std::string("Lift Level 2"), 12.0);
- const smartDB pickupPValue(std::string("Pickup P Mainly"), 0.0);
- const smartDB otherPickupP(std::string("Pickup P Sub loop"), 0.0);
+ const smartDB pickupPValue(std::string("Pickup P Correction"), 0.0);
+ const smartDB otherPickupP(std::string("Pickup P Main Control"), 0.0);
  const smartDB pickupCurrentThresh(std::string("Pickup Current Threshold"), 0.0);
+ const smartDB pickupShootClearance(std::string("Pickup Safe Min"), 0.0);
+
+ const smartDB magneticPotMax(std::string("Pot Max"), 4098.0);
+ const smartDB leftMagPotBase(std::string("Left Pot Base"), 0.0);
+ const smartDB rightMagPotBase(std::string("Right Pot Base"), 0.0);
+
 
 
  const std::vector<const smartDB *> sdPointers = {
@@ -238,7 +244,10 @@ public:
 		 &liftLevel2,
 		 &pickupPValue,
 		 &otherPickupP,
-		 &pickupCurrentThresh
+		 &pickupCurrentThresh,
+		 &magneticPotMax,
+		 &leftMagPotBase,
+		 &rightMagPotBase
  };
 
 

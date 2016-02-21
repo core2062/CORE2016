@@ -41,15 +41,15 @@ public:
 	std::map<pneumatics, DoubleSolenoid*> pneumaticMap;
 
 
-#if defined(USE_NAVX)
+//#if defined(USE_NAVX)
 #if defined(ENABLE_AHRS)
-    AHRS *ahrs;
+//    AHRS *ahrs;
 #elif defined(ENABLE_IMU_ADVANCED)
         IMUAdvanced *ahrs;
 #elif defined(ENABLE_IMU) // ENABLE_IMU
         IMU *ahrs;
 #endif
-#endif
+//#endif
 
 	JoystickCache joystick;
 	Log outLog;
