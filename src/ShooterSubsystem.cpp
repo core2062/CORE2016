@@ -40,24 +40,24 @@ void ShooterSubsystem::teleop(void){
 		}*/
 
 
-		if (robot.joystick.button(SHOOTER_FIRE) && shooterTimer.Get() >=8.5){
+		if (robot.joystick.button(SHOOTER_FIRE) && shooterTimer.Get() >=4.5){
 			leftShooter.Set(true);
 			rightShooter.Set(true);
-			backShooter.Set(false);
-			exhaustShooter.Set(false);
+//			backShooter.Set(false);
+//			exhaustShooter.Set(false);
 			shooterTimer.Reset();
 		}
 	if (shooterTimer.Get() >= fireTime && shooterTimer.Get() <= fireTime+4.0){
 		leftShooter.Set(false);
 		rightShooter.Set(false);
-		backShooter.Set(true);
-		exhaustShooter.Set(false);
-	}else if (shooterTimer.Get() >= fireTime+4.0 && shooterTimer.Get() <= fireTime+5.0){
-		leftShooter.Set(false);
-		rightShooter.Set(false);
-		backShooter.Set(false);
-		exhaustShooter.Set(true);
-	}
+//		backShooter.Set(true);
+//		exhaustShooter.Set(false);
+	}//else if (shooterTimer.Get() >= fireTime+4.0 && shooterTimer.Get() <= fireTime+5.0){
+//		leftShooter.Set(false);
+//		rightShooter.Set(false);
+//		backShooter.Set(false);
+//		exhaustShooter.Set(true);
+//	}
 
 }
 

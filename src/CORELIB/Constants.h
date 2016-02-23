@@ -209,7 +209,7 @@ public:
  const smartDB pickupCurrentThresh(std::string("Pickup Current Threshold"), 0.0);
  const smartDB pickupShootClearance(std::string("Pickup Safe Min"), 0.0);
 
- const smartDB magneticPotMax(std::string("Pot Max"), 4098.0);
+ const smartDB magneticPotMax(std::string("Pot Max"), 5.0);
  const smartDB leftMagPotBase(std::string("Left Pot Base"), 0.0);
  const smartDB rightMagPotBase(std::string("Right Pot Base"), 0.0);
 

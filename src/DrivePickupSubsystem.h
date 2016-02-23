@@ -103,6 +103,7 @@ public:
 			backRight.SetSafetyEnabled(false);
 			frontRight.SetInverted(true);
 			backRight.SetInverted(true);
+			leftPickupMotor.SetInverted(true);
 
 
 
@@ -143,8 +144,8 @@ public:
 	void setPickupHeight(smartDB height);
 	void setPickupHeight(double height);
 	bool autoPickup(void);
-	int leftPotValue();
-	int rightPotValue();
+	double leftPotValue();
+	double rightPotValue();
 };
 
 
