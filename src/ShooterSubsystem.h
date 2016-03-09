@@ -37,12 +37,12 @@ public:
 	std::string name(void);
 	ShooterSubsystem(CORERobot& robot):
 		CORESubsystem(robot),
-//		rightShooter(1,2),
-//		leftShooter(3,4),
-		leftShooter(0),
-		rightShooter(1),
-		backShooter(2),
-		exhaustShooter(3),
+		rightShooter(1,2),
+		leftShooter(3,4),
+//		leftShooter(0),
+//		rightShooter(1),
+//		backShooter(2),
+//		exhaustShooter(3),
 		shooterTimer()
 
 		{

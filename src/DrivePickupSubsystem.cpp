@@ -28,26 +28,29 @@ double DrivePickupSubsystem::rightPotValue(){
 
 void DrivePickupSubsystem::setPickupHeight(smartDB height){
 
-	double rightPickupError =  rightPotValue() - leftPotValue() ;
-	SmartDashboard::PutNumber("Right Pickup Error", rightPickupError);
-	double rightPickupOutput = (SmartDashboard::GetNumber(pickupPValue.n, pickupPValue.v)*rightPickupError);
-	rightPickupOutput = rightPickupOutput > 0.3 ? 0.3 : (rightPickupOutput < -0.3 ? -0.3 : rightPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
-	if (rightPickupOutput < .05 && rightPickupOutput > -.05){
-		rightPickupOutput = 0;
-	}
-	SmartDashboard::PutNumber("Right Pickup Output", rightPickupOutput);
+//	double rightPickupError =  rightPotValue() - leftPotValue() ;
+//	SmartDashboard::PutNumber("Right Pickup Error", rightPickupError);
+//	double rightPickupOutput = (SmartDashboard::GetNumber(pickupPValue.n, pickupPValue.v)*rightPickupError);
+//	rightPickupOutput = rightPickupOutput > 0.3 ? 0.3 : (rightPickupOutput < -0.3 ? -0.3 : rightPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
+//	if (rightPickupOutput < .05 && rightPickupOutput > -.05){
+//		rightPickupOutput = 0;
+//	}
+//	SmartDashboard::PutNumber("Right Pickup Output", rightPickupOutput);
+//
+//	double leftPickupError =  leftPotValue() - rightPotValue();
+//	SmartDashboard::PutNumber("Left Pickup Error", leftPickupError);
+//	double leftPickupOutput = (SmartDashboard::GetNumber(pickupPValue.n, pickupPValue.v)*leftPickupError);
+//	leftPickupOutput = leftPickupOutput > 0.3 ? 0.3 : (leftPickupOutput < -0.3 ? -0.3 : leftPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
+//	if (leftPickupOutput < .05 && leftPickupOutput > -.05){
+//		leftPickupOutput = 0;
+//	}
+//	SmartDashboard::PutNumber("Left Pickup Output", rightPickupOutput);
+//	double otherPickupError =  ((leftPotValue() + rightPotValue()) / 2) - SmartDashboard::GetNumber(height.n, height.v);
+//	SmartDashboard::PutNumber("Main Pickup Error", otherPickupError);
+//	double otherPickupOutput = (SmartDashboard::GetNumber(otherPickupP.n, otherPickupP.v)*otherPickupError);
+//	otherPickupOutput = otherPickupOutput > 0.8 ? 0.8 : (otherPickupOutput < -0.8 ? -0.8 : otherPickupOutput);
 
-	double leftPickupError =  leftPotValue() - rightPotValue();
-	SmartDashboard::PutNumber("Left Pickup Error", leftPickupError);
-	double leftPickupOutput = (SmartDashboard::GetNumber(pickupPValue.n, pickupPValue.v)*leftPickupError);
-	leftPickupOutput = leftPickupOutput > 0.3 ? 0.3 : (leftPickupOutput < -0.3 ? -0.3 : leftPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
-	if (leftPickupOutput < .05 && leftPickupOutput > -.05){
-		leftPickupOutput = 0;
-	}
-	SmartDashboard::PutNumber("Left Pickup Output", rightPickupOutput);
-
-
-	double otherPickupError =  ((leftPotValue() + rightPotValue()) / 2) - SmartDashboard::GetNumber(height.n, height.v);
+	double otherPickupError =  (rightPotValue()) - SmartDashboard::GetNumber(height.n, height.v);
 	SmartDashboard::PutNumber("Main Pickup Error", otherPickupError);
 	double otherPickupOutput = (SmartDashboard::GetNumber(otherPickupP.n, otherPickupP.v)*otherPickupError);
 	otherPickupOutput = otherPickupOutput > 0.8 ? 0.8 : (otherPickupOutput < -0.8 ? -0.8 : otherPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
@@ -55,8 +58,33 @@ void DrivePickupSubsystem::setPickupHeight(smartDB height){
 		otherPickupOutput = 0;
 	}
 	SmartDashboard::PutNumber("Main Pickup Output", otherPickupOutput);
-	leftPickupMotor.Set(DEADBAND(otherPickupOutput + leftPickupOutput,.05));
-	rightPickupMotor.Set(DEADBAND(otherPickupOutput + rightPickupOutput,.05));
+	leftPickupMotor.Set(DEADBAND(otherPickupOutput, .05));
+	rightPickupMotor.Set(DEADBAND(otherPickupOutput, .05));
+};
+void DrivePickupSubsystem::setPickupHeight(smartDB height, smartDB heightL){
+
+	double rightPickupError =  rightPotValue() - SmartDashboard::GetNumber(height.n, height.v) ;
+	SmartDashboard::PutNumber("Right Pickup Error", rightPickupError);
+	double rightPickupOutput = (SmartDashboard::GetNumber(pickupPValue.n, pickupPValue.v)*rightPickupError);
+	rightPickupOutput = rightPickupOutput > 0.8 ? 0.8 : (rightPickupOutput < -0.8 ? -0.8 : rightPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
+	if (rightPickupOutput < .05 && rightPickupOutput > -.05){
+		rightPickupOutput = 0;
+	}
+	SmartDashboard::PutNumber("Right Pickup Output", rightPickupOutput);
+
+	double leftPickupError =  leftPotValue() - SmartDashboard::GetNumber(heightL.n, heightL.v);
+	SmartDashboard::PutNumber("Left Pickup Error", leftPickupError);
+	double leftPickupOutput = (SmartDashboard::GetNumber(pickupPValue.n, pickupPValue.v)*leftPickupError);
+	leftPickupOutput = leftPickupOutput > 0.8 ? 0.8 : (leftPickupOutput < -0.8 ? -0.8 : leftPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
+	if (leftPickupOutput < .05 && leftPickupOutput > -.05){
+		leftPickupOutput = 0;
+	}
+	SmartDashboard::PutNumber("Left Pickup Output", rightPickupOutput);
+
+
+
+	leftPickupMotor.Set(DEADBAND(leftPickupOutput,.05));
+	rightPickupMotor.Set(DEADBAND(rightPickupOutput,.05));
 };
 void DrivePickupSubsystem::setPickupHeight(double height){
 	smartDB temp((std::string)"NULL",height);
@@ -208,6 +236,8 @@ if (robot.joystick.button(DRIVE_REVERSE)){
 #ifdef SHOW_SENSORS
   SmartDashboard::PutNumber("Left Pot Raw", leftPot.GetVoltage());
   SmartDashboard::PutNumber("Right Pot Raw", rightPot.GetVoltage());
+  SmartDashboard::PutNumber("Jumper", jumper.GetVoltage());
+
   SmartDashboard::PutNumber(std::string("Left Pot Value"), leftPotValue());
   SmartDashboard::PutNumber(std::string("Right Pot Value"), rightPotValue());
 #endif
@@ -351,6 +381,8 @@ if (robot.joystick.button(DRIVE_REVERSE)){
 	double a = SmartDashboard::GetNumber( etherA.n,  etherA.v);
 	double b = SmartDashboard::GetNumber( etherB.n,  etherB.v);
 
+	drive_mag = drive_mag*drive_mag*drive_mag;
+
 	std::string choice = * (std::string*) driveChooser.GetSelected();
 
 	if (choice == "ether"){
@@ -402,42 +434,61 @@ if (robot.joystick.button(DRIVE_REVERSE)){
 
 //Pickup Height's buttons
 	if(DEADBAND(robot.joystick.axis(PICKUP_AXIS),.05) != 0){
-		double rightPickupError =  rightPotValue() - leftPotValue() ;
-		SmartDashboard::PutNumber("Right Pickup Error", rightPickupError);
-		double rightPickupOutput = (SmartDashboard::GetNumber(pickupPValue.n, pickupPValue.v)*rightPickupError);
-		rightPickupOutput = rightPickupOutput > 0.3 ? 0.3 : (rightPickupOutput < -0.3 ? -0.3 : rightPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
-		if (rightPickupOutput < .05 && rightPickupOutput > -.05){
-			rightPickupOutput = 0;
-		}
-		SmartDashboard::PutNumber("Right Pickup Output", rightPickupOutput);
-
-		double leftPickupError =  leftPotValue() - rightPotValue() ;
-		SmartDashboard::PutNumber("Left Pickup Error", leftPickupError);
-		double leftPickupOutput = (SmartDashboard::GetNumber(pickupPValue.n, pickupPValue.v)*leftPickupError);
-		leftPickupOutput = leftPickupOutput > 0.3 ? 0.3 : (leftPickupOutput < -0.3 ? -0.3 : leftPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
-		if (leftPickupOutput < .05 && leftPickupOutput > -.05){
-			leftPickupOutput = 0;
-		}
-		SmartDashboard::PutNumber("Left Pickup Output", leftPickupOutput);
-		leftPickupMotor.Set((robot.joystick.axis(PICKUP_AXIS)*-.8) + leftPickupOutput);
-		rightPickupMotor.Set((robot.joystick.axis(PICKUP_AXIS)*-.8)+ rightPickupOutput);
+//		double rightPickupError =  rightPotValue() - leftPotValue() ;
+//		SmartDashboard::PutNumber("Right Pickup Error", rightPickupError);
+//		double rightPickupOutput = (SmartDashboard::GetNumber(pickupPValue.n, pickupPValue.v)*rightPickupError);
+//		rightPickupOutput = rightPickupOutput > 0.3 ? 0.3 : (rightPickupOutput < -0.3 ? -0.3 : rightPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
+//		if (rightPickupOutput < .05 && rightPickupOutput > -.05){
+//			rightPickupOutput = 0;
+//		}
+//		SmartDashboard::PutNumber("Right Pickup Output", rightPickupOutput);
+//
+//		double leftPickupError =  leftPotValue() - rightPotValue() ;
+//		SmartDashboard::PutNumber("Left Pickup Error", leftPickupError);
+//		double leftPickupOutput = (SmartDashboard::GetNumber(pickupPValue.n, pickupPValue.v)*leftPickupError);
+//		leftPickupOutput = leftPickupOutput > 0.3 ? 0.3 : (leftPickupOutput < -0.3 ? -0.3 : leftPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
+//		if (leftPickupOutput < .05 && leftPickupOutput > -.05){
+//			leftPickupOutput = 0;
+//		}
+//		SmartDashboard::PutNumber("Left Pickup Output", leftPickupOutput);
+		leftPickupMotor.Set((robot.joystick.axis(PICKUP_AXIS)*-.8));
+		rightPickupMotor.Set((robot.joystick.axis(PICKUP_AXIS)*-.8));
 	}
 	else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT1))
-		setPickupHeight(pickupHeight1);
+		if(SmartDashboard::GetNumber(pickupHeight1L.n, pickupHeight1L.v) == -1)
+			setPickupHeight(pickupHeight1);
+		else
+			setPickupHeight(pickupHeight1,pickupHeight1L);
 	else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT2)){
 		rollerMotor.Set(1.0);
-		setPickupHeight(pickupHeight2);
+		if(SmartDashboard::GetNumber(pickupHeight2L.n, pickupHeight2L.v) == -1)
+			setPickupHeight(pickupHeight2);
+		else
+			setPickupHeight(pickupHeight2,pickupHeight2L);
 	}
-	else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT3))
-		setPickupHeight(pickupHeight3);
+	else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT3)){
+		double setP = SmartDashboard::GetNumber(otherPickupP.n,otherPickupP.v);
+		SmartDashboard::PutNumber(otherPickupP.n, SmartDashboard::GetNumber(safePickupP.n,safePickupP.v));
+		if(SmartDashboard::GetNumber(pickupHeight3L.n, pickupHeight3L.v) == -1)
+			setPickupHeight(pickupHeight3);
+		else
+			setPickupHeight(pickupHeight3,pickupHeight3L);
+		SmartDashboard::PutNumber(otherPickupP.n, setP);
+	}
 	else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT4)){
-		setPickupHeight(pickupHeight4);
+		if(SmartDashboard::GetNumber(pickupHeight4L.n, pickupHeight4L.v) == -1)
+			setPickupHeight(pickupHeight4);
+		else
+			setPickupHeight(pickupHeight4,pickupHeight4L);
 		rollerMotor.Set(-.5);
 	}
 	else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT5))
-		setPickupHeight(pickupHeight5);
+		if(SmartDashboard::GetNumber(pickupHeight5L.n, pickupHeight5L.v) == -1)
+			setPickupHeight(pickupHeight5);
+		else
+			setPickupHeight(pickupHeight5,pickupHeight5L);
 	else{
-		setPickupHeight((leftPotValue() + rightPotValue()) / 2.0);
+		setPickupHeight(rightPotValue());
 	}
 
 

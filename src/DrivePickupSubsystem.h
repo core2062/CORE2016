@@ -50,6 +50,7 @@ public:
 		CANTalon rollerMotor;
 		AnalogInput leftPot;
 		AnalogInput rightPot;
+		AnalogInput jumper;
 		DigitalInput upperLeftLimit;
 		DigitalInput lowerLeftLimit;
 		DigitalInput upperRightLimit;
@@ -70,6 +71,7 @@ public:
 		rollerMotor(16),
 		leftPot(0),
 		rightPot(1),
+		jumper(2),
 		upperLeftLimit(1),
 		lowerLeftLimit(2),
 		upperRightLimit(3),
@@ -142,6 +144,7 @@ public:
 	void setPickupMotor(double speed);
 	void setPickupSpeed(double speed);
 	void setPickupHeight(smartDB height);
+	void setPickupHeight(smartDB height, smartDB heightL);
 	void setPickupHeight(double height);
 	bool autoPickup(void);
 	double leftPotValue();

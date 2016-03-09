@@ -195,17 +195,23 @@ public:
  const smartDB secondaryMedium(std::string("Secondary Medium Distance"), 5.0);
  const smartDB longDistance(std::string("Long Distance"), 5.0);
  const smartDB secondaryLong(std::string("Secondary Long Distance"), 5.0);
- const smartDB pickupHeight1(std::string("Pickup Height 1"), 0.0);
- const smartDB pickupHeight2(std::string("Pickup Height 2"), 12.0);
- const smartDB pickupHeight3(std::string("Pickup Height 3"), 24.0);
- const smartDB pickupHeight4(std::string("Pickup Height 4"), 36.0);
- const smartDB pickupHeight5(std::string("Pickup Height 5"), 48.0);
+ const smartDB pickupHeight1(std::string("Pickup Height 1"), 2.5);
+ const smartDB pickupHeight2(std::string("Pickup Height 2"), .9);
+ const smartDB pickupHeight3(std::string("Pickup Height 3"), 3.43);
+ const smartDB pickupHeight4(std::string("Pickup Height 4"), 2.5);
+ const smartDB pickupHeight5(std::string("Pickup Height 5"), 2.5);
+ const smartDB pickupHeight1L(std::string("Pickup Height 1L"), -1.0);
+ const smartDB pickupHeight2L(std::string("Pickup Height 2L"), -1.0);
+ const smartDB pickupHeight3L(std::string("Pickup Height 3L"), -1.0);
+ const smartDB pickupHeight4L(std::string("Pickup Height 4L"), -1.0);
+ const smartDB pickupHeight5L(std::string("Pickup Height 5L"), -1.0);
  const smartDB leftPickupPos(std::string("Left Pickup Position"), 0.0);
  const smartDB rightPickupPos(std::string("Right Pickup Position"), 0.0);
  const smartDB liftLevel1(std::string("Lift Level 1"), 0.0);
  const smartDB liftLevel2(std::string("Lift Level 2"), 12.0);
  const smartDB pickupPValue(std::string("Pickup P Correction"), 0.0);
- const smartDB otherPickupP(std::string("Pickup P Main Control"), 0.0);
+ const smartDB otherPickupP(std::string("Pickup P Main Control"), -2.0);
+ const smartDB safePickupP(std::string("Safe Pickup P"), -1.0);
  const smartDB pickupCurrentThresh(std::string("Pickup Current Threshold"), 0.0);
  const smartDB pickupShootClearance(std::string("Pickup Safe Min"), 0.0);
 
@@ -244,6 +250,7 @@ public:
 		 &liftLevel2,
 		 &pickupPValue,
 		 &otherPickupP,
+		 &safePickupP,
 		 &pickupCurrentThresh,
 		 &magneticPotMax,
 		 &leftMagPotBase,
