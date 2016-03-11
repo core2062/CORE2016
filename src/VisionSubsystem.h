@@ -60,7 +60,7 @@ public:
 
 		{
 		try{
-			visionTable = NetworkTable::GetTable("Vision");
+			visionTable = NetworkTable::GetTable("vision");
 		}catch(...){
 			std::cout << "ERROR: Failed to pull network tables!" << std::endl;
 			run = false;

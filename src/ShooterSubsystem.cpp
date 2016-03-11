@@ -16,6 +16,7 @@ void ShooterSubsystem::robotInit(void){
 }
 void ShooterSubsystem::teleopInit(void){
 	robot.outLog.appendLog("ShooterSubsystem: TeleopInit Success");
+	shooterFlag = false;
 	shooterTimer.Reset();
 	shooterTimer.Start();
 
@@ -23,19 +24,21 @@ void ShooterSubsystem::teleopInit(void){
 
 void ShooterSubsystem::teleop(void){
 
-	double fireTime = SmartDashboard::GetNumber(shooterReturn.n, shooterReturn.v);
+//	double fireTime = SmartDashboard::GetNumber(shooterReturn.n, shooterReturn.v);
 	if (!robot.isHybrid){
-		if (robot.joystick.button(SHOOTER_FIRE)
+		if (robot.joystick.button(SHOOTER_FIRE) && robot.analogSensorMap[RIGHT_POT]->GetVoltage() < SmartDashboard::GetNumber(pickupHeight1.n,pickupHeight1.v)
 		&& (shooterTimer.Get() >= SmartDashboard::GetNumber(shooterReturn.n, shooterReturn.v) + 3.0)){
+			shooterFlag = true;
 			leftShooter.Set(DoubleSolenoid::kForward);
 			rightShooter.Set(DoubleSolenoid::kForward);
+			shooterTimer.Reset();
 		}
 		if (shooterTimer.Get() >= (SmartDashboard::GetNumber(shooterReturn.n, shooterReturn.v))
-		&& (shooterTimer.Get() <= (SmartDashboard::GetNumber(shooterReturn.n, shooterReturn.v) + 2.5))){
+		&& (shooterTimer.Get() <= (SmartDashboard::GetNumber(shooterReturn.n, shooterReturn.v) + 2.5)) && shooterFlag){
 			leftShooter.Set(DoubleSolenoid::kReverse);
 			rightShooter.Set(DoubleSolenoid::kReverse);
 		}
-		if(shooterTimer.Get() > (SmartDashboard::GetNumber(shooterReturn.n, shooterReturn.v) + 2.5)){
+		if(shooterTimer.Get() > (SmartDashboard::GetNumber(shooterReturn.n, shooterReturn.v) + 2.5) && shooterFlag){
 			leftShooter.Set(DoubleSolenoid::kOff);
 			rightShooter.Set(DoubleSolenoid::kOff);
 		}

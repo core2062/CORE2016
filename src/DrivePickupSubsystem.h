@@ -29,6 +29,9 @@ class DrivePickupSubsystem: public CORESubsystem{
     	Timer autoPickupTimer;
     	int driveDirection = 1;
 		SendableChooser driveChooser;
+		double oldGyroYaw = 0.0;
+		Timer gyroITimer;
+		double gyroIntegral = 0.0;
 
 public:
 
@@ -75,7 +78,8 @@ public:
 		upperLeftLimit(1),
 		lowerLeftLimit(2),
 		upperRightLimit(3),
-		lowerRightLimit(4)
+		lowerRightLimit(4),
+		gyroITimer()
 
 		{
 
@@ -86,8 +90,8 @@ public:
 //		robot.link(RIGHT_PICKUP, &rightPickupMotor);
 //		robot.link(LEFT_PICKUP, &leftPickupMotor);
 //		robot.link(ROLLER, &rollerMotor);
-//		robot.link(LEFT_POT, &leftPot);
-//		robot.link(RIGHT_POT, &rightPot);
+		robot.link(LEFT_POT, &leftPot);
+		robot.link(RIGHT_POT, &rightPot);
 		robot.link(PICKUP_UPPER_LEFT_LIMIT, &upperLeftLimit);
 		robot.link(PICKUP_LOWER_LEFT_LIMIT, &lowerLeftLimit);
 		robot.link(PICKUP_UPPER_RIGHT_LIMIT, &upperRightLimit);

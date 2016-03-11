@@ -212,7 +212,7 @@ void DrivePickupSubsystem::teleop(void){
 
 
 if (robot.joystick.combo(COMBO5)){
-//	robot.ahrs->ZeroYaw();
+	robot.ahrs->ZeroYaw();
 	robot.outLog.appendLog("Manual Reset Gyro Yaw");
 	std::cout << "WARNING: Manual Reset Gyro Yaw" << std::endl;
 //	DriveAction driveThing(robot, 5, 1.0);
@@ -225,7 +225,7 @@ if (robot.joystick.button(DRIVE_REVERSE)){
 
 
 //#if defined(USE_NAVX)
-//SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
+SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 //#endif
 #ifdef SHOW_MOTORS
   SmartDashboard::PutNumber(std::string("back right motor current"), robot.motorMap[BACK_RIGHT]->GetOutputCurrent());
@@ -237,6 +237,8 @@ if (robot.joystick.button(DRIVE_REVERSE)){
   SmartDashboard::PutNumber("Left Pot Raw", leftPot.GetVoltage());
   SmartDashboard::PutNumber("Right Pot Raw", rightPot.GetVoltage());
   SmartDashboard::PutNumber("Jumper", jumper.GetVoltage());
+
+  SmartDashboard::PutNumber("Gyro Yaw",robot.ahrs->GetYaw());
 
   SmartDashboard::PutNumber(std::string("Left Pot Value"), leftPotValue());
   SmartDashboard::PutNumber(std::string("Right Pot Value"), rightPotValue());
@@ -273,12 +275,13 @@ if (robot.joystick.button(DRIVE_REVERSE)){
   	rollerMotor.Set(DEADBAND(robot.joystick.axis(ROLLER_AXIS),.05));
 
 	if ((drive_rot == 0) && (oldRot != 0.0)){
-		resetQ = 6;
+		resetQ = 12;
 	}
 	if (resetQ != 0){
 		if (resetQ == 3){
 #if defined(USE_NAVX)
 		robot.ahrs->ZeroYaw();
+//		std::cout << "WARNING: NavX Zeroed" << std::endl;
 		gyroSet = robot.ahrs->GetYaw();
 #endif
 		}
@@ -319,9 +322,14 @@ if (robot.joystick.button(DRIVE_REVERSE)){
 
 
 		}else if (robot.joystick.button(DRIVE_GOAL)){
+			if(oldGoalX!=goalX){
+				oldGyroYaw = robot.ahrs->GetYaw();
+				gyroIntegral = 0.0;
+
+			}
 
 			if (goalX == -1){
-				drive_rot = (oldGoalX == -1)?NORMAL_SPEED:0.0;
+//				drive_rot = (oldGoalX == -1)?NORMAL_SPEED:0.0;
 			}else if (std::fabs(goalX-VISION_WIDTH/2.0) > VISION_WIDTH/2.0){
 				if (goalX>VISION_WIDTH/2.0){
 					drive_rot = -NORMAL_SPEED;
@@ -329,36 +337,41 @@ if (robot.joystick.button(DRIVE_REVERSE)){
 					drive_rot = NORMAL_SPEED;
 				}
 			}else{
-				gyroSet  = ((goalX-(VISION_WIDTH/2.0))/(VISION_WIDTH/2.0))*(VISION_H_FOV/2.0);
+				gyroSet  = oldGyroYaw+((goalX-(VISION_WIDTH/2.0))/(VISION_WIDTH/2.0))*(VISION_H_FOV/2.0);
+				SmartDashboard::PutNumber("Gyro Set", gyroSet);
 			}
+			double gyroRate = robot.ahrs->GetYaw();
+				//Gyro PID
+				if((drive_rot==0.0 && resetQ == 0 && !SmartDashboard::GetBoolean("disableGyro",false))){
+					double gyroError =  gyroSet - gyroRate;
+//					double time = gyroITimer.Get();
 
+					gyroIntegral += gyroError;
+		//			SmartDashboard::PutNumber("Gyro PID Error", gyroPID.mistake);
+					double gyroOutput = 0.0;
+					if(fabs(gyroError)>2){
+						gyroOutput = ((SmartDashboard::GetNumber( rotationPValue.n,  rotationPValue.v)*gyroError) + (SmartDashboard::GetNumber( rotationIValue.n,  rotationIValue.v)*gyroIntegral));
+					}else{
+						gyroOutput = ((SmartDashboard::GetNumber( rotationClosePValue.n,  rotationClosePValue.v)*gyroError) + (SmartDashboard::GetNumber( rotationCloseIValue.n,  rotationCloseIValue.v)*gyroIntegral));
+					}
+//					double gyroOutput = ((SmartDashboard::GetNumber( rotationPValue.n,  rotationPValue.v)*gyroError) + (SmartDashboard::GetNumber( rotationIValue.n,  rotationIValue.v)*gyroIntegral));
+		//			SmartDashboard::PutNumber("Gyro PID Out before", gyroOutput);
+					gyroOutput = gyroOutput > 1.0 ? 1.0 : (gyroOutput < -1.0 ? -1.0 : gyroOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
+					drive_rot = gyroOutput;
+				}
 
 
 		}
 	}
 	oldBallX = ballX;
 	oldGoalX = goalX;
-
+	gyroITimer.Reset();
 
 
 	///////////////////////////////////////
 	///////// GYRO CALCULATIONS ///////////
 	///////////////////////////////////////
-#if defined(USE_NAVX)
-		double gyroRate = robot.ahrs->GetYaw();
-#else
-		double gyroRate = 0.0;
-#endif
-		//Gyro PID
-		if((drive_rot==0.0 && resetQ == 0 && !SmartDashboard::GetBoolean("disableGyro",false))){
-			double gyroError =  gyroSet - gyroRate;
-//			SmartDashboard::PutNumber("Gyro PID Error", gyroPID.mistake);
 
-			double gyroOutput = (SmartDashboard::GetNumber( rotationPValue.n,  rotationPValue.v)*gyroError);
-//			SmartDashboard::PutNumber("Gyro PID Out before", gyroOutput);
-			gyroOutput = gyroOutput > 1.0 ? 1.0 : (gyroOutput < -1.0 ? -1.0 : gyroOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
-			drive_rot = gyroOutput;
-		}
 			if (drive_rot < .05 && drive_rot > -.05){
 				drive_rot = 0;
 			}
@@ -381,7 +394,7 @@ if (robot.joystick.button(DRIVE_REVERSE)){
 	double a = SmartDashboard::GetNumber( etherA.n,  etherA.v);
 	double b = SmartDashboard::GetNumber( etherB.n,  etherB.v);
 
-	drive_mag = drive_mag*drive_mag*drive_mag;
+//	drive_mag = drive_mag*drive_mag*drive_mag;
 
 	std::string choice = * (std::string*) driveChooser.GetSelected();
 
@@ -451,8 +464,10 @@ if (robot.joystick.button(DRIVE_REVERSE)){
 //			leftPickupOutput = 0;
 //		}
 //		SmartDashboard::PutNumber("Left Pickup Output", leftPickupOutput);
-		leftPickupMotor.Set((robot.joystick.axis(PICKUP_AXIS)*-.8));
-		rightPickupMotor.Set((robot.joystick.axis(PICKUP_AXIS)*-.8));
+		double pickupSet = (robot.joystick.axis(PICKUP_AXIS)*-.8);
+//		pickupSet = (pickupSet<0 && rightPot.GetVoltage() < SmartDashboard::GetNumber(pickupHeight3.n,pickupHeight3.v))?pickupSet:0.0;
+		leftPickupMotor.Set(pickupSet);
+		rightPickupMotor.Set(pickupSet);
 	}
 	else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT1))
 		if(SmartDashboard::GetNumber(pickupHeight1L.n, pickupHeight1L.v) == -1)

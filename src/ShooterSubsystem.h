@@ -19,15 +19,16 @@ using namespace CORE;
 
 class ShooterSubsystem: public CORESubsystem{
 
-//	DoubleSolenoid rightShooter;
-//	DoubleSolenoid leftShooter;
+	DoubleSolenoid rightShooter;
+	DoubleSolenoid leftShooter;
 
-	Solenoid leftShooter;
-	Solenoid rightShooter;
-	Solenoid backShooter;
-	Solenoid exhaustShooter;
+//	Solenoid leftShooter;
+//	Solenoid rightShooter;
+//	Solenoid backShooter;
+//	Solenoid exhaustShooter;
 	Timer shooterTimer;
 
+	bool shooterFlag = false;
 public:
 
 		CANSpeedController::ControlMode mode = CANSpeedController::kPercentVbus;
@@ -37,8 +38,8 @@ public:
 	std::string name(void);
 	ShooterSubsystem(CORERobot& robot):
 		CORESubsystem(robot),
-		rightShooter(1,2),
-		leftShooter(3,4),
+		rightShooter(0,1),
+		leftShooter(2,3),
 //		leftShooter(0),
 //		rightShooter(1),
 //		backShooter(2),
@@ -46,12 +47,12 @@ public:
 		shooterTimer()
 
 		{
-			leftShooter.Set(false);
-			rightShooter.Set(false);
-			backShooter.Set(false);
-			exhaustShooter.Set(false);
-//			leftShooter.Set(DoubleSolenoid::kReverse);
-//			rightShooter.Set(DoubleSolenoid::kReverse);
+//			leftShooter.Set(false);
+//			rightShooter.Set(false);
+//			backShooter.Set(false);
+//			exhaustShooter.Set(false);
+			leftShooter.Set(DoubleSolenoid::kOff);
+			rightShooter.Set(DoubleSolenoid::kOff);
 //			robot.link(SHOOTER_LEFT_CYLINDER, &leftShooter);
 //			robot.link(SHOOTER_RIGHT_CYLINDER, &rightShooter);
 		}

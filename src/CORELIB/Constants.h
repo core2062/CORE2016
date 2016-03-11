@@ -9,7 +9,7 @@
 #ifndef SRC_CORELIB_CONSTANTS_H_
 #define SRC_CORELIB_CONSTANTS_H_
 
-//#define USE_NAVX
+#define USE_NAVX
 //#define SHOW_MOTORS
 #define ETHER_DIRVE
 #define SHOW_SENSORS
@@ -176,7 +176,10 @@ public:
 };
 */
 
- const smartDB rotationPValue(std::string("Rotation P"), .05);
+ const smartDB rotationPValue(std::string("Rotation P"), 0.15);
+ const smartDB rotationIValue(std::string("Rotation I"), 0.025);
+ const smartDB rotationClosePValue(std::string("Rotation Close P"), 0.25);
+ const smartDB rotationCloseIValue(std::string("Rotation Close I"), 0.1);
  const smartDB etherA(std::string("Ether A"), 1.0);
  const smartDB etherB(std::string("Ether B"), 0.5);
  const smartDB blueTowerCompass(std::string("Blue Tower Compass"), 0.0);
@@ -223,6 +226,9 @@ public:
 
  const std::vector<const smartDB *> sdPointers = {
 		 &rotationPValue,
+		 &rotationIValue,
+		 &rotationClosePValue,
+		 &rotationCloseIValue,
 		 &etherA,
 		 &etherB,
 		 &blueTowerCompass,

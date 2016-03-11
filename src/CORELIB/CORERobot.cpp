@@ -28,8 +28,9 @@ void CORERobot::robotInit(void){
 #if defined(USE_NAVX)
 	try {
 		ahrs = new AHRS(SerialPort::Port::kMXP);
+		std::cout <<"WARNING: NAVX INIT" << std::endl;
 	} catch (std::exception ex ) {
-		std::string err_string = "Error instantiating navX-MXP:  ";
+		std::string err_string = "ERROR: instantiating navX-MXP:  ";
 		err_string += ex.what();
 		DriverStation::ReportError(err_string.c_str());
 	}
