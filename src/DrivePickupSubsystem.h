@@ -30,7 +30,7 @@ class DrivePickupSubsystem: public CORESubsystem{
     	int driveDirection = 1;
 		SendableChooser driveChooser;
 		double oldGyroYaw = 0.0;
-		Timer gyroITimer;
+		//Timer gyroITimer;
 		double gyroIntegral = 0.0;
 
 public:
@@ -78,8 +78,8 @@ public:
 		upperLeftLimit(1),
 		lowerLeftLimit(2),
 		upperRightLimit(3),
-		lowerRightLimit(4),
-		gyroITimer()
+		lowerRightLimit(4)
+		//gyroITimer()
 
 		{
 

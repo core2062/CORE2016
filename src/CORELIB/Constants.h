@@ -54,8 +54,8 @@ enum controllerInputs{
 	DRIVE_MAG,
 	DRIVE_MAG2,
 	DRIVE_ROT,
-	DRIVE_LSPEED,
-	DRIVE_SPEED,
+	DRIVE_MAG_SPEED,
+	DRIVE_ROT_SPEED,
 	DRIVE_GOAL,
 	DRIVE_REVERSE,
 	DRIVE_AUTO_PICKUP,
@@ -186,7 +186,7 @@ public:
  const smartDB blueTowerCompass(std::string("Blue Tower Compass"), 0.0);
  const smartDB compass(std::string("NavX Compass"), 0.0);
  const smartDB shooterReturn(std::string("Shooter Return Time"), .5);
- const smartDB quickTurn(std::string("Quick Turn Speed"), .5);
+ const smartDB quickTurn(std::string("Quick Turn Speed"), .75);
 
  const smartDB testTargetX(std::string("Coordinate Target X"), 0.0);
  const smartDB testTargetY(std::string("Coordinate Target Y"), 0.0);

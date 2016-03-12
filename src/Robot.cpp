@@ -60,6 +60,7 @@ public:
 		autoChooser.AddObject("Obstacle 3", new std::string("Obstacle3"));
 		autoChooser.AddObject("Obstacle 4", new std::string("Obstacle4"));
 		autoChooser.AddObject("Obstacle 5", new std::string("Obstacle5"));
+		autoChooser.AddObject("Drop the Ball", new std::string("DropTheBall"));
 		SmartDashboard::PutData("auto-choose", &autoChooser);
 	}
 
@@ -79,9 +80,10 @@ public:
 				if(choice=="Lowbar"){
 			//		getTicks(SmartDashboard::GetNumber(secondaryLong.n,secondaryLong.v));
 
-					autoControl.add( new DriveAction(robot, toEnc(95.75), NORMAL_SPEED));
+					//autoControl.add( new DriveAction(robot, toEnc(95.75), NORMAL_SPEED));
 					autoControl.add( new DriveUntillSettleAction(robot, NORMAL_SPEED));
 					autoControl.add( new TurnWithGyroAction(robot, 45.0));
+					autoControl.add( new GoalAlign(robot, vision));
 					autoControl.add( new ShootAction(robot));
 
 				}
@@ -89,17 +91,20 @@ public:
 
 					//getTicks(SmartDashboard::GetNumber(secondaryMedium.n,secondaryMedium.v));
 
-					autoControl.add( new DriveAction(robot, toEnc(47.875), NORMAL_SPEED));
+					//autoControl.add( new DriveAction(robot, toEnc(95.75), NORMAL_SPEED));
 					autoControl.add( new DriveUntillSettleAction(robot, NORMAL_SPEED));
 					autoControl.add( new TurnWithGyroAction(robot, 30.0));
+					autoControl.add( new GoalAlign(robot, vision));
 					autoControl.add( new ShootAction(robot));
 
 				}
 				else if(choice=="Obstacle 3"){
 				//	getTicks(SmartDashboard::GetNumber(testAuto.n,testAuto.v));
 
-					autoControl.add( new DriveAction(robot, toEnc(74), NORMAL_SPEED));
+					//autoControl.add( new DriveAction(robot, toEnc(95.75), NORMAL_SPEED));
 					autoControl.add( new DriveUntillSettleAction(robot, NORMAL_SPEED));
+					//autoControl.add( new TurnWithGyroAction(robot, 45.0));
+					autoControl.add( new GoalAlign(robot, vision));
 					autoControl.add( new ShootAction(robot));
 
 				}
@@ -107,20 +112,41 @@ public:
 
 				//	getTicks(SmartDashboard::GetNumber(mediumDistance.n,mediumDistance.v));
 
-					autoControl.add( new DriveAction(robot, toEnc(47.875), NORMAL_SPEED));
+					//autoControl.add( new DriveAction(robot, toEnc(95.75), NORMAL_SPEED));
 					autoControl.add( new DriveUntillSettleAction(robot, NORMAL_SPEED));
 					autoControl.add( new TurnWithGyroAction(robot, -30.0));
+					autoControl.add( new GoalAlign(robot, vision));
 					autoControl.add( new ShootAction(robot));
 
 				}
 				else if(choice=="Obstacle 5"){
 				//	getTicks(SmartDashboard::GetNumber(longDistance.n,longDistance.v));
 
-					autoControl.add( new DriveAction(robot, toEnc(95.75), NORMAL_SPEED));
+					//autoControl.add( new DriveAction(robot, toEnc(95.75), NORMAL_SPEED));
 					autoControl.add( new DriveUntillSettleAction(robot, NORMAL_SPEED));
 					autoControl.add( new TurnWithGyroAction(robot, -45.0));
+					autoControl.add( new GoalAlign(robot, vision));
 					autoControl.add( new ShootAction(robot));
 
+				}
+				else if(choice=="Drop the Ball"){
+				//	getTicks(SmartDashboard::GetNumber(longDistance.n,longDistance.v));
+
+					//autoControl.add( new DriveAction(robot, toEnc(95.75), NORMAL_SPEED));
+					autoControl.add( new DriveUntillSettleAction(robot, NORMAL_SPEED));
+					autoControl.add( new TurnWithGyroAction(robot, 45.0));
+					autoControl.add( new GoalAlign(robot, vision));
+					autoControl.add( new ShootAction(robot));
+					autoControl.add( new TurnWithGyroAction(robot, -45.0));
+					autoControl.add( new DriveUntillSettleAction(robot, -NORMAL_SPEED));
+					autoControl.add( new PickupRollerAction(robot, IN, true, 5.0));
+					autoControl.add( new PickupArmAction(robot, pickupHeight2));
+					autoControl.add( new DriveAction(robot, toEnc(-95.75), -.3));
+					//autoControl.add( new PickupArmAction(robot, DRIVE_PICKUP_HEIGHT5));
+					autoControl.add( new DriveUntillSettleAction(robot, NORMAL_SPEED));
+					autoControl.add( new TurnWithGyroAction(robot, 45.0));
+					autoControl.add( new GoalAlign(robot, vision));
+					autoControl.add( new ShootAction(robot));
 				}
 				autoControl.init();
 		while (IsAutonomous() and !IsDisabled()) {

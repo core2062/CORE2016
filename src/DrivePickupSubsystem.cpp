@@ -159,9 +159,9 @@ void DrivePickupSubsystem::teleopInit(void){
 	robot.joystick.register_axis(DRIVE_MAG, 0, 1);
 	robot.joystick.register_axis(DRIVE_MAG2, 0, 3);
 	robot.joystick.register_axis(PICKUP_AXIS, 1, 1);
-	robot.joystick.register_button(DRIVE_SPEED, 0, 5);
+	robot.joystick.register_button(DRIVE_ROT_SPEED, 0, 5);
 
-	robot.joystick.register_button(DRIVE_LSPEED, 0, 7);
+	robot.joystick.register_button(DRIVE_MAG_SPEED, 0, 7);
 	robot.joystick.register_button(DRIVE_AUTO_PICKUP, 0, 8);
 	robot.joystick.register_button(DRIVE_GOAL, 0 , 1);
 	robot.joystick.register_button(DRIVE_REVERSE, 0, 6, JoystickCache::RISING);
@@ -367,7 +367,7 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 	}
 	oldBallX = ballX;
 	oldGoalX = goalX;
-	gyroITimer.Reset();
+	//gyroITimer.Reset();
 
 
 	///////////////////////////////////////
@@ -395,33 +395,31 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 	double right;
 	double a = SmartDashboard::GetNumber( etherA.n,  etherA.v);
 	double b = SmartDashboard::GetNumber( etherB.n,  etherB.v);
-	if(!robot.joystick.button(DRIVE_LSPEED)){
-		drive_mag *= .5;
-	}
+
 
 	std::string choice = * (std::string*) driveChooser.GetSelected();
 
 	if (choice == "ether"){
 		if (drive_mag>0){
 			if (drive_rot>=0){
-				left = etherL(drive_mag, drive_rot, a, b * (robot.joystick.button(DRIVE_SPEED)?2:1));
-				right = etherR(drive_mag, drive_rot, a, b * (robot.joystick.button(DRIVE_SPEED)?2:1));
+				left = etherL(drive_mag * (robot.joystick.button(DRIVE_MAG_SPEED))?1:.5, drive_rot, a, b * (robot.joystick.button(DRIVE_ROT_SPEED)?2:1));
+				right = etherR(drive_mag * (robot.joystick.button(DRIVE_MAG_SPEED))?1:.5, drive_rot, a, b * (robot.joystick.button(DRIVE_ROT_SPEED)?2:1));
 			} else{
-				left = etherR(drive_mag, -drive_rot, a, b * (robot.joystick.button(DRIVE_SPEED)?2:1));
-				right = etherL(drive_mag, -drive_rot, a, b * (robot.joystick.button(DRIVE_SPEED)?2:1));
+				left = etherR(drive_mag * (robot.joystick.button(DRIVE_MAG_SPEED))?1:.5, -drive_rot, a, b * (robot.joystick.button(DRIVE_ROT_SPEED)?2:1));
+				right = etherL(drive_mag * (robot.joystick.button(DRIVE_MAG_SPEED))?1:.5, -drive_rot, a, b * (robot.joystick.button(DRIVE_ROT_SPEED)?2:1));
 			}
 		} else if (drive_mag < 0){
 			if (drive_rot>=0){
 
-				left = -etherR(-drive_mag, drive_rot, a, b * (robot.joystick.button(DRIVE_SPEED)?2:1));
-				right = -etherL(-drive_mag, drive_rot, a, b * (robot.joystick.button(DRIVE_SPEED)?2:1));
+				left = -etherR(-drive_mag * (robot.joystick.button(DRIVE_MAG_SPEED))?1:.5, drive_rot, a, b * (robot.joystick.button(DRIVE_ROT_SPEED)?2:1));
+				right = -etherL(-drive_mag * (robot.joystick.button(DRIVE_MAG_SPEED))?1:.5, drive_rot, a, b * (robot.joystick.button(DRIVE_ROT_SPEED)?2:1));
 			} else{
-				left = -etherL(-drive_mag, -drive_rot, a, b * (robot.joystick.button(DRIVE_SPEED)?2:1));
-				right = -etherR(-drive_mag, -drive_rot, a, b * (robot.joystick.button(DRIVE_SPEED)?2:1));
+				left = -etherL(-drive_mag * (robot.joystick.button(DRIVE_MAG_SPEED))?1:.5, -drive_rot, a, b * (robot.joystick.button(DRIVE_ROT_SPEED)?2:1));
+				right = -etherR(-drive_mag * (robot.joystick.button(DRIVE_MAG_SPEED))?1:.5, -drive_rot, a, b * (robot.joystick.button(DRIVE_ROT_SPEED)?2:1));
 			}
 		} else {
-			left = (drive_rot * (robot.joystick.button(DRIVE_SPEED)?1:SmartDashboard::GetNumber(quickTurn.n,quickTurn.v)));
-			right = (-drive_rot * (robot.joystick.button(DRIVE_SPEED)?1:SmartDashboard::GetNumber(quickTurn.n,quickTurn.v)));
+			left = (drive_rot * (robot.joystick.button(DRIVE_ROT_SPEED)?1:SmartDashboard::GetNumber(quickTurn.n,quickTurn.v)));
+			right = (-drive_rot * (robot.joystick.button(DRIVE_ROT_SPEED)?1:SmartDashboard::GetNumber(quickTurn.n,quickTurn.v)));
 		}
 	}else if (choice == "tank"){
 		left = drive_mag;
@@ -431,8 +429,8 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 			left = (drive_mag);
 			right = (drive_mag);
 		}else{
-			left = (drive_rot * (robot.joystick.button(DRIVE_SPEED)?1:SmartDashboard::GetNumber(quickTurn.n,quickTurn.v)));
-			right = (-drive_rot * (robot.joystick.button(DRIVE_SPEED)?1:SmartDashboard::GetNumber(quickTurn.n,quickTurn.v)));
+			left = (drive_rot * (robot.joystick.button(DRIVE_ROT_SPEED)?1:SmartDashboard::GetNumber(quickTurn.n,quickTurn.v)));
+			right = (-drive_rot * (robot.joystick.button(DRIVE_ROT_SPEED)?1:SmartDashboard::GetNumber(quickTurn.n,quickTurn.v)));
 		}
 	}
 

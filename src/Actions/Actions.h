@@ -18,5 +18,6 @@
 #include "TestAction.h"
 #include "TurnWithGyroAction.h"
 #include "AutoPickupAction.h"
+#include "GoalAlign.h"
 
 #endif /* SRC_ACTIONS_ACTIONS_H_ */
