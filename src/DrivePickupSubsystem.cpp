@@ -160,7 +160,9 @@ void DrivePickupSubsystem::teleopInit(void){
 	robot.joystick.register_axis(DRIVE_MAG2, 0, 3);
 	robot.joystick.register_axis(PICKUP_AXIS, 1, 1);
 	robot.joystick.register_button(DRIVE_SPEED, 0, 5);
-	robot.joystick.register_button(DRIVE_AUTO_PICKUP, 0, 7);
+
+	robot.joystick.register_button(DRIVE_LSPEED, 0, 7);
+	robot.joystick.register_button(DRIVE_AUTO_PICKUP, 0, 8);
 	robot.joystick.register_button(DRIVE_GOAL, 0 , 1);
 	robot.joystick.register_button(DRIVE_REVERSE, 0, 6, JoystickCache::RISING);
 	robot.joystick.register_button(DRIVE_PICKUP_HEIGHT1, 1, 1);
@@ -393,8 +395,9 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 	double right;
 	double a = SmartDashboard::GetNumber( etherA.n,  etherA.v);
 	double b = SmartDashboard::GetNumber( etherB.n,  etherB.v);
-
-//	drive_mag = drive_mag*drive_mag*drive_mag;
+	if(!robot.joystick.button(DRIVE_LSPEED)){
+		drive_mag *= .5;
+	}
 
 	std::string choice = * (std::string*) driveChooser.GetSelected();
 

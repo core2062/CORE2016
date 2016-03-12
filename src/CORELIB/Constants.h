@@ -54,6 +54,7 @@ enum controllerInputs{
 	DRIVE_MAG,
 	DRIVE_MAG2,
 	DRIVE_ROT,
+	DRIVE_LSPEED,
 	DRIVE_SPEED,
 	DRIVE_GOAL,
 	DRIVE_REVERSE,
@@ -198,8 +199,8 @@ public:
  const smartDB secondaryMedium(std::string("Secondary Medium Distance"), 5.0);
  const smartDB longDistance(std::string("Long Distance"), 5.0);
  const smartDB secondaryLong(std::string("Secondary Long Distance"), 5.0);
- const smartDB pickupHeight1(std::string("Pickup Height 1"), 2.5);
- const smartDB pickupHeight2(std::string("Pickup Height 2"), .9);
+ const smartDB pickupHeight1(std::string("Pickup Height 1"), 2.25);
+ const smartDB pickupHeight2(std::string("Pickup Height 2"), .75);
  const smartDB pickupHeight3(std::string("Pickup Height 3"), 3.43);
  const smartDB pickupHeight4(std::string("Pickup Height 4"), 2.5);
  const smartDB pickupHeight5(std::string("Pickup Height 5"), 2.5);
