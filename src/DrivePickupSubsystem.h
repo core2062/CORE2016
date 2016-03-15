@@ -25,6 +25,7 @@ class DrivePickupSubsystem: public CORESubsystem{
     	double gyroSet = 0.0;
     	int oldBallX = -1;
     	int oldGoalX = -1;
+    	double oldGyroError = 0.0;
     	bool autoPickupFlag = false;
     	Timer autoPickupTimer;
     	int driveDirection = 1;
@@ -32,6 +33,9 @@ class DrivePickupSubsystem: public CORESubsystem{
 		double oldGyroYaw = 0.0;
 		//Timer gyroITimer;
 		double gyroIntegral = 0.0;
+		double tempP = 0.0;
+		bool oldGoalButton = false;
+		int goalFlag = 0;
 
 public:
 
@@ -121,8 +125,8 @@ public:
 			backLeft.Set(0.0);
 			backRight.Set(0.0);
 
-//			frontLeft.SetFeedbackDevice(CANTalon::QuadEncoder);
-//			frontRight.SetFeedbackDevice(CANTalon::QuadEncoder);
+			frontLeft.SetFeedbackDevice(CANTalon::QuadEncoder);
+			frontRight.SetFeedbackDevice(CANTalon::QuadEncoder);
 //
 //			rightPickupMotor.SetFeedbackDevice(CANTalon::AnalogPot);
 //			rightPickupMotor.SetControlMode(CANSpeedController::kPosition);
@@ -132,8 +136,8 @@ public:
 //			leftPickupMotor.SetControlMode(CANSpeedController::kPosition);
 //			leftPickupMotor.SetP(SmartDashboard::GetNumber(pickupP.n,pickupP.v));
 //
-//			frontLeft.ConfigEncoderCodesPerRev(ENCODER_RES);
-//			frontRight.ConfigEncoderCodesPerRev(ENCODER_RES);
+			frontLeft.ConfigEncoderCodesPerRev(ENCODER_RES);
+			frontRight.ConfigEncoderCodesPerRev(ENCODER_RES);
 		}
 
 	void robotInit(void);

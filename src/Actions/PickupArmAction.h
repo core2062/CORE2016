@@ -70,31 +70,36 @@ public:
 				return END;
 			}
 		}else{
-			double rightPickupError =  robot.analogSensorMap[RIGHT_POT]->GetValue() - robot.analogSensorMap[LEFT_POT]->GetValue() ;
-				double rightPickupOutput = (SmartDashboard::GetNumber(pickupPValue.n, pickupPValue.v)*rightPickupError);
-				rightPickupOutput = rightPickupOutput > 0.3 ? 0.3 : (rightPickupOutput < -0.3 ? -0.3 : rightPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
-				if (rightPickupOutput < .05 && rightPickupOutput > -.05){
-					rightPickupOutput = 0;
-				}
+//			double rightPickupError =  robot.analogSensorMap[RIGHT_POT]->GetValue() - robot.analogSensorMap[LEFT_POT]->GetValue() ;
+//				double rightPickupOutput = (SmartDashboard::GetNumber(pickupPValue.n, pickupPValue.v)*rightPickupError);
+//				rightPickupOutput = rightPickupOutput > 0.3 ? 0.3 : (rightPickupOutput < -0.3 ? -0.3 : rightPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
+//				if (rightPickupOutput < .05 && rightPickupOutput > -.05){
+//					rightPickupOutput = 0;
+//				}
+//
+//
+//				double leftPickupError =  robot.analogSensorMap[LEFT_POT]->GetValue() - robot.analogSensorMap[RIGHT_POT]->GetValue() ;
+//				double leftPickupOutput = (SmartDashboard::GetNumber(pickupPValue.n, pickupPValue.v)*leftPickupError);
+//				leftPickupOutput = leftPickupOutput > 0.3 ? 0.3 : (leftPickupOutput < -0.3 ? -0.3 : leftPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
+//				if (leftPickupOutput < .05 && leftPickupOutput > -.05){
+//					leftPickupOutput = 0;
+//				}
 
+				double base = SmartDashboard::GetNumber(rightMagPotBase.n,rightMagPotBase.v);
+				double max = SmartDashboard::GetNumber(magneticPotMax.n,magneticPotMax.v);
+				double raw = base<0?max-robot.analogSensorMap[RIGHT_POT]->GetVoltage():robot.analogSensorMap[RIGHT_POT]->GetVoltage();
+				base = fabs(base);
 
-				double leftPickupError =  robot.analogSensorMap[LEFT_POT]->GetValue() - robot.analogSensorMap[RIGHT_POT]->GetValue() ;
-				double leftPickupOutput = (SmartDashboard::GetNumber(pickupPValue.n, pickupPValue.v)*leftPickupError);
-				leftPickupOutput = leftPickupOutput > 0.3 ? 0.3 : (leftPickupOutput < -0.3 ? -0.3 : leftPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
-				if (leftPickupOutput < .05 && leftPickupOutput > -.05){
-					leftPickupOutput = 0;
-				}
+				double val = raw<base?max+raw-base:raw-base;
 
-
-
-				double otherPickupError =  ((robot.analogSensorMap[LEFT_POT]->GetValue() + robot.analogSensorMap[RIGHT_POT]->GetValue()) / 2) - height->v;
+				double otherPickupError =  (val - SmartDashboard::GetNumber(height->n, height->v));
 				double otherPickupOutput = (SmartDashboard::GetNumber(otherPickupP.n, otherPickupP.v)*otherPickupError);
 				otherPickupOutput = otherPickupOutput > 0.8 ? 0.8 : (otherPickupOutput < -0.8 ? -0.8 : otherPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
 				if (otherPickupOutput < .05 && otherPickupOutput > -.05){
 					otherPickupOutput = 0;
 				}
-				robot.motorMap[LEFT_PICKUP]->Set(otherPickupOutput + leftPickupOutput);
-				robot.motorMap[RIGHT_PICKUP]->Set(otherPickupOutput + rightPickupOutput);
+				robot.motorMap[LEFT_PICKUP]->Set(otherPickupOutput);
+				robot.motorMap[RIGHT_PICKUP]->Set(otherPickupOutput);
 				if(bkrd)
 					return BACKGROUND;
 				else

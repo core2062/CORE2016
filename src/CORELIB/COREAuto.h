@@ -156,6 +156,24 @@ protected:
 };
 
 
+class WaitAction : public OrderAction{
+	float m_duration;
+	Timer timer;
+public:
+	WaitAction(CORERobot& robot, float duration):
+		OrderAction(robot),
+		timer()
+		{
+			m_duration	= duration;
+		}
+	virtual ControlFlow call(void);
+	virtual ~WaitAction(void){};
+	void init(void){}
+	void end(void){}
+};
+
+
+
 class AutoControl{
 	std::queue<OrderAction*> aqueue;
 	std::vector<Action*> background;

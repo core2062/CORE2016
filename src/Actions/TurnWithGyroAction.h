@@ -55,7 +55,7 @@ public:
 //			SmartDashboard::PutNumber("Gyro PID Error", gyroPID.mistake);
 
 			double drive_rot = (SmartDashboard::GetNumber(rotationPValue.n, rotationPValue.v)*gyroError);
-			drive_rot = drive_rot > 1.0 ? 1.0 : (drive_rot < -1.0 ? -1.0 : drive_rot); //Conditional (Tenerary) Operator limiting values to between 1 and -1
+			drive_rot = drive_rot > .8 ? .8 : (drive_rot < -.8 ? -.8 : drive_rot); //Conditional (Tenerary) Operator limiting values to between 1 and -1
 			if (drive_rot < .05 && drive_rot > -.05){
 				drive_rot = 0;
 			}

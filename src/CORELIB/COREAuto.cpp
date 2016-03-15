@@ -2,6 +2,16 @@
 
 using namespace CORE;
 
+ControlFlow WaitAction::call(void){
+	if(timer.Get() == 0){
+		timer.Start();
+	}
+	if(timer.Get()<=m_duration){
+		return CONTINUE;
+	}else{
+		return END;
+	}
+}
 
 void AutoControl::iter(){
 

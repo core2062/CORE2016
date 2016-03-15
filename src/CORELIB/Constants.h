@@ -177,16 +177,16 @@ public:
 };
 */
 
- const smartDB rotationPValue(std::string("Rotation P"), 0.15);
- const smartDB rotationIValue(std::string("Rotation I"), 0.025);
- const smartDB rotationClosePValue(std::string("Rotation Close P"), 0.25);
+ const smartDB rotationPValue(std::string("Rotation P"), 0.1);
+ const smartDB rotationIValue(std::string("Rotation I"), 0.03);
+ const smartDB rotationClosePValue(std::string("Rotation Close P"), 0.0);
  const smartDB rotationCloseIValue(std::string("Rotation Close I"), 0.1);
  const smartDB etherA(std::string("Ether A"), 1.0);
  const smartDB etherB(std::string("Ether B"), 0.5);
  const smartDB blueTowerCompass(std::string("Blue Tower Compass"), 0.0);
  const smartDB compass(std::string("NavX Compass"), 0.0);
  const smartDB shooterReturn(std::string("Shooter Return Time"), .5);
- const smartDB quickTurn(std::string("Quick Turn Speed"), .75);
+ const smartDB quickTurn(std::string("Quick Turn Speed"), .85);
 
  const smartDB testTargetX(std::string("Coordinate Target X"), 0.0);
  const smartDB testTargetY(std::string("Coordinate Target Y"), 0.0);
@@ -199,9 +199,9 @@ public:
  const smartDB secondaryMedium(std::string("Secondary Medium Distance"), 5.0);
  const smartDB longDistance(std::string("Long Distance"), 5.0);
  const smartDB secondaryLong(std::string("Secondary Long Distance"), 5.0);
- const smartDB pickupHeight1(std::string("Pickup Height 1"), 2.25);
- const smartDB pickupHeight2(std::string("Pickup Height 2"), .75);
- const smartDB pickupHeight3(std::string("Pickup Height 3"), 3.43);
+ const smartDB pickupHeight1(std::string("Pickup Height 1"), 2.675);
+ const smartDB pickupHeight2(std::string("Pickup Height 2"), 1.2);
+ const smartDB pickupHeight3(std::string("Pickup Height 3"), 3.7);
  const smartDB pickupHeight4(std::string("Pickup Height 4"), 2.5);
  const smartDB pickupHeight5(std::string("Pickup Height 5"), 2.5);
  const smartDB pickupHeight1L(std::string("Pickup Height 1L"), -1.0);
@@ -218,6 +218,7 @@ public:
  const smartDB safePickupP(std::string("Safe Pickup P"), -1.0);
  const smartDB pickupCurrentThresh(std::string("Pickup Current Threshold"), 0.0);
  const smartDB pickupShootClearance(std::string("Pickup Safe Min"), 0.0);
+ const smartDB goalCenter(std::string("Goal Center"), 480.0);
 
  const smartDB magneticPotMax(std::string("Pot Max"), 5.0);
  const smartDB leftMagPotBase(std::string("Left Pot Base"), 0.0);
@@ -241,6 +242,8 @@ public:
 		 &testTargetX,
 		 &testTargetY,
 		 &testTargetAngle,
+
+		 &goalCenter,
 
 		 &mediumDistance,
 		 &secondaryMedium,

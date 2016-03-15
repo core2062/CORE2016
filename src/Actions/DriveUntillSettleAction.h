@@ -27,8 +27,9 @@ public:
 	double pitch = 0.0;
 	double pitchRate = 0.0;
 	bool toRamp = false;
-	double rampThreshold = 0.0; // Threshold for gyro to determine it's on the ramp
-	double rateThreshold = 0.0; //Threshold to determine rate is small enough to consider it's stable
+	bool downRamp = false;
+	double rampThreshold = 10.0; // Threshold for gyro to determine it's on the ramp
+	double rateThreshold = 8.0; //Threshold to determine rate is small enough to consider it's stable
 
 
 
@@ -65,7 +66,9 @@ public:
 		}
 		if(pitch > rampThreshold)
 			toRamp=true;
-		if(toRamp == true && pitchRate < rateThreshold && pitch < rampThreshold /*&& pitch > -rampThreshold*/){ //may need this if it stops before fully off the ramp, but if added it may go to far
+		if(pitch < -rampThreshold)
+			downRamp = true;
+		if((toRamp && downRamp) && fabs(pitchRate) < rateThreshold /*&& pitch > -rampThreshold*/){ //may need this if it stops before fully off the ramp, but if added it may go to far
 			return END;
 		} else{
 			robot.motorMap[BACK_RIGHT]->Set(speed);

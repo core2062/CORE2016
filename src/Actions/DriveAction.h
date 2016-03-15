@@ -17,6 +17,7 @@ class DriveAction : public ConditionAction{
 	double avgDist = 0.0;
 	double targetDistance = 0;
 	double speed = 0;
+	int direction = 1;
 	//variables
 
 public:
@@ -29,7 +30,7 @@ public:
 	virtual bool endCondition(){
 		return false;
 	}
-	DriveAction(CORERobot& robot, double targetDistance, double speed):
+	DriveAction(CORERobot& robot, double targetDistance, double speed, int direction = 1):
 		ConditionAction(robot),
 		targetDistance(targetDistance),
 		speed(speed)
@@ -46,16 +47,20 @@ public:
 
 
 	}
-	void end(){}
+	void end(){
+		robot.motorMap[FRONT_LEFT]->Set(0.0);
+		robot.motorMap[FRONT_RIGHT]->Set(0.0);
+		robot.motorMap[BACK_LEFT]->Set(0.0);
+		robot.motorMap[BACK_RIGHT]->Set(0.0);
+	}
 	ControlFlow autoCall(){
-		avgDist = (robot.motorMap[FRONT_LEFT]->GetEncPosition()+robot.motorMap[FRONT_RIGHT]->GetEncPosition()+
-		robot.motorMap[BACK_LEFT]->GetEncPosition()+robot.motorMap[BACK_RIGHT]->GetEncPosition())/4;
+		avgDist = (fabs(robot.motorMap[BACK_LEFT]->GetEncPosition())+fabs(robot.motorMap[BACK_RIGHT]->GetEncPosition()))/2;
 		if(avgDist < targetDistance){
 			return CONTINUE;
-		robot.motorMap[FRONT_LEFT]->Set(NORMAL_SPEED);
-		robot.motorMap[FRONT_RIGHT]->Set(NORMAL_SPEED);
-		robot.motorMap[BACK_LEFT]->Set(NORMAL_SPEED);
-		robot.motorMap[BACK_RIGHT]->Set(NORMAL_SPEED);
+		robot.motorMap[FRONT_LEFT]->Set(speed*direction);
+		robot.motorMap[FRONT_RIGHT]->Set(speed*direction);
+		robot.motorMap[BACK_LEFT]->Set(speed*direction);
+		robot.motorMap[BACK_RIGHT]->Set(speed*direction);
 	}
 		else{
 
