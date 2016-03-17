@@ -68,6 +68,7 @@ enum controllerInputs{
 	LIFT_LEVEL2,
 	SHOOTER_FIRE,
 	PICKUP_AXIS,
+	PICKUP_SET,
 	ROLLER_AXIS,
 
 	HYBRID_GOTO_SDXY,
@@ -117,7 +118,7 @@ const double PICKUP_SPEED = .85;
 
 
 const double WHEEL_DIA = 7.95;
-const double ENCODER_CONST = 1.0/4.0;
+const double ENCODER_CONST = 34.0/18.0;
 const double ENCODER_RES = 1024;
 
 //	Vision Things	//
@@ -199,6 +200,7 @@ public:
  const smartDB secondaryMedium(std::string("Secondary Medium Distance"), 5.0);
  const smartDB longDistance(std::string("Long Distance"), 5.0);
  const smartDB secondaryLong(std::string("Secondary Long Distance"), 5.0);
+ const smartDB lowbarDist(std::string("Low Bar Distance"), 72.0);
  const smartDB pickupHeight1(std::string("Pickup Height 1"), 2.675);
  const smartDB pickupHeight2(std::string("Pickup Height 2"), 1.2);
  const smartDB pickupHeight3(std::string("Pickup Height 3"), 3.7);
@@ -238,6 +240,8 @@ public:
 		 &testAuto,
 		 &shooterReturn,
 		 &quickTurn,
+
+		 &lowbarDist,
 
 		 &testTargetX,
 		 &testTargetY,

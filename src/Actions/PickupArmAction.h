@@ -49,10 +49,13 @@ public:
 	void init(){
 		timer.Reset();
 		timer.Start();
+		robot.outLog.appendLog("Pickup Arm Action Start");
 
 	}
 	void end(){
 		timer.Stop();
+
+		robot.outLog.appendLog("Pickup Arm Action End");
 	}
 
 	ControlFlow autoCall(){

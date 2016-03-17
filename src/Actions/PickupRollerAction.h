@@ -41,9 +41,12 @@ public:
 	timer.Reset();
 	timer.Start();
 
+	robot.outLog.appendLog("Pickup Roller Action Start");
+
 	}
 	void end(){
 
+		robot.outLog.appendLog("Pickup Roller Action End");
 	}
 	ControlFlow autoCall(){
 		if(timer.Get() > duration){

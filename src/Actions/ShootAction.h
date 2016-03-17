@@ -42,9 +42,13 @@ public:
 		timer.Reset();
 		timer.Start();
 
+		robot.outLog.appendLog("Shooter Action Start");
+
 	}
 	void end(){
 		timer.Stop();
+
+		robot.outLog.appendLog("Shooter Action End");
 	}
 	ControlFlow autoCall(){
 		if(!flag && robot.pneumaticMap[SHOOTER_LEFT_CYLINDER]->Get() == DoubleSolenoid::kForward) {

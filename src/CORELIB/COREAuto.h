@@ -166,7 +166,7 @@ public:
 		{
 			m_duration	= duration;
 		}
-	virtual ControlFlow call(void);
+	virtual ControlFlow autoCall(void);
 	virtual ~WaitAction(void){};
 	void init(void){}
 	void end(void){}

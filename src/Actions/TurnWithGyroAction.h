@@ -37,12 +37,17 @@ public:
 		gyroSet(gyroSet){
 	};
 
-	void init(){}
+	void init(){
+
+		robot.outLog.appendLog("Gyro Turn Action Start");
+	}
 	void end(){
 		robot.motorMap[BACK_RIGHT]->Set(0.0);
 		robot.motorMap[BACK_LEFT]->Set(0.0);
 		robot.motorMap[FRONT_RIGHT]->Set(0.0);
 		robot.motorMap[FRONT_LEFT]->Set(0.0);
+
+		robot.outLog.appendLog("Gyro Turn Action End");
 	}
 	ControlFlow autoCall(){
 #ifdef USE_NAVX
@@ -55,7 +60,7 @@ public:
 //			SmartDashboard::PutNumber("Gyro PID Error", gyroPID.mistake);
 
 			double drive_rot = (SmartDashboard::GetNumber(rotationPValue.n, rotationPValue.v)*gyroError);
-			drive_rot = drive_rot > .8 ? .8 : (drive_rot < -.8 ? -.8 : drive_rot); //Conditional (Tenerary) Operator limiting values to between 1 and -1
+			drive_rot = drive_rot > .6 ? .6 : (drive_rot < -.6 ? -.6 : drive_rot); //Conditional (Tenerary) Operator limiting values to between 1 and -1
 			if (drive_rot < .05 && drive_rot > -.05){
 				drive_rot = 0;
 			}

@@ -52,12 +52,14 @@ public:
 		tempP = SmartDashboard::GetNumber(rotationPValue.n,rotationPValue.v);
 		std::cout << "WARNING: Goal Start" << std::endl;
 		goalFlag = 0;
+		robot.outLog.appendLog("Goal Align Action Start");
 	}
 	void end(){
 		robot.motorMap[BACK_RIGHT]->Set(0.0);
 		robot.motorMap[BACK_LEFT]->Set(0.0);
 		robot.motorMap[FRONT_RIGHT]->Set(0.0);
 		robot.motorMap[FRONT_LEFT]->Set(0.0);
+		robot.outLog.appendLog("Goal Align Action End");
 	}
 	ControlFlow autoCall(){
 
@@ -87,29 +89,29 @@ public:
 		}else if (std::fabs(goalX-(SmartDashboard::GetNumber(goalCenter.n,goalCenter.v))) > 300){
 			gyroIntegral = 0.0;
 			if (goalX>SmartDashboard::GetNumber(goalCenter.n,goalCenter.v)){
-				goalFlag = 1;
+				goalFlag = (goalFlag==4)?4:1;
 				drive_rot = .7;
 			}else{
-				goalFlag = 2;
+				goalFlag = (goalFlag==4)?4:2;
 				drive_rot = -.7;
 			}
 		}else if (std::fabs(goalX-(SmartDashboard::GetNumber(goalCenter.n,goalCenter.v))) > 90){
 			gyroIntegral = 0.0;
 			if (goalX>SmartDashboard::GetNumber(goalCenter.n,goalCenter.v)){
 
-				if(goalFlag != 1){
+				if(goalFlag != 1 && goalFlag !=4){
 					drive_rot = .65;
 				}else{
 					drive_rot = .55;
 				}
-				goalFlag = 1;
+				goalFlag = (goalFlag==4)?4:1;
 			}else{
-				if(goalFlag!=2){
+				if(goalFlag!=2 && goalFlag !=4){
 					drive_rot = -.65;
 				}else{
 					drive_rot = -.55;
 				}
-				goalFlag = 2;
+				goalFlag = (goalFlag==4)?4:2;
 			}
 		}else{
 			gyroSet  = oldGyroYaw+((goalX-(SmartDashboard::GetNumber(goalCenter.n,goalCenter.v)))/(SmartDashboard::GetNumber(goalCenter.n,goalCenter.v)))*(VISION_H_FOV/2.0);
@@ -117,6 +119,7 @@ public:
 
 		double gyroRate = robot.ahrs->GetYaw();
 			//Gyro PID
+			goalFlag = 4;
 			if((drive_rot==0.0 && resetQ == 0 && !SmartDashboard::GetBoolean("disableGyro",false))){
 				double gyroError =  gyroSet - gyroRate;
 //					double time = gyroITimer.Get();
@@ -146,6 +149,10 @@ public:
 //					}
 
 				gyroIntegral+=gyroError;
+				if((goalX>=182  && gyroIntegral<0/*&& oldGoalX <182*/) || (goalX<=178  && gyroIntegral>0/*&& oldGoalX >178*/)){
+					gyroIntegral = 0;
+					std::cout << "WARNGING: Integral Reset" << std::endl;
+				}
 	//			SmartDashboard::PutNumber("Gyro PID Error", gyroPID.mistake);
 				double gyroOutput = 0.0;
 //					if(fabs(gyroError)>1.5){

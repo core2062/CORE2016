@@ -28,7 +28,7 @@ public:
 	double pitchRate = 0.0;
 	bool toRamp = false;
 	bool downRamp = false;
-	double rampThreshold = 10.0; // Threshold for gyro to determine it's on the ramp
+	double rampThreshold = 7.0; // Threshold for gyro to determine it's on the ramp
 	double rateThreshold = 8.0; //Threshold to determine rate is small enough to consider it's stable
 
 
@@ -43,6 +43,7 @@ public:
 	void init(){
 		itrTimer.Reset();
 		itrTimer.Start();
+		robot.outLog.appendLog("Drive Settle Action Start");
 
 	}
 	void end(){
@@ -51,6 +52,9 @@ public:
 		robot.motorMap[BACK_LEFT]->Set(0.0);
 		robot.motorMap[FRONT_RIGHT]->Set(0.0);
 		robot.motorMap[FRONT_LEFT]->Set(0.0);
+		robot.motorMap[FRONT_LEFT]->SetEncPosition(0);
+		robot.motorMap[FRONT_RIGHT]->SetEncPosition(0);
+		robot.outLog.appendLog("Drive Settle Action End");
 	}
 	ControlFlow autoCall(){
 #ifdef USE_NAVX
@@ -59,16 +63,21 @@ public:
 		return END;
 #endif
 		// Calc pitch rate
+		SmartDashboard::PutNumber("Gyro Yaw",robot.ahrs->GetYaw());
 		if(itrTimer.Get() > 1){
 			pitchRate = oldPitch-pitch;
 			oldPitch = pitch;
 			itrTimer.Reset();
 		}
-		if(pitch > rampThreshold)
+		if(pitch > rampThreshold){
+			robot.outLog.appendLog("Drive Settle Action Pitch High");
 			toRamp=true;
-		if(pitch < -rampThreshold)
+		}
+		if(pitch < -rampThreshold){
+			robot.outLog.appendLog("Drive Settle Action Pitch Low");
 			downRamp = true;
-		if((toRamp && downRamp) && fabs(pitchRate) < rateThreshold /*&& pitch > -rampThreshold*/){ //may need this if it stops before fully off the ramp, but if added it may go to far
+		}
+		if((toRamp && downRamp) && pitchRate >-1.0 /*rateThreshold*/ /*&& pitch > -rampThreshold*/){ //may need this if it stops before fully off the ramp, but if added it may go to far
 			return END;
 		} else{
 			robot.motorMap[BACK_RIGHT]->Set(speed);

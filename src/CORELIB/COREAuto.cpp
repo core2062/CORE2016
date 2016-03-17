@@ -2,7 +2,7 @@
 
 using namespace CORE;
 
-ControlFlow WaitAction::call(void){
+ControlFlow WaitAction::autoCall(void){
 	if(timer.Get() == 0){
 		timer.Start();
 	}
@@ -34,9 +34,12 @@ void AutoControl::iter(){
 		/* no break */
 	case END:
 		position++;
+		outLog.appendLog("Ending:");
+		outLog.appendLog(a->name);
 		aqueue.pop();
 		if(!aqueue.empty()){
 			a = aqueue.front();
+			outLog.appendLog("Starting:");
 			outLog.appendLog(a->name);
 			a->init();
 		}

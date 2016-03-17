@@ -170,6 +170,7 @@ void DrivePickupSubsystem::teleopInit(void){
 	robot.joystick.register_button(DRIVE_PICKUP_HEIGHT3, 1, 3);
 	robot.joystick.register_button(DRIVE_PICKUP_HEIGHT4, 1, 4);
 	robot.joystick.register_button(DRIVE_PICKUP_HEIGHT5, 1, 6);
+	robot.joystick.register_button(PICKUP_SET, 1, 7);
 	robot.joystick.register_combo(COMBO5, 0, 3);
 	robot.joystick.register_axis(ROLLER_AXIS, 1, 3);
 
@@ -215,8 +216,10 @@ void DrivePickupSubsystem::teleop(void){
 
 if (robot.joystick.combo(COMBO5)){
 	robot.ahrs->ZeroYaw();
-	robot.outLog.appendLog("Manual Reset Gyro Yaw");
-	std::cout << "WARNING: Manual Reset Gyro Yaw" << std::endl;
+	frontLeft.SetEncPosition(0);
+	frontRight.SetEncPosition(0);
+	robot.outLog.appendLog("Manual Reset Sensors");
+	std::cout << "WARNING: Manual Reset Sensors" << std::endl;
 //	DriveAction driveThing(robot, 5, 1.0);
 //	robot.teleSeq->add(driveThing);
 }
@@ -358,19 +361,19 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 				gyroIntegral = 0.0;
 				if (goalX>SmartDashboard::GetNumber(goalCenter.n,goalCenter.v)){
 
-					if(goalFlag != 1){
+					if(goalFlag != 1 && goalFlag !=4){
 						drive_rot = .65;
 					}else{
 						drive_rot = .55;
 					}
-					goalFlag = 1;
+					goalFlag = (goalFlag==4)?4:1;
 				}else{
-					if(goalFlag!=2){
+					if(goalFlag!=2 && goalFlag !=4){
 						drive_rot = -.65;
 					}else{
 						drive_rot = -.55;
 					}
-					goalFlag = 2;
+					goalFlag = (goalFlag==4)?4:2;
 				}
 			}else{
 				gyroSet  = oldGyroYaw+((goalX-(SmartDashboard::GetNumber(goalCenter.n,goalCenter.v)))/(SmartDashboard::GetNumber(goalCenter.n,goalCenter.v)))*(VISION_H_FOV/2.0);
@@ -404,6 +407,10 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 //					}
 
 					gyroIntegral+=gyroError;
+					if((goalX>=182  && gyroIntegral<0/*&& oldGoalX <182*/) || (goalX<=178  && gyroIntegral>0/*&& oldGoalX >178*/)){
+						gyroIntegral = 0;
+						std::cout << "WARNGING: Integral Reset" << std::endl;
+					}
 		//			SmartDashboard::PutNumber("Gyro PID Error", gyroPID.mistake);
 					double gyroOutput = 0.0;
 //					if(fabs(gyroError)>1.5){
@@ -515,6 +522,24 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 		backRight.Set(0);
 	}
 
+	if(robot.joystick.button(PICKUP_SET)){
+		if(robot.joystick.button(DRIVE_PICKUP_HEIGHT1))
+			SmartDashboard::PutNumber(pickupHeight1L.n, rightPotValue());
+		else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT2)){
+			SmartDashboard::PutNumber(pickupHeight2L.n, rightPotValue());
+		}
+		else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT3)){
+			SmartDashboard::PutNumber(pickupHeight3L.n, rightPotValue());
+		}
+		else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT4)){
+			SmartDashboard::PutNumber(pickupHeight4L.n, rightPotValue());
+		}
+		else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT5)){
+			SmartDashboard::PutNumber(pickupHeight5L.n, rightPotValue());
+		}
+	}
+
+
 //Pickup Height's buttons
 	if(DEADBAND(robot.joystick.axis(PICKUP_AXIS),.05) != 0){
 //		double rightPickupError =  rightPotValue() - leftPotValue() ;
@@ -567,12 +592,12 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 			setPickupHeight(pickupHeight4,pickupHeight4L);
 		rollerMotor.Set(-.5);
 	}
-	else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT5))
+	else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT5)){
 		if(SmartDashboard::GetNumber(pickupHeight5L.n, pickupHeight5L.v) == -1)
 			setPickupHeight(pickupHeight5);
 		else
 			setPickupHeight(pickupHeight5,pickupHeight5L);
-	else{
+	}else{
 		setPickupHeight(rightPotValue());
 	}
 

@@ -8,7 +8,7 @@
 using namespace CORE;
 
 int toEnc(double inches){
-	return (inches/((PI)*WHEEL_DIA)) * ENCODER_CONST;
+	return ((inches/((PI)*WHEEL_DIA)) * ENCODER_CONST * ENCODER_RES);
 }
 
 
@@ -74,7 +74,7 @@ public:
         std::string choice = *(std::string*) autoChooser.GetSelected();
         std::cout<<"Auto mode:" <<choice<<std::endl;
         robot.outLog.appendLog(choice);
-
+        autoControl.reset();
 //					autoControl.add( new DriveAction(robot, 100, 10.0));
 
 				if(choice=="Lowbar"){
@@ -83,10 +83,13 @@ public:
 					//autoControl.add( new DriveAction(robot, toEnc(95.75), NORMAL_SPEED));
 					autoControl.add( new DriveUntillSettleAction(robot, NORMAL_SPEED));
 //TODO: this			autoControl.add( new DriveAction)
-					autoControl.add( new WaitAction(robot, 1.0));
+					autoControl.add( new WaitAction(robot, 2.0));
+					autoControl.add( new DriveAction(robot, toEnc(SmartDashboard::GetNumber(lowbarDist.n,lowbarDist.v)),NORMAL_SPEED,1));
+					autoControl.add( new WaitAction(robot, 2.0));
 					autoControl.add( new TurnWithGyroAction(robot, 45.0));
+					autoControl.add( new WaitAction(robot, 2.0));
 					autoControl.add( new GoalAlign(robot, vision));
-					autoControl.add( new PickupArmAction(robot, pickupHeight1));
+//					autoControl.add( new PickupArmAction(robot, pickupHeight1));
 					autoControl.add( new ShootAction(robot));
 
 				}
