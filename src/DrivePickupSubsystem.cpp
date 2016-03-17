@@ -407,7 +407,7 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 //					}
 
 					gyroIntegral+=gyroError;
-					if((goalX>=182  && gyroIntegral<0/*&& oldGoalX <182*/) || (goalX<=178  && gyroIntegral>0/*&& oldGoalX >178*/)){
+					if((goalX>=182  && gyroIntegral>0/*&& oldGoalX <182*/) || (goalX<=178  && gyroIntegral<0/*&& oldGoalX >178*/)){
 						gyroIntegral = 0;
 						std::cout << "WARNGING: Integral Reset" << std::endl;
 					}
