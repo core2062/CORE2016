@@ -30,12 +30,15 @@ public:
 	bool downRamp = false;
 	double rampThreshold = 7.0; // Threshold for gyro to determine it's on the ramp
 	double rateThreshold = 8.0; //Threshold to determine rate is small enough to consider it's stable
+	bool useMean;
+	std::vector<double> pitches = {0};
 
 
 
-	DriveUntillSettleAction(CORERobot& robot, double speed):
+	DriveUntillSettleAction(CORERobot& robot, double speed, bool average = false):
 		OrderAction(robot),
-		speed(speed)
+		speed(speed),
+		useMean(average)
 	{
 
 	};
@@ -56,6 +59,17 @@ public:
 		robot.motorMap[FRONT_RIGHT]->SetEncPosition(0);
 		robot.outLog.appendLog("Drive Settle Action End");
 	}
+
+	bool getPositive(){
+		for(auto i:pitches){
+			if(i < 0){
+				return false;
+			}
+		}
+		return true;
+	}
+
+
 	ControlFlow autoCall(){
 #ifdef USE_NAVX
 		pitch = robot.ahrs->GetPitch();
@@ -77,7 +91,13 @@ public:
 			robot.outLog.appendLog("Drive Settle Action Pitch Low");
 			downRamp = true;
 		}
-		if((toRamp && downRamp) && pitchRate >-1.0 /*rateThreshold*/ /*&& pitch > -rampThreshold*/){ //may need this if it stops before fully off the ramp, but if added it may go to far
+		if(toRamp && downRamp){
+			pitches.push_back(pitch);
+			if(pitches.size()>5){
+				pitches.erase(pitches.begin());
+			}
+		}
+		if((toRamp && downRamp) && ((useMean)?getPositive():pitch >-1.0) /*rateThreshold*/ /*&& pitch > -rampThreshold*/){ //may need this if it stops before fully off the ramp, but if added it may go to far
 			return END;
 		} else{
 			robot.motorMap[BACK_RIGHT]->Set(speed);

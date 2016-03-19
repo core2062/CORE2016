@@ -38,7 +38,7 @@ public:
 		bkrd(backround)
 	{
 	};
-	PickupArmAction(CORERobot& robot, smartDB height, bool backround = true):
+	PickupArmAction(CORERobot& robot, smartDB height, bool backround = false):
 		OrderAction(robot),
 		height(&height),
 		bkrd(backround)
@@ -48,13 +48,16 @@ public:
 
 	void init(){
 		timer.Reset();
+		robot.motorMap[LEFT_PICKUP]->Set(0.0);
+		robot.motorMap[RIGHT_PICKUP]->Set(0.0);
 		timer.Start();
 		robot.outLog.appendLog("Pickup Arm Action Start");
 
 	}
 	void end(){
 		timer.Stop();
-
+		robot.motorMap[LEFT_PICKUP]->Set(0.0);
+		robot.motorMap[RIGHT_PICKUP]->Set(0.0);
 		robot.outLog.appendLog("Pickup Arm Action End");
 	}
 
@@ -101,6 +104,11 @@ public:
 				if (otherPickupOutput < .05 && otherPickupOutput > -.05){
 					otherPickupOutput = 0;
 				}
+
+				if(fabs(otherPickupError) <.1){
+					return END;
+				}
+
 				robot.motorMap[LEFT_PICKUP]->Set(otherPickupOutput);
 				robot.motorMap[RIGHT_PICKUP]->Set(otherPickupOutput);
 				if(bkrd)

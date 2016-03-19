@@ -91,9 +91,9 @@ public:
 		robot.link(BACK_LEFT, &backLeft);
 		robot.link(FRONT_RIGHT, &frontRight);
 		robot.link(FRONT_LEFT, &frontLeft);
-//		robot.link(RIGHT_PICKUP, &rightPickupMotor);
-//		robot.link(LEFT_PICKUP, &leftPickupMotor);
-//		robot.link(ROLLER, &rollerMotor);
+		robot.link(RIGHT_PICKUP, &rightPickupMotor);
+		robot.link(LEFT_PICKUP, &leftPickupMotor);
+		robot.link(ROLLER, &rollerMotor);
 		robot.link(LEFT_POT, &leftPot);
 		robot.link(RIGHT_POT, &rightPot);
 		robot.link(PICKUP_UPPER_LEFT_LIMIT, &upperLeftLimit);

@@ -162,7 +162,8 @@ void DrivePickupSubsystem::teleopInit(void){
 	robot.joystick.register_button(DRIVE_ROT_SPEED, 0, 7);
 
 	robot.joystick.register_button(DRIVE_MAG_SPEED, 0, 5);
-	robot.joystick.register_button(DRIVE_AUTO_PICKUP, 0, 8);
+	robot.joystick.register_button(DRIVE_AUTO_PICKUP, 0, 10);
+	robot.joystick.register_button(SWITCH_CAMERA, 0,8,JoystickCache::RISING);
 	robot.joystick.register_button(DRIVE_GOAL, 0 , 1);
 	robot.joystick.register_button(DRIVE_REVERSE, 0, 6, JoystickCache::RISING);
 	robot.joystick.register_button(DRIVE_PICKUP_HEIGHT1, 1, 1);
@@ -210,6 +211,10 @@ void DrivePickupSubsystem::teleopInit(void){
 
 void DrivePickupSubsystem::teleop(void){
 
+
+	if(robot.joystick.button(SWITCH_CAMERA)){
+		SmartDashboard::PutBoolean("useCamera1", !SmartDashboard::GetBoolean("useCamera1", true));
+	}
 
 
 
@@ -407,9 +412,9 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 //					}
 
 					gyroIntegral+=gyroError;
-					if((goalX>=182  && gyroIntegral>0/*&& oldGoalX <182*/) || (goalX<=178  && gyroIntegral<0/*&& oldGoalX >178*/)){
+					if((goalX>=SmartDashboard::GetNumber(goalCenter.n,goalCenter.v)+2  && gyroIntegral<0) || (goalX<=SmartDashboard::GetNumber(goalCenter.n,goalCenter.v)-2  && gyroIntegral>0)){
 						gyroIntegral = 0;
-						std::cout << "WARNGING: Integral Reset" << std::endl;
+						std::cout << "WARNING: Integral Reset" << std::endl;
 					}
 		//			SmartDashboard::PutNumber("Gyro PID Error", gyroPID.mistake);
 					double gyroOutput = 0.0;
@@ -524,18 +529,18 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 
 	if(robot.joystick.button(PICKUP_SET)){
 		if(robot.joystick.button(DRIVE_PICKUP_HEIGHT1))
-			SmartDashboard::PutNumber(pickupHeight1L.n, rightPotValue());
+			SmartDashboard::PutNumber(pickupHeight1.n, rightPotValue());
 		else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT2)){
-			SmartDashboard::PutNumber(pickupHeight2L.n, rightPotValue());
+			SmartDashboard::PutNumber(pickupHeight2.n, rightPotValue());
 		}
 		else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT3)){
-			SmartDashboard::PutNumber(pickupHeight3L.n, rightPotValue());
+			SmartDashboard::PutNumber(pickupHeight3.n, rightPotValue());
 		}
 		else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT4)){
-			SmartDashboard::PutNumber(pickupHeight4L.n, rightPotValue());
+			SmartDashboard::PutNumber(pickupHeight4.n, rightPotValue());
 		}
 		else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT5)){
-			SmartDashboard::PutNumber(pickupHeight5L.n, rightPotValue());
+			SmartDashboard::PutNumber(pickupHeight5.n, rightPotValue());
 		}
 	}
 

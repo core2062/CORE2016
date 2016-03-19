@@ -29,6 +29,7 @@ public:
 	double gyroRate = 0.0;
 	double left = 0.0;
 	double right = 0.0;
+	double direction = 1;
 	double a = SmartDashboard::GetNumber(etherA.n, etherA.v);
 	double b = SmartDashboard::GetNumber(etherB.n, etherB.v);
 
@@ -40,6 +41,17 @@ public:
 	void init(){
 
 		robot.outLog.appendLog("Gyro Turn Action Start");
+		std::cout<<"WARNING: Gyro Turn Start" << std::endl;
+		gyroRate = robot.ahrs->GetYaw();
+		if (gyroRate < gyroSet){
+			direction = 1;
+			std::cout<<"WARNING: Gyro Turn Dir +" << std::endl;
+		}else{
+			direction = -1;
+			std::cout<<"WARNING: Gyro Turn Dir -" << std::endl;
+		}
+
+
 	}
 	void end(){
 		robot.motorMap[BACK_RIGHT]->Set(0.0);
@@ -74,10 +86,25 @@ public:
 			robot.motorMap[FRONT_LEFT]->Set(left);
 			robot.motorMap[BACK_LEFT]->Set(left);
 
-			if(drive_rot == 0)
+			if(direction == 1){
+				if (gyroRate > gyroSet){
+					std::cout<<"WARNING: Gyro Turn End Dir+" << std::endl;
+					return END;
+				}
+			}else{
+				if (gyroRate < gyroSet){
+					std::cout<<"WARNING: Gyro Turn End Dir-" << std::endl;
+					return END;
+				}
+			}
+
+
+			if(drive_rot == 0){
+				std::cout<<"WARNING: Gyro Turn End Norm" << std::endl;
 				return END;
-			else
+			}else{
 				return CONTINUE;
+			}
 	}
 
 	~TurnWithGyroAction(){

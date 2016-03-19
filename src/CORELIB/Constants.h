@@ -71,6 +71,8 @@ enum controllerInputs{
 	PICKUP_SET,
 	ROLLER_AXIS,
 
+	SWITCH_CAMERA,
+
 	HYBRID_GOTO_SDXY,
 
 
@@ -201,9 +203,9 @@ public:
  const smartDB longDistance(std::string("Long Distance"), 5.0);
  const smartDB secondaryLong(std::string("Secondary Long Distance"), 5.0);
  const smartDB lowbarDist(std::string("Low Bar Distance"), 72.0);
- const smartDB pickupHeight1(std::string("Pickup Height 1"), 2.675);
- const smartDB pickupHeight2(std::string("Pickup Height 2"), 1.2);
- const smartDB pickupHeight3(std::string("Pickup Height 3"), 3.7);
+ const smartDB pickupHeight1(std::string("Pickup Height 1"), 1.75);
+ const smartDB pickupHeight2(std::string("Pickup Height 2"), 1.0);
+ const smartDB pickupHeight3(std::string("Pickup Height 3"), 3.34);
  const smartDB pickupHeight4(std::string("Pickup Height 4"), 2.5);
  const smartDB pickupHeight5(std::string("Pickup Height 5"), 2.5);
  const smartDB pickupHeight1L(std::string("Pickup Height 1L"), -1.0);
@@ -233,41 +235,41 @@ public:
 		 &rotationIValue,
 		 &rotationClosePValue,
 		 &rotationCloseIValue,
-		 &etherA,
-		 &etherB,
-		 &blueTowerCompass,
-		 &compass,
-		 &testAuto,
+//		 &etherA,
+//		 &etherB,
+//		 &blueTowerCompass,
+//		 &compass,
+//		 &testAuto,
 		 &shooterReturn,
 		 &quickTurn,
 
 		 &lowbarDist,
 
-		 &testTargetX,
-		 &testTargetY,
-		 &testTargetAngle,
+//		 &testTargetX,
+//		 &testTargetY,
+//		 &testTargetAngle,
 
 		 &goalCenter,
 
-		 &mediumDistance,
-		 &secondaryMedium,
-		 &longDistance,
-		 &secondaryLong,
+//		 &mediumDistance,
+//		 &secondaryMedium,
+//		 &longDistance,
+//		 &secondaryLong,
 		 &pickupHeight1,
 		 &pickupHeight2,
 		 &pickupHeight3,
 		 &pickupHeight4,
 		 &pickupHeight5,
-		 &leftPickupPos,
+//		 &leftPickupPos,
 		 &rightPickupPos,
-		 &liftLevel1,
-		 &liftLevel2,
+//		 &liftLevel1,
+//		 &liftLevel2,
 		 &pickupPValue,
 		 &otherPickupP,
 		 &safePickupP,
 		 &pickupCurrentThresh,
 		 &magneticPotMax,
-		 &leftMagPotBase,
+//		 &leftMagPotBase,
 		 &rightMagPotBase
  };
 
