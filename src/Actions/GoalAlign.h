@@ -36,6 +36,9 @@ class GoalAlign : public OrderAction{
 	double gyroIntegral = 0.0;
 	int goalFlag = 0;
 	double tempP = 0.0;
+	Timer pulseTimer;
+	double pulseLength = 0;
+	int good = 0;
 
 public:
 
@@ -50,11 +53,15 @@ public:
 	void init(){
 		gyroIntegral = 0.0;
 		tempP = SmartDashboard::GetNumber(rotationPValue.n,rotationPValue.v);
+		pulseLength = SmartDashboard::GetNumber(goalPulse.n,goalPulse.v);
 		std::cout << "WARNING: Goal Start" << std::endl;
 		goalFlag = 0;
 		robot.outLog.appendLog("Goal Align Action Start");
+		pulseTimer.Reset();
+		pulseTimer.Start();
 	}
 	void end(){
+		pulseTimer.Stop();
 		robot.motorMap[BACK_RIGHT]->Set(0.0);
 		robot.motorMap[BACK_LEFT]->Set(0.0);
 		robot.motorMap[FRONT_RIGHT]->Set(0.0);
@@ -72,7 +79,7 @@ public:
 
 		goalX = vision.getGoalX();
 
-
+if(pulseTimer.Get()<pulseLength){
 
 
 
@@ -86,15 +93,15 @@ public:
 			drive_rot = 0.0;
 			goalFlag = 0;
 			return CONTINUE;
-		}else if (std::fabs(goalX-(SmartDashboard::GetNumber(goalCenter.n,goalCenter.v))) > 300){
-			gyroIntegral = 0.0;
-			if (goalX>SmartDashboard::GetNumber(goalCenter.n,goalCenter.v)){
-				goalFlag = (goalFlag==4)?4:1;
-				drive_rot = .7;
-			}else{
-				goalFlag = (goalFlag==4)?4:2;
-				drive_rot = -.7;
-			}
+//		}else if (std::fabs(goalX-(SmartDashboard::GetNumber(goalCenter.n,goalCenter.v))) > 300){
+//			gyroIntegral = 0.0;
+//			if (goalX>SmartDashboard::GetNumber(goalCenter.n,goalCenter.v)){
+//				goalFlag = (goalFlag==4)?4:1;
+//				drive_rot = .7;
+//			}else{
+//				goalFlag = (goalFlag==4)?4:2;
+//				drive_rot = -.7;
+//			}
 		}else if (std::fabs(goalX-(SmartDashboard::GetNumber(goalCenter.n,goalCenter.v))) > 90){
 			gyroIntegral = 0.0;
 			if (goalX>SmartDashboard::GetNumber(goalCenter.n,goalCenter.v)){
@@ -132,8 +139,13 @@ public:
 ////						gyroError*=-1;
 //
 //					}
-				if(fabs(gyroError) <=3){
-					return END;
+				if(fabs(goalX-SmartDashboard::GetNumber(goalCenter.n,goalCenter.v)) <=5){
+					good++;
+					if(good>=6 && fabs(goalX-SmartDashboard::GetNumber(goalCenter.n,goalCenter.v)) <=3){
+						std::cout << "WARNING: Aligned" << std::endl;
+						return END;
+					}
+
 				}
 
 //					if(fabs(gyroError) < 4.5)
@@ -150,7 +162,7 @@ public:
 
 				gyroIntegral+=gyroError;
 				if((goalX>=SmartDashboard::GetNumber(goalCenter.n,goalCenter.v)+2  && gyroIntegral<0/*&& oldGoalX <182*/) || (goalX<=SmartDashboard::GetNumber(goalCenter.n,goalCenter.v)-2  && gyroIntegral>0/*&& oldGoalX >178*/)){
-					gyroIntegral = 0;
+					gyroIntegral *= -.05;
 					std::cout << "WARNGING: Integral Reset" << std::endl;
 				}
 	//			SmartDashboard::PutNumber("Gyro PID Error", gyroPID.mistake);
@@ -160,11 +172,11 @@ public:
 //					}else{
 //						gyroOutput = ((SmartDashboard::GetNumber( rotationClosePValue.n,  rotationClosePValue.v)*gyroError) + (SmartDashboard::GetNumber( rotationCloseIValue.n,  rotationCloseIValue.v)*sumIntegral));
 //					}
-				gyroOutput = ((tempP*gyroError) + (SmartDashboard::GetNumber( rotationIValue.n,  rotationIValue.v)*gyroIntegral));
+				gyroOutput = ((tempP*gyroError) + (SmartDashboard::GetNumber( rotationIValue.n,  rotationIValue.v)*gyroIntegral*1.5));
 				//
 //					double gyroOutput = ((SmartDashboard::GetNumber( rotationPValue.n,  rotationPValue.v)*gyroError) + (SmartDashboard::GetNumber( rotationIValue.n,  rotationIValue.v)*gyroIntegral));
 	//			SmartDashboard::PutNumber("Gyro PID Out before", gyroOutput);
-				gyroOutput = gyroOutput > .55 ? .55 : (gyroOutput < -.55 ? -.55 : gyroOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
+				gyroOutput = gyroOutput > .5 ? .5 : (gyroOutput < -.5 ? -.5 : gyroOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
 				drive_rot = gyroOutput;
 
 //					if(((gyroError >0 && oldGyroError <0) || (gyroError < 0 && oldGyroError > 0)) || (goalX >= 478 && goalX <=482)){
@@ -193,6 +205,29 @@ public:
 			robot.motorMap[BACK_LEFT]->Set(left);
 
 			return CONTINUE;
+}else{
+	if(pulseLength<SmartDashboard::GetNumber(goalPulse.n,goalPulse.v)*1.25)
+		gyroIntegral = 0.0;
+	drive_rot = 0.0;
+
+	left = drive_rot;
+	right = -drive_rot;
+
+	robot.motorMap[BACK_RIGHT]->Set(right);
+	robot.motorMap[FRONT_RIGHT]->Set(right);
+	robot.motorMap[FRONT_LEFT]->Set(left);
+	robot.motorMap[BACK_LEFT]->Set(left);
+
+	if(pulseTimer.Get()>SmartDashboard::GetNumber(goalPulse.n,goalPulse.v)/*pulseLength*/*2.0){
+		pulseTimer.Reset();
+//		pulseLength*=1;
+		if(fabs(goalX-SmartDashboard::GetNumber(goalCenter.n,goalCenter.v)) <=15){
+			std::cout << "WARNING: Increase Pulse" << std::endl;
+			pulseLength+=.05;
+		}
+	}
+	return CONTINUE;
+}
 
 
 	}

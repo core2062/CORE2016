@@ -32,10 +32,12 @@ public:
 	double direction = 1;
 	double a = SmartDashboard::GetNumber(etherA.n, etherA.v);
 	double b = SmartDashboard::GetNumber(etherB.n, etherB.v);
+	double maxSpeed = .6;
 
-	TurnWithGyroAction(CORERobot& robot, double gyroSet):
+	TurnWithGyroAction(CORERobot& robot, double gyroSet, double max = .6):
 		OrderAction(robot),
-		gyroSet(gyroSet){
+		gyroSet(gyroSet),
+		maxSpeed(max){
 	};
 
 	void init(){
@@ -72,7 +74,7 @@ public:
 //			SmartDashboard::PutNumber("Gyro PID Error", gyroPID.mistake);
 
 			double drive_rot = (SmartDashboard::GetNumber(rotationPValue.n, rotationPValue.v)*gyroError);
-			drive_rot = drive_rot > .6 ? .6 : (drive_rot < -.6 ? -.6 : drive_rot); //Conditional (Tenerary) Operator limiting values to between 1 and -1
+			drive_rot = drive_rot > maxSpeed ? maxSpeed : (drive_rot < -maxSpeed ? -maxSpeed : drive_rot); //Conditional (Tenerary) Operator limiting values to between 1 and -1
 			if (drive_rot < .05 && drive_rot > -.05){
 				drive_rot = 0;
 			}

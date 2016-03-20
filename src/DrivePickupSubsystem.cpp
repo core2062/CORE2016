@@ -151,6 +151,8 @@ std::string DrivePickupSubsystem::name(void){
 void DrivePickupSubsystem::robotInit(void){
 
 	robot.outLog.appendLog("DriveSubsystem: RobotInit Success");
+	frontLeft.SetEncPosition(0);
+	frontRight.SetEncPosition(0);
 }
 void DrivePickupSubsystem::teleopInit(void){
 
@@ -170,7 +172,9 @@ void DrivePickupSubsystem::teleopInit(void){
 	robot.joystick.register_button(DRIVE_PICKUP_HEIGHT2, 1, 2);
 	robot.joystick.register_button(DRIVE_PICKUP_HEIGHT3, 1, 3);
 	robot.joystick.register_button(DRIVE_PICKUP_HEIGHT4, 1, 4);
-	robot.joystick.register_button(DRIVE_PICKUP_HEIGHT5, 1, 6);
+	robot.joystick.register_button(DRIVE_PICKUP_HEIGHT5, 1, 10);
+	robot.joystick.register_button(ROLLER_IN, 1, 8);
+	robot.joystick.register_button(ROLLER_OUT, 1, 6);
 	robot.joystick.register_button(PICKUP_SET, 1, 7);
 	robot.joystick.register_combo(COMBO5, 0, 3);
 	robot.joystick.register_axis(ROLLER_AXIS, 1, 3);
@@ -286,8 +290,12 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 	}
 	drive_mag2 *= -1;
 
+	double roller = DEADBAND(robot.joystick.axis(ROLLER_AXIS),.05);
+	if(roller == 0){
+		roller = ((robot.joystick.button(ROLLER_OUT))?1:((robot.joystick.button(ROLLER_IN))?-1:0));
+	}
+  	rollerMotor.Set(roller);
 
-  	rollerMotor.Set(DEADBAND(robot.joystick.axis(ROLLER_AXIS),.05));
 
 	if ((drive_rot == 0) && (oldRot != 0.0)){
 		resetQ = 12;

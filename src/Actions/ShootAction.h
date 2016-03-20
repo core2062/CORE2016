@@ -51,45 +51,63 @@ public:
 		robot.outLog.appendLog("Shooter Action End");
 	}
 	ControlFlow autoCall(){
-		if(!flag && robot.pneumaticMap[SHOOTER_LEFT_CYLINDER]->Get() == DoubleSolenoid::kForward) {
-			robot.pneumaticMap[SHOOTER_LEFT_CYLINDER]->Set(DoubleSolenoid::kReverse);
-			robot.pneumaticMap[SHOOTER_RIGHT_CYLINDER]->Set(DoubleSolenoid::kReverse);
-			flag2 = true;
-			timer.Reset();
-		}
-		if(flag2){
-			if(timer.Get() >= loadTime){
-				if(flag2)
-					flag2 = false;
-				return CONTINUE;
-			}
-		}else if(!flag && !flag2){
-			timer.Reset();
+//		if(!flag && robot.pneumaticMap[SHOOTER_LEFT_CYLINDER]->Get() == DoubleSolenoid::kForward) {
+//			robot.pneumaticMap[SHOOTER_LEFT_CYLINDER]->Set(DoubleSolenoid::kReverse);
+//			robot.pneumaticMap[SHOOTER_RIGHT_CYLINDER]->Set(DoubleSolenoid::kReverse);
+//			flag2 = true;
+//			timer.Reset();
+//		}
+//		if(flag2){
+//			if(timer.Get() >= loadTime){
+//				if(flag2)
+//					flag2 = false;
+//				return CONTINUE;
+//			}
+//		}else if(!flag && !flag2){
+//			timer.Reset();
+//			robot.pneumaticMap[SHOOTER_LEFT_CYLINDER]->Set(DoubleSolenoid::kForward);
+//			robot.pneumaticMap[SHOOTER_RIGHT_CYLINDER]->Set(DoubleSolenoid::kForward);
+//			flag = true;
+//			return BACKGROUND;
+//		}
+//
+//		if(timer.Get() >= loadTime && flag){
+//			if(flag3 == false){
+//				timer2.Reset();
+//				timer2.Start();
+//				flag3 = true;
+//			}
+//			if(timer2.Get() > 2.0){// wait time after  reverse for off
+//				robot.pneumaticMap[SHOOTER_LEFT_CYLINDER]->Set(DoubleSolenoid::kOff);
+//				robot.pneumaticMap[SHOOTER_RIGHT_CYLINDER]->Set(DoubleSolenoid::kOff);
+//				return END;
+//			} else {
+//				robot.pneumaticMap[SHOOTER_LEFT_CYLINDER]->Set(DoubleSolenoid::kReverse);
+//				robot.pneumaticMap[SHOOTER_RIGHT_CYLINDER]->Set(DoubleSolenoid::kReverse);
+//				return BACKGROUND;
+//			}
+//
+//		} else {
+//			return BACKGROUND;
+//		}
+		if(timer.Get()<.5){
 			robot.pneumaticMap[SHOOTER_LEFT_CYLINDER]->Set(DoubleSolenoid::kForward);
 			robot.pneumaticMap[SHOOTER_RIGHT_CYLINDER]->Set(DoubleSolenoid::kForward);
-			flag = true;
-			return BACKGROUND;
+		}else if(timer.Get()>.5 && timer.Get()<1.5){
+			robot.pneumaticMap[SHOOTER_LEFT_CYLINDER]->Set(DoubleSolenoid::kReverse);
+			robot.pneumaticMap[SHOOTER_RIGHT_CYLINDER]->Set(DoubleSolenoid::kReverse);
+		}else if(timer.Get()>1.5){
+			robot.pneumaticMap[SHOOTER_LEFT_CYLINDER]->Set(DoubleSolenoid::kOff);
+			robot.pneumaticMap[SHOOTER_RIGHT_CYLINDER]->Set(DoubleSolenoid::kOff);
+			return END;
 		}
+		return CONTINUE;
 
-		if(timer.Get() >= loadTime && flag){
-			if(flag3 == false){
-				timer2.Reset();
-				timer2.Start();
-				flag3 = true;
-			}
-			if(timer2.Get() > 2.0){// wait time after  reverse for off
-				robot.pneumaticMap[SHOOTER_LEFT_CYLINDER]->Set(DoubleSolenoid::kOff);
-				robot.pneumaticMap[SHOOTER_RIGHT_CYLINDER]->Set(DoubleSolenoid::kOff);
-				return END;
-			} else {
-				robot.pneumaticMap[SHOOTER_LEFT_CYLINDER]->Set(DoubleSolenoid::kReverse);
-				robot.pneumaticMap[SHOOTER_RIGHT_CYLINDER]->Set(DoubleSolenoid::kReverse);
-				return BACKGROUND;
-			}
 
-		} else {
-			return BACKGROUND;
-		}
+
+
+
+
 	}
 
 	~ShootAction(){

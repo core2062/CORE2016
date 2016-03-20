@@ -53,8 +53,8 @@ public:
 //			exhaustShooter.Set(false);
 			leftShooter.Set(DoubleSolenoid::kOff);
 			rightShooter.Set(DoubleSolenoid::kOff);
-//			robot.link(SHOOTER_LEFT_CYLINDER, &leftShooter);
-//			robot.link(SHOOTER_RIGHT_CYLINDER, &rightShooter);
+			robot.link(SHOOTER_LEFT_CYLINDER, &leftShooter);
+			robot.link(SHOOTER_RIGHT_CYLINDER, &rightShooter);
 		}
 
 	void robotInit(void);

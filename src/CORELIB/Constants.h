@@ -71,6 +71,9 @@ enum controllerInputs{
 	PICKUP_SET,
 	ROLLER_AXIS,
 
+	ROLLER_IN,
+	ROLLER_OUT,
+
 	SWITCH_CAMERA,
 
 	HYBRID_GOTO_SDXY,
@@ -202,8 +205,26 @@ public:
  const smartDB secondaryMedium(std::string("Secondary Medium Distance"), 5.0);
  const smartDB longDistance(std::string("Long Distance"), 5.0);
  const smartDB secondaryLong(std::string("Secondary Long Distance"), 5.0);
- const smartDB lowbarDist(std::string("Low Bar Distance"), 72.0);
- const smartDB pickupHeight1(std::string("Pickup Height 1"), 1.75);
+
+
+
+ const smartDB autoDefenseTime(std::string("Max Time For Defense"),5.0);
+
+
+
+ const smartDB lowbarDist(std::string("Low Bar Distance"), 45.0);
+
+ const smartDB auto2Turn(std::string("Defense 2 Turn"), 15.0);
+ const smartDB auto5Turn(std::string("Defense 5 Turn"), -25.0);
+
+ const smartDB autoRockwall(std::string("Over Rock Wall"), false);
+ const smartDB autoMoat(std::string("Over Moat"), false);
+
+
+ const smartDB autoDriveBack(std::string("Auto Back Drive"), 50.0);
+
+
+ const smartDB pickupHeight1(std::string("Pickup Height 1"), 2.6);
  const smartDB pickupHeight2(std::string("Pickup Height 2"), 1.0);
  const smartDB pickupHeight3(std::string("Pickup Height 3"), 3.34);
  const smartDB pickupHeight4(std::string("Pickup Height 4"), 2.5);
@@ -224,11 +245,13 @@ public:
  const smartDB pickupShootClearance(std::string("Pickup Safe Min"), 0.0);
  const smartDB goalCenter(std::string("Goal Center"), 480.0);
 
+ const smartDB goalPulse(std::string("Goal Align Pulse"), .15);
+
  const smartDB magneticPotMax(std::string("Pot Max"), 5.0);
  const smartDB leftMagPotBase(std::string("Left Pot Base"), 0.0);
  const smartDB rightMagPotBase(std::string("Right Pot Base"), 0.0);
 
-
+ const smartDB lowbarTurnAngle(std::string("Low Bar Turn Angle"), 25.0);
 
  const std::vector<const smartDB *> sdPointers = {
 		 &rotationPValue,
@@ -243,7 +266,16 @@ public:
 		 &shooterReturn,
 		 &quickTurn,
 
+		 &goalPulse,
+
 		 &lowbarDist,
+		 &lowbarTurnAngle,
+		 &autoDriveBack,
+
+		 &autoRockwall,
+		 &autoMoat,
+
+		 &autoDefenseTime,
 
 //		 &testTargetX,
 //		 &testTargetY,
