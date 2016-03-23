@@ -99,20 +99,69 @@ public:
 				else if(choice=="Obstacle2"){
 
 					//autoControl.add( new DriveAction(robot, toEnc(95.75), NORMAL_SPEED));
-//					autoControl.add( new DriveUntillSettleAction(robot, NORMAL_SPEED, true));
-////TODO: this			autoControl.add( new DriveAction)
-//					autoControl.add( new WaitAction(robot, 2.0));
+					autoControl.add( new DriveUntillSettleAction(robot, (SmartDashboard::GetBoolean(autoRockwall.n,autoRockwall.b))?-NORMAL_SPEED:NORMAL_SPEED, (SmartDashboard::GetBoolean(autoMoat.n,autoMoat.b))?true:false));
+//					autoControl.add( new WaitAction(robot, .5));
+//					autoControl.add( new DriveAction(robot, toEnc(SmartDashboard::GetNumber(autoDriveBack.n,autoDriveBack.v)), -NORMAL_SPEED));
+
+					if(SmartDashboard::GetBoolean(autoRockwall.n,autoRockwall.b)){
+						autoControl.add( new WaitAction(robot, .5));
+						autoControl.add( new TurnWithGyroAction(robot, -170, 1.0));
+
+					}
+
+//TODO: this			autoControl.add( new DriveAction)
+					autoControl.add( new WaitAction(robot, .5));
+					if(SmartDashboard::GetBoolean(autoRockwall.n,autoRockwall.b)){
+						autoControl.add( new ResetYawAction(robot));
+						autoControl.add( new WaitAction(robot, .1));
+
+					}
+//					autoControl.add( new TurnWithGyroAction(robot, 0.0));
+//					autoControl.add( new WaitAction(robot, .5));
 //					autoControl.add( new DriveAction(robot, toEnc(SmartDashboard::GetNumber(lowbarDist.n,lowbarDist.v)),NORMAL_SPEED,1));
-//					autoControl.add( new WaitAction(robot, 2.0));
-//					autoControl.add( new TurnWithGyroAction(robot, 30.0));
-//					autoControl.add( new WaitAction(robot, 2.0));
-					autoControl.add( new GoalAlign(robot, vision));
+//					autoControl.add( new WaitAction(robot, .5));
+					autoControl.add( new PickupArmAction(robot, pickupHeight1, false));
+					autoControl.add( new TurnWithGyroAction(robot, SmartDashboard::GetNumber(auto2Turn.n,auto2Turn.v)));
+					autoControl.add( new WaitAction(robot, .5));
+					autoControl.add( new GoalAlign(robot, vision, VisionSubsystem::RIGHT));
 					autoControl.add( new ShootAction(robot));
-////					autoControl.add( new PickupArmAction(robot, pickupHeight1));
-//					autoControl.add( new ShootAction(robot));
 
 				}
 				else if(choice=="Obstacle3"){
+					//autoControl.add( new DriveAction(robot, toEnc(95.75), NORMAL_SPEED));
+					autoControl.add( new DriveUntillSettleAction(robot, (SmartDashboard::GetBoolean(autoRockwall.n,autoRockwall.b))?-NORMAL_SPEED:NORMAL_SPEED, (SmartDashboard::GetBoolean(autoMoat.n,autoMoat.b))?true:false));
+					autoControl.add( new WaitAction(robot, .5));
+					autoControl.add( new DriveAction(robot, toEnc(SmartDashboard::GetNumber(autoDriveBack.n,autoDriveBack.v)), -NORMAL_SPEED));
+
+					if(SmartDashboard::GetBoolean(autoRockwall.n,autoRockwall.b)){
+						autoControl.add( new WaitAction(robot, .5));
+						autoControl.add( new TurnWithGyroAction(robot, -90, .8));
+						autoControl.add( new WaitAction(robot, .5));
+						autoControl.add( new ResetYawAction(robot));
+						autoControl.add( new WaitAction(robot, .1));
+						autoControl.add( new TurnWithGyroAction(robot, -90, .8));
+					}
+
+//TODO: this			autoControl.add( new DriveAction)
+					autoControl.add( new WaitAction(robot, .5));
+//					if(SmartDashboard::GetBoolean(autoRockwall.n,autoRockwall.b)){
+//						autoControl.add( new ResetYawAction(robot));
+//						autoControl.add( new WaitAction(robot, .1));
+//
+//					}
+//					autoControl.add( new TurnWithGyroAction(robot, 0.0));
+//					autoControl.add( new WaitAction(robot, .5));
+//					autoControl.add( new DriveAction(robot, toEnc(SmartDashboard::GetNumber(lowbarDist.n,lowbarDist.v)),NORMAL_SPEED,1));
+//					autoControl.add( new WaitAction(robot, .5));
+					autoControl.add( new PickupArmAction(robot, pickupHeight1, false));
+//					autoControl.add( new TurnWithGyroAction(robot, SmartDashboard::GetNumber(lowbarTurnAngle.n,lowbarTurnAngle.v)));
+					autoControl.add( new WaitAction(robot, .5));
+					autoControl.add( new GoalAlign(robot, vision));
+					autoControl.add( new ShootAction(robot));
+
+				}
+				else if(choice=="Obstacle4"){
+
 					//autoControl.add( new DriveAction(robot, toEnc(95.75), NORMAL_SPEED));
 					autoControl.add( new DriveUntillSettleAction(robot, (SmartDashboard::GetBoolean(autoRockwall.n,autoRockwall.b))?-NORMAL_SPEED:NORMAL_SPEED, (SmartDashboard::GetBoolean(autoMoat.n,autoMoat.b))?true:false));
 					autoControl.add( new WaitAction(robot, .5));
@@ -127,7 +176,8 @@ public:
 //TODO: this			autoControl.add( new DriveAction)
 					autoControl.add( new WaitAction(robot, .5));
 					if(SmartDashboard::GetBoolean(autoRockwall.n,autoRockwall.b)){
-//						autoControl.add( new ResetYawAction(robot));
+						autoControl.add( new ResetYawAction(robot));
+						autoControl.add( new WaitAction(robot, .1));
 
 					}
 //					autoControl.add( new TurnWithGyroAction(robot, 0.0));
@@ -138,37 +188,41 @@ public:
 //					autoControl.add( new TurnWithGyroAction(robot, SmartDashboard::GetNumber(lowbarTurnAngle.n,lowbarTurnAngle.v)));
 					autoControl.add( new WaitAction(robot, .5));
 					autoControl.add( new GoalAlign(robot, vision));
-//					autoControl.add( new WaitAction(robot, .5));
-					autoControl.add( new ShootAction(robot));
-
-				}
-				else if(choice=="Obstacle4"){
-
-					//autoControl.add( new DriveAction(robot, toEnc(95.75), NORMAL_SPEED));
-					autoControl.add( new DriveUntillSettleAction(robot, NORMAL_SPEED, true));
-//TODO: this			autoControl.add( new DriveAction)
-					autoControl.add( new WaitAction(robot, 2.0));
-					autoControl.add( new DriveAction(robot, toEnc(SmartDashboard::GetNumber(lowbarDist.n,lowbarDist.v)),NORMAL_SPEED,1));
-					autoControl.add( new WaitAction(robot, 2.0));
-					autoControl.add( new TurnWithGyroAction(robot, -25.0));
-					autoControl.add( new WaitAction(robot, 2.0));
-					autoControl.add( new GoalAlign(robot, vision));
-//					autoControl.add( new PickupArmAction(robot, pickupHeight1));
 					autoControl.add( new ShootAction(robot));
 
 				}
 				else if(choice=="Obstacle5"){
 					//autoControl.add( new DriveAction(robot, toEnc(95.75), NORMAL_SPEED));
-					autoControl.add( new DriveUntillSettleAction(robot, NORMAL_SPEED, true));
+					autoControl.add( new DriveUntillSettleAction(robot, (SmartDashboard::GetBoolean(autoRockwall.n,autoRockwall.b))?-NORMAL_SPEED:NORMAL_SPEED, (SmartDashboard::GetBoolean(autoMoat.n,autoMoat.b))?true:false));
+					autoControl.add( new WaitAction(robot, .5));
+					autoControl.add( new DriveAction(robot, toEnc(SmartDashboard::GetNumber(autoDriveBack.n,autoDriveBack.v)), -NORMAL_SPEED));
+
+					if(SmartDashboard::GetBoolean(autoRockwall.n,autoRockwall.b)){
+						autoControl.add( new WaitAction(robot, .5));
+						autoControl.add( new TurnWithGyroAction(robot, -90, .8));
+						autoControl.add( new WaitAction(robot, .5));
+						autoControl.add( new ResetYawAction(robot));
+						autoControl.add( new WaitAction(robot, .1));
+						autoControl.add( new TurnWithGyroAction(robot, -90, .8));
+					}
+
 //TODO: this			autoControl.add( new DriveAction)
-					autoControl.add( new WaitAction(robot, 2.0));
-					autoControl.add( new DriveAction(robot, toEnc(SmartDashboard::GetNumber(lowbarDist.n,lowbarDist.v)),NORMAL_SPEED,1));
-					autoControl.add( new WaitAction(robot, 2.0));
-					autoControl.add( new TurnWithGyroAction(robot, -40.0));
-					autoControl.add( new WaitAction(robot, 2.0));
+					autoControl.add( new WaitAction(robot, .5));
+//					if(SmartDashboard::GetBoolean(autoRockwall.n,autoRockwall.b)){
+//						autoControl.add( new ResetYawAction(robot));
+//						autoControl.add( new WaitAction(robot, .1));
+//
+//					}
+//					autoControl.add( new TurnWithGyroAction(robot, 0.0));
+//					autoControl.add( new WaitAction(robot, .5));
+//					autoControl.add( new DriveAction(robot, toEnc(SmartDashboard::GetNumber(lowbarDist.n,lowbarDist.v)),NORMAL_SPEED,1));
+//					autoControl.add( new WaitAction(robot, .5));
+					autoControl.add( new PickupArmAction(robot, pickupHeight1, false));
+					autoControl.add( new TurnWithGyroAction(robot, SmartDashboard::GetNumber(auto5Turn.n,auto5Turn.v)));
+					autoControl.add( new WaitAction(robot, .5));
 					autoControl.add( new GoalAlign(robot, vision));
-//					autoControl.add( new PickupArmAction(robot, pickupHeight1));
 					autoControl.add( new ShootAction(robot));
+
 
 				}
 				else if(choice=="DropTheBall"){

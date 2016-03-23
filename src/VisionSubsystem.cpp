@@ -53,8 +53,13 @@ if(run){
 		return;
 	}
 
-	goalX = visionTable->GetNumber("goal_x",-1);
-//	std::vector<double> ballXCords = ballTable->GetNumberArray("xCord", llvm::ArrayRef<double>());
+	goalX = visionTable->GetNumber("largestGoal_x",-1);
+	if(goalX == -1){
+		goalX = visionTable->GetNumber("goal_x",-1);
+	}
+	leftGoalX = visionTable->GetNumber("leftGoal_x",-1);
+	rightGoalX = visionTable->GetNumber("rightGoal_x",-1);
+	//	std::vector<double> ballXCords = ballTable->GetNumberArray("xCord", llvm::ArrayRef<double>());
 //	std::vector<double> goalXCords = goalTable->GetNumberArray("xCord", llvm::ArrayRef<double>());
 //	std::vector<double> ballAreas = ballTable->GetNumberArray("area", llvm::ArrayRef<double>());
 //	std::vector<double> goalAreas = goalTable->GetNumberArray("area", llvm::ArrayRef<double>());
@@ -127,8 +132,13 @@ double VisionSubsystem::getBallX(){
 double VisionSubsystem::getBallArea(){
 	return ballArea;
 }
-double VisionSubsystem::getGoalX(){
-	return goalX;
+double VisionSubsystem::getGoalX(Goals goal){
+	if(goal == LEFT)
+		return leftGoalX;
+	else if(goal == RIGHT)
+		return rightGoalX;
+	else
+		return goalX;
 }
 
 

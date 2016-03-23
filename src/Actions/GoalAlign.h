@@ -39,13 +39,15 @@ class GoalAlign : public OrderAction{
 	Timer pulseTimer;
 	double pulseLength = 0;
 	int good = 0;
+	VisionSubsystem::Goals goal = VisionSubsystem::CENTER;
 
 public:
 
 
-	GoalAlign(CORERobot& robot, VisionSubsystem &vision):
+	GoalAlign(CORERobot& robot, VisionSubsystem &vision, VisionSubsystem::Goals goal = VisionSubsystem::CENTER):
 		OrderAction(robot),
-		vision(vision)
+		vision(vision),
+		goal(goal)
 	{
 
 	};
@@ -77,7 +79,7 @@ public:
 		return END;
 #endif
 
-		goalX = vision.getGoalX();
+		goalX = vision.getGoalX(goal);
 
 if(pulseTimer.Get()<pulseLength){
 

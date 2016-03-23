@@ -25,6 +25,8 @@ class VisionSubsystem: public CORESubsystem{
 
 	int ballX = -1;
 	int goalX = -1;
+	int leftGoalX = -1;
+	int rightGoalX = -1;
 	int ballArea = -1;
 
 	bool errorStated = false;
@@ -46,6 +48,12 @@ class VisionSubsystem: public CORESubsystem{
 	Timer checkTimer;
 
 public:
+	enum Goals{
+			LEFT,
+			CENTER,
+			RIGHT
+	};
+
 
 		CANSpeedController::ControlMode mode = CANSpeedController::kPercentVbus;
 //		CANSpeedController::ControlMode mode = CANSpeedController::kVoltage;
@@ -77,7 +85,7 @@ public:
 	double distFromBall(void);
 	double getBallX();
 	double getBallArea();
-	double getGoalX();
+	double getGoalX(Goals goal = CENTER);
 
 void teleopEnd(void);
 };

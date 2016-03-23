@@ -5,8 +5,8 @@
  *      Author: Draven
  */
 
-#ifndef SRC_ACTIONS_SHOOTACTION_H_
-#define SRC_ACTIONS_SHOOTACTION_H_
+#ifndef SRC_ACTIONS_RESETYAWACTION_H_
+#define SRC_ACTIONS_RESETYAWACTION_H_
 
 #include "CoreLIB/COREAuto.h"
 #include "CORELIB/CORERobot.h"
@@ -52,7 +52,7 @@ public:
 
 	}
 
-	~ShootAction(){
+	~ResetYawAction(){
 
 	}
 };
