@@ -221,12 +221,12 @@ public:
  const smartDB autoMoat(std::string("Over Moat"), false);
 
 
- const smartDB autoDriveBack(std::string("Auto Back Drive"), 50.0);
+ const smartDB autoDriveBack(std::string("Auto Back Drive"), 0.0);
 
 
- const smartDB pickupHeight1(std::string("Pickup Height 1"), 2.6);
- const smartDB pickupHeight2(std::string("Pickup Height 2"), 1.0);
- const smartDB pickupHeight3(std::string("Pickup Height 3"), 3.34);
+ const smartDB pickupHeight1(std::string("Pickup Height 1"), 1.5);
+ const smartDB pickupHeight2(std::string("Pickup Height 2"), .35);
+ const smartDB pickupHeight3(std::string("Pickup Height 3"), 3.05);
  const smartDB pickupHeight4(std::string("Pickup Height 4"), 2.5);
  const smartDB pickupHeight5(std::string("Pickup Height 5"), 2.5);
  const smartDB pickupHeight1L(std::string("Pickup Height 1L"), -1.0);
@@ -239,7 +239,7 @@ public:
  const smartDB liftLevel1(std::string("Lift Level 1"), 0.0);
  const smartDB liftLevel2(std::string("Lift Level 2"), 12.0);
  const smartDB pickupPValue(std::string("Pickup P Correction"), 0.0);
- const smartDB otherPickupP(std::string("Pickup P Main Control"), -2.0);
+ const smartDB otherPickupP(std::string("Pickup P Main Control"), -1.50);
  const smartDB safePickupP(std::string("Safe Pickup P"), -1.0);
  const smartDB pickupCurrentThresh(std::string("Pickup Current Threshold"), 0.0);
  const smartDB pickupShootClearance(std::string("Pickup Safe Min"), 0.0);
@@ -247,7 +247,7 @@ public:
 
  const smartDB goalPulse(std::string("Goal Align Pulse"), .15);
 
- const smartDB magneticPotMax(std::string("Pot Max"), 5.0);
+ const smartDB magneticPotMax(std::string("Pot Max"), 4.8);
  const smartDB leftMagPotBase(std::string("Left Pot Base"), 0.0);
  const smartDB rightMagPotBase(std::string("Right Pot Base"), 0.0);
 
