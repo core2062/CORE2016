@@ -178,6 +178,7 @@ void DrivePickupSubsystem::teleopInit(void){
 	robot.joystick.register_button(PICKUP_SET, 1, 7);
 	robot.joystick.register_combo(COMBO5, 0, 3);
 	robot.joystick.register_axis(ROLLER_AXIS, 1, 3);
+	robot.joystick.joystick1.GetPOV();
 
 	frontLeft.SetSafetyEnabled(true);
 	backLeft.SetSafetyEnabled(true);
@@ -214,6 +215,11 @@ void DrivePickupSubsystem::teleopInit(void){
 }
 
 void DrivePickupSubsystem::teleop(void){
+
+
+
+	int POV = robot.joystick.joystick1.GetPOV();
+
 
 
 	if(robot.joystick.button(SWITCH_CAMERA)){
@@ -316,7 +322,14 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 	///////// VISION DRIVE THINGS ////////
 	//////////////////////////////////////
 	int ballX = vision->getBallX();
-	int goalX = vision->getGoalX();
+	int goalX;
+	if(POV == 90){
+		goalX = vision->getGoalX(VisionSubsystem::RIGHT);
+	}else if(POV == 270){
+		goalX = vision->getGoalX(VisionSubsystem::LEFT);
+	}else{
+		goalX = vision->getGoalX();
+	}
 	gyroSet = 0.0;
 
 	if((drive_rot == 0 && drive_mag == 0)){

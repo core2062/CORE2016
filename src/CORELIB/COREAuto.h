@@ -168,8 +168,8 @@ public:
 		}
 	virtual ControlFlow autoCall(void);
 	virtual ~WaitAction(void){};
-	void init(void){}
-	void end(void){}
+	virtual void init(void){}
+	virtual void end(void){}
 };
 
 

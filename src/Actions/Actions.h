@@ -20,5 +20,6 @@
 #include "AutoPickupAction.h"
 #include "GoalAlign.h"
 #include "ResetYawAction.h"
+#include "DriveActionTime.h"
 
 #endif /* SRC_ACTIONS_ACTIONS_H_ */

@@ -212,7 +212,7 @@ public:
 
 
 
- const smartDB lowbarDist(std::string("Low Bar Distance"), 45.0);
+ const smartDB lowbarDist(std::string("Low Bar Distance"), 250.0);
 
  const smartDB auto2Turn(std::string("Defense 2 Turn"), 15.0);
  const smartDB auto5Turn(std::string("Defense 5 Turn"), -25.0);
@@ -222,6 +222,13 @@ public:
 
 
  const smartDB autoDriveBack(std::string("Auto Back Drive"), 0.0);
+
+ const smartDB moatTime(std::string("Moat Time"), 4.0);
+ const smartDB wallTime(std::string("Wall Time"), 4.5);
+ const smartDB rampartTime(std::string("Rampart Time"), 2.5);
+ const smartDB roughTime(std::string("Rough Time"), 2.5);
+ const smartDB rockWallFastDrive(std::string("Rock Wall Dist"), 100.0);
+
 
 
  const smartDB pickupHeight1(std::string("Pickup Height 1"), 1.5);
@@ -274,6 +281,10 @@ public:
 
 		 &autoRockwall,
 		 &autoMoat,
+		 &moatTime,
+		 &wallTime,
+		 &roughTime,
+		 &rampartTime,
 
 		 &autoDefenseTime,
 
