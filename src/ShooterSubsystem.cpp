@@ -1,15 +1,8 @@
-/*
- * ShooterSubsystem.cpp
- *
- *  Created on: Jan 15, 2016
- *      Author: core
- */
 #include "ShooterSubsystem.h"
 
 std::string ShooterSubsystem::name(void){
 	return "Shooter";
 }
-
 void ShooterSubsystem::robotInit(void){
 	robot.joystick.register_button(SHOOTER_FIRE, 1, 5, JoystickCache::RISING);
 	robot.outLog.appendLog("ShooterSubsystem: RobotInit Success");
@@ -19,22 +12,19 @@ void ShooterSubsystem::teleopInit(void){
 	shooterFlag = false;
 	shooterTimer.Reset();
 	shooterTimer.Start();
-
 }
-
 void ShooterSubsystem::teleop(void){
-
 //	double fireTime = SmartDashboard::GetNumber(shooterReturn.n, shooterReturn.v);
 	if (!robot.isHybrid){
 		if (robot.joystick.button(SHOOTER_FIRE) && robot.analogSensorMap[RIGHT_POT]->GetVoltage() < SmartDashboard::GetNumber(pickupHeight1.n,pickupHeight1.v)
-		&& (shooterTimer.Get() >= SmartDashboard::GetNumber(shooterReturn.n, shooterReturn.v) + 3.0)){
+			&& (shooterTimer.Get() >= SmartDashboard::GetNumber(shooterReturn.n, shooterReturn.v) + 3.0)){
 			shooterFlag = true;
 			leftShooter.Set(DoubleSolenoid::kForward);
 			rightShooter.Set(DoubleSolenoid::kForward);
 			shooterTimer.Reset();
 		}
 		if (shooterTimer.Get() >= (SmartDashboard::GetNumber(shooterReturn.n, shooterReturn.v))
-		&& (shooterTimer.Get() <= (SmartDashboard::GetNumber(shooterReturn.n, shooterReturn.v) + 2.5)) && shooterFlag){
+				&& (shooterTimer.Get() <= (SmartDashboard::GetNumber(shooterReturn.n, shooterReturn.v) + 2.5)) && shooterFlag){
 			leftShooter.Set(DoubleSolenoid::kReverse);
 			rightShooter.Set(DoubleSolenoid::kReverse);
 		}
@@ -42,8 +32,6 @@ void ShooterSubsystem::teleop(void){
 			leftShooter.Set(DoubleSolenoid::kOff);
 			rightShooter.Set(DoubleSolenoid::kOff);
 		}
-
-
 //		if (robot.joystick.button(SHOOTER_FIRE) && shooterTimer.Get() >=4.5){
 //			leftShooter.Set(true);
 //			rightShooter.Set(true);
@@ -63,19 +51,13 @@ void ShooterSubsystem::teleop(void){
 ////		exhaustShooter.Set(true);
 ////	}
 
+	}
 }
-}
-
 void ShooterSubsystem::teleopEnd(void){
 	robot.outLog.appendLog("shooter tele end");
-
 }
 void ShooterSubsystem::shoot(void){
 		leftShooter.Set(DoubleSolenoid::kForward);
 		rightShooter.Set(DoubleSolenoid::kForward);
 		shooterTimer.Reset();
 }
-
-
-
-

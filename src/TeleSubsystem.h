@@ -1,10 +1,3 @@
-/*
- * TeleSubsystem.h
- *
- *  Created on: Feb 12, 2016
- *      Author: Joshua
- */
-
 #ifndef TELESUBSYSTEM_H_
 #define TELESUBSYSTEM_H_
 
@@ -19,29 +12,17 @@
 
 using namespace CORE;
 
-
 class TeleSubsystem: public CORESubsystem{
-
-
-
 	double setX = 0.0;
 	double setY = 0.0;
-
 	double oldCompass = 0.0;
-
 	double oldLeftEnc = 0.0;
 	double oldRightEnc = 0.0;
-
 	AutoControl& seq;
 	DrivePickupSubsystem& drive;
-
 public:
-
 	double currentX = 0.0;
 	double currentY = 0.0;
-
-
-
 	std::string name(void){
 		return "TeleSubsystem";
 	}
@@ -49,19 +30,13 @@ public:
 		CORESubsystem(robot),
 		seq(sequen),
 		drive(driv)
-
-		{
-		}
-
+		{}
 	void robotInit(void);
 	void teleopInit(void);
 	void teleop(void);
-	void teleopEnd(void){
-
-	}
+	void teleopEnd(void){}
 	double getHeading(){
-
-#if defined(USE_NAVX)
+	#if defined(USE_NAVX)
 		DriverStation::Alliance color;
 		color = DriverStation::GetInstance().GetAlliance();
 		if(color == DriverStation::Alliance::kBlue){
@@ -71,18 +46,10 @@ public:
 			double total = (robot.ahrs->GetCompassHeading()+SmartDashboard::GetNumber(blueTowerCompass.n,blueTowerCompass.v) + 180);
 			return total>=360?(total-360>=360?total-720:total-360):total;
 		}
-
-#else
+	#else
 		return -1;
-#endif
-
-
+	#endif
 	}
 };
 
-
-
-
-
-
-#endif /* TELESUBSYSTEM_H_ */
+#endif

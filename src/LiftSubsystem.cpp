@@ -1,10 +1,5 @@
-/*
- * liftSubsystem.cpp
- *
- *  Created on: Dec 8, 2015
- *      Author: core
- */
 #include <LiftSubsystem.h>
+
 void LiftSubsystem::robotInit(void){
 	robot.outLog.appendLog("Lift Robot Init");
 }

@@ -1,10 +1,3 @@
-/*
- * ShooterSubsystem.h
- *
- *  Created on: Jan 15, 2016
- *      Author: core
- */
-
 #ifndef SRC_SHOOTERSUBSYSTEM_H_
 #define SRC_SHOOTERSUBSYSTEM_H_
 
@@ -16,25 +9,18 @@
 
 using namespace CORE;
 
-
 class ShooterSubsystem: public CORESubsystem{
-
 	DoubleSolenoid rightShooter;
 	DoubleSolenoid leftShooter;
-
 //	Solenoid leftShooter;
 //	Solenoid rightShooter;
 //	Solenoid backShooter;
 //	Solenoid exhaustShooter;
 	Timer shooterTimer;
-
 	bool shooterFlag = false;
 public:
-
-		CANSpeedController::ControlMode mode = CANSpeedController::kPercentVbus;
-//		CANSpeedController::ControlMode mode = CANSpeedController::kVoltage;
-
-
+	CANSpeedController::ControlMode mode = CANSpeedController::kPercentVbus;
+//	CANSpeedController::ControlMode mode = CANSpeedController::kVoltage;
 	std::string name(void);
 	ShooterSubsystem(CORERobot& robot):
 		CORESubsystem(robot),
@@ -45,7 +31,6 @@ public:
 //		backShooter(2),
 //		exhaustShooter(3),
 		shooterTimer()
-
 		{
 //			leftShooter.Set(false);
 //			rightShooter.Set(false);
@@ -56,7 +41,6 @@ public:
 			robot.link(SHOOTER_LEFT_CYLINDER, &leftShooter);
 			robot.link(SHOOTER_RIGHT_CYLINDER, &rightShooter);
 		}
-
 	void robotInit(void);
 	void teleopInit(void);
 	void teleop(void);
@@ -64,4 +48,4 @@ public:
 	void shoot(void);
 };
 
-#endif /* SRC_SHOOTERSUBSYSTEM_H_ */
+#endif
