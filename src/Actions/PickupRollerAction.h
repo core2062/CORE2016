@@ -28,11 +28,11 @@ class PickupRollerAction : public OrderAction{
 public:
 
 
-	PickupRollerAction(CORERobot& robot, direction dir, bool backround, double duration = 0.1):
+	PickupRollerAction(CORERobot& robot, direction dir, double duration, bool backround = false):
 		OrderAction(robot),
 		directions(dir),
-		backround(backround),
-		duration(duration)
+		duration(duration),
+		backround(backround)
 	{
 
 	};

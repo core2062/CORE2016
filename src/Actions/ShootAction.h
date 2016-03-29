@@ -28,11 +28,13 @@ public:
 	bool flag2 = false;
 	bool flag3 = false;
 	double loadTime;
+	bool background = false;
 
 
 
-	ShootAction(CORERobot& robot, double loadTime = 1.5):
+	ShootAction(CORERobot& robot, bool background = false, double loadTime = 1.5):
 		OrderAction(robot),
+		background(background),
 		loadTime(loadTime)
 	{
 
@@ -101,7 +103,11 @@ public:
 			robot.pneumaticMap[SHOOTER_RIGHT_CYLINDER]->Set(DoubleSolenoid::kOff);
 			return END;
 		}
-		return CONTINUE;
+		if(!background){
+			return CONTINUE;
+		}else{
+			return BACKGROUND;
+		}
 
 
 

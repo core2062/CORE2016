@@ -47,23 +47,38 @@ class GoalAlign : public OrderAction{
 	double pulseLength = 0;
 	int good = 0;
 	VisionSubsystem::Goals goal = VisionSubsystem::CENTER;
+	double maxV = 11;
 
 public:
 
 
-	GoalAlign(CORERobot& robot, VisionSubsystem &vision, VisionSubsystem::Goals goal = VisionSubsystem::CENTER):
+	GoalAlign(CORERobot& robot, VisionSubsystem &vision, VisionSubsystem::Goals goal = VisionSubsystem::CENTER, double maxV = 10.5):
 		OrderAction(robot),
 		vision(vision),
-		goal(goal)
+		goal(goal),
+		maxV(maxV)
 	{
 
 	};
+
+	bool endCondition(int pos = -1){
+		if(robot.pneumaticMap[SHOOTER_LEFT_CYLINDER]->Get() == DoubleSolenoid::kReverse){
+			return true;
+		}else{
+			return false;
+		}
+
+	}
 
 	void init(){
 		gyroIntegral = 0.0;
 		tempP = SmartDashboard::GetNumber(rotationPValue.n,rotationPValue.v);
 		pulseLength = SmartDashboard::GetNumber(goalPulse.n,goalPulse.v);
-		std::cout << "WARNING: Goal Start" << std::endl;
+//		std::cout << "WARNING: Goal Start" << std::endl;
+		robot.motorMap[BACK_RIGHT]->SetControlMode(CANTalon::kVoltage);
+		robot.motorMap[BACK_LEFT]->SetControlMode(CANTalon::kVoltage);
+		robot.motorMap[FRONT_RIGHT]->SetControlMode(CANTalon::kVoltage);
+		robot.motorMap[FRONT_LEFT]->SetControlMode(CANTalon::kVoltage);
 		goalFlag = 0;
 		robot.outLog.appendLog("Goal Align Action Start");
 		controlTimer.Reset();
@@ -75,68 +90,120 @@ public:
 		robot.motorMap[BACK_LEFT]->Set(0.0);
 		robot.motorMap[FRONT_RIGHT]->Set(0.0);
 		robot.motorMap[FRONT_LEFT]->Set(0.0);
+		robot.motorMap[BACK_RIGHT]->SetControlMode(CANTalon::kPercentVbus);
+		robot.motorMap[BACK_LEFT]->SetControlMode(CANTalon::kPercentVbus);
+		robot.motorMap[FRONT_RIGHT]->SetControlMode(CANTalon::kPercentVbus);
+		robot.motorMap[FRONT_LEFT]->SetControlMode(CANTalon::kPercentVbus);
+		std::cout << "WARNING: Goal Alignment End" << std::endl;
 		robot.outLog.appendLog("Goal Align Action End");
 	}
 	ControlFlow autoCall(){
+//		robot.motorMap[BACK_RIGHT]->Set(0.0);
+//		robot.motorMap[BACK_LEFT]->Set(0.0);
+//		robot.motorMap[FRONT_RIGHT]->Set(0.0);
+//		robot.motorMap[FRONT_LEFT]->Set(0.0);
 		goalX = vision.getGoalX(goal);
 		double error = goalX-SmartDashboard::GetNumber(goalCenter.n,goalCenter.v);
 		switch(state){
 		case PULSING:
-			if (fabs(error) > 300){
+			if (fabs(error) > 100){
 				gyroIntegral = 0.0;
 				if (error>0){
 					goalFlag = 1;
-					drive_rot = .7;
+					drive_rot = .55;
 				}else{
 					goalFlag = 2;
-					drive_rot = -.7;
+					drive_rot = -.55;
 				}
-			}else if (fabs(error) > 15){
+			}else if (fabs(error) > 35)
+			{
 				gyroIntegral = 0.0;
 				if (error > 0){
 
 					if(goalFlag != 1 && goalFlag !=4){
-						drive_rot = .65;
-					}else{
 						drive_rot = .55;
+					}else{
+						drive_rot = .45;
 					}
 					goalFlag = (goalFlag==4)?4:1;
 				}else{
 					if(goalFlag!=2 && goalFlag !=4){
-						drive_rot = -.65;
-					}else{
 						drive_rot = -.55;
+					}else{
+						drive_rot = -.45;
+					}
+					goalFlag = (goalFlag==4)?4:2;
+				}
+			}
+			else if (fabs(error) > 10)
+			{
+				gyroIntegral = 0.0;
+					if (error > 0){
+
+					if(goalFlag != 1 && goalFlag !=4){
+						drive_rot = .35;
+					}else{
+						drive_rot = .35;
+					}
+					goalFlag = (goalFlag==4)?4:1;
+				}else{
+					if(goalFlag!=2 && goalFlag !=4){
+						drive_rot = -.35;
+					}else{
+						drive_rot = -.35;
 					}
 					goalFlag = (goalFlag==4)?4:2;
 				}
 			}else{
-				state = WAITING;
-				drive_rot = 0;
+				/*
+				if (error > 0){
+
+					if(goalFlag != 1 && goalFlag !=4){
+						drive_rot = .35;
+					}else{
+						drive_rot = .35;
+					}
+					goalFlag = (goalFlag==4)?4:1;
+				}else{
+					if(goalFlag!=2 && goalFlag !=4){
+						drive_rot = -.35;
+					}else{
+						drive_rot = -.35;
+					}
+					goalFlag = (goalFlag==4)?4:2;
+				}*/
+				drive_rot = 0.0;
+//				controlTimer.Reset();
+//				state = WAITING;
 			}
 			if(controlTimer.Get()>pulseLength){
 				drive_rot = 0.0;
 				controlTimer.Reset();
 				state = WAITING;
+				return CONTINUE;
 			}
 			break;
 		case WAITING:
 			drive_rot = 0.0;
-			if(controlTimer.Get()>.2){
-				state = CHECKING;
+			if(controlTimer.Get()>.1){
+
 				controlTimer.Reset();
 				drive_rot = 0.0;
+				state = CHECKING;
 			}
+			return CONTINUE;
 			break;
 		case CHECKING:
 			drive_rot = 0.0;
-			if(fabs(error) > 20){
+			if(fabs(error) > 12){
+				controlTimer.Reset();
 				state = PULSING;
 				goalFlag = 0;
 				controlTimer.Reset();
-				if(fabs(error)>100){
+				if(fabs(error)>25){
 					pulseLength = 2.0*SmartDashboard::GetNumber(goalPulse.n,goalPulse.v);
-				}else if(fabs(error)<50){
-					pulseLength = .5*SmartDashboard::GetNumber(goalPulse.n,goalPulse.v);
+				}else if(fabs(error)<15){
+					pulseLength = SmartDashboard::GetNumber(goalPulse.n,goalPulse.v);
 				}else{
 					pulseLength = SmartDashboard::GetNumber(goalPulse.n,goalPulse.v);
 				}
@@ -144,18 +211,21 @@ public:
 //				return END;
 			}else{
 				std::cout<< "WARNING: Fine Tuning Start" << std::endl;
+				controlTimer.Reset();
 				state = FINE;
 				good = 0;
 				gyroIntegral=0.0;
+				return CONTINUE;
 			}
 			break;
 		case FINE:
 			if (fabs(error)<=2){
-				if(good>3)
-					return END;
-				good++;
+				if(controlTimer.Get()>.2)
+					return BACKGROUND;
+//				good++;
 			}else{
-				good = 0;
+				controlTimer.Reset();
+//				good = 0;
 			}
 			if(oldGoalX!=goalX){
 				oldGyroYaw = robot.ahrs->GetYaw();
@@ -174,9 +244,10 @@ public:
 			}
 			break;
 		}
-
-		left = drive_rot;
-		right = -drive_rot;
+		SmartDashboard::PutNumber("Drive Rot", drive_rot);
+		SmartDashboard::PutNumber("Align State", state);
+		left = drive_rot*maxV;
+		right = -drive_rot*maxV;
 
 		robot.motorMap[BACK_RIGHT]->Set(right);
 		robot.motorMap[FRONT_RIGHT]->Set(right);

@@ -44,17 +44,17 @@ void AutoControl::iter(){
 			a->init();
 		}
 		break;
+	}
 	if(!background.empty()){
-	std::vector<Action*>::iterator it = background.begin();
-	while(it != background.end()){
-		ControlFlow return_val = (*it)->call(position);
-		if (return_val == END){
-			it = background.erase(it);
-		}else{
-			++it;
+		std::vector<Action*>::iterator it = background.begin();
+		while(it != background.end()){
+			ControlFlow return_val = (*it)->call(position);
+			if (return_val == END){
+				it = background.erase(it);
+			}else{
+				++it;
+			}
 		}
-	}
-	}
 	}
 	}
 	/*

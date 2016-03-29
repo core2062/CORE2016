@@ -110,7 +110,7 @@ public:
 				pitches.erase(pitches.begin());
 			}
 		}
-		if((toRamp && downRamp) && ((useMean)?getPositive():pitch >-1.0) /*rateThreshold*/ /*&& pitch > -rampThreshold*/){ //may need this if it stops before fully off the ramp, but if added it may go to far
+		if(((robot.digitalSensorMap[BACK_PHOTO]->Get() == true && robot.digitalSensorMap[FRONT_PHOTO]->Get() == true) &&(toRamp && downRamp)) && ((useMean)?getPositive():pitch >-1.0) /*rateThreshold*/ /*&& pitch > -rampThreshold*/){ //may need this if it stops before fully off the ramp, but if added it may go to far
 			return END;
 		} else{
 			robot.motorMap[BACK_RIGHT]->Set(speed);

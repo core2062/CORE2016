@@ -5,14 +5,14 @@
  *      Author: Draven
  */
 
-#ifndef SRC_ACTIONS_DRIVEACTIONTIMEPHOTO_H_
-#define SRC_ACTIONS_DRIVEACTIONTIMEPHOTO_H_
+#ifndef SRC_ACTIONS_DRIVEACTIONTIMEPHOTOGYRO_H_
+#define SRC_ACTIONS_DRIVEACTIONTIMEPHOTOGYRO_H_
 
 #include "CoreLib/COREAuto.h"
 
 using namespace CORE;
 
-class DriveActionTimePhoto : public WaitAction{
+class DriveActionTimePhotoGyro : public WaitAction{
 
 	double avgDist = 0.0;
 	double speed = 0;
@@ -25,7 +25,7 @@ public:
 
 
 
-	DriveActionTimePhoto(CORERobot& robot, double duration, double speed, bool trip = true):
+	DriveActionTimePhotoGyro(CORERobot& robot, double duration, double speed, bool trip = true):
 		WaitAction(robot, duration),
 		speed(speed),
 		trip(trip)
@@ -42,6 +42,10 @@ public:
 		robot.motorMap[FRONT_RIGHT]->Set(speed);
 		robot.motorMap[BACK_LEFT]->Set(speed);
 		robot.motorMap[BACK_RIGHT]->Set(speed);
+		robot.motorMap[BACK_RIGHT]->SetControlMode(CANTalon::kPercentVbus);
+		robot.motorMap[BACK_LEFT]->SetControlMode(CANTalon::kPercentVbus);
+		robot.motorMap[FRONT_RIGHT]->SetControlMode(CANTalon::kPercentVbus);
+		robot.motorMap[FRONT_LEFT]->SetControlMode(CANTalon::kPercentVbus);
 
 	}
 	void end(){
@@ -53,8 +57,11 @@ public:
 	}
 
 	ControlFlow autoCall(){
-
-		if(robot.digitalSensorMap[BACK_PHOTO]->Get() == trip && robot.digitalSensorMap[FRONT_PHOTO]->Get() == trip){
+		robot.motorMap[FRONT_LEFT]->Set(speed);
+		robot.motorMap[FRONT_RIGHT]->Set(speed);
+		robot.motorMap[BACK_LEFT]->Set(speed);
+		robot.motorMap[BACK_RIGHT]->Set(speed);
+		if((robot.digitalSensorMap[BACK_PHOTO]->Get() == trip && robot.digitalSensorMap[FRONT_PHOTO]->Get() == trip) && fabs(robot.ahrs->GetPitch()) <8){
 			return WaitAction::autoCall();
 		}else{
 			return CONTINUE;
@@ -63,7 +70,7 @@ public:
 	}
 
 
-	~DriveActionTimePhoto(){
+	~DriveActionTimePhotoGyro(){
 
 	}
 };

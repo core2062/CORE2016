@@ -50,7 +50,7 @@ void DrivePickupSubsystem::setPickupHeight(smartDB height){
 //	double otherPickupOutput = (SmartDashboard::GetNumber(otherPickupP.n, otherPickupP.v)*otherPickupError);
 //	otherPickupOutput = otherPickupOutput > 0.8 ? 0.8 : (otherPickupOutput < -0.8 ? -0.8 : otherPickupOutput);
 
-	double otherPickupError =  (rightPotValue()) - SmartDashboard::GetNumber(height.n, height.v);
+	double otherPickupError =  /*((fabs(oldPickupVal-rightPotValue())>.5)?oldPickupVal:*/rightPotValue()/*)*/ - SmartDashboard::GetNumber(height.n, height.v);
 	SmartDashboard::PutNumber("Main Pickup Error", otherPickupError);
 	double otherPickupOutput = (SmartDashboard::GetNumber(otherPickupP.n, otherPickupP.v)*otherPickupError);
 	otherPickupOutput = otherPickupOutput > 0.8 ? 0.8 : (otherPickupOutput < -0.8 ? -0.8 : otherPickupOutput); //Conditional (Tenerary) Operator limiting values to between 1 and -1
@@ -60,6 +60,7 @@ void DrivePickupSubsystem::setPickupHeight(smartDB height){
 	SmartDashboard::PutNumber("Main Pickup Output", otherPickupOutput);
 	leftPickupMotor.Set(DEADBAND(otherPickupOutput, .05));
 	rightPickupMotor.Set(DEADBAND(otherPickupOutput, .05));
+//	oldPickupVal = rightPotValue();
 };
 void DrivePickupSubsystem::setPickupHeight(smartDB height, smartDB heightL){
 
@@ -195,7 +196,7 @@ void DrivePickupSubsystem::teleopInit(void){
 	leftPickupMotor.Set(0.0);
 	rightPickupMotor.Set(0.0);
 	rollerMotor.Set(0.0);
-
+	oldHeight = rightPotValue();
 
 
 	std::string* arcade = new std::string("arcade");
@@ -218,6 +219,7 @@ void DrivePickupSubsystem::teleopInit(void){
 void DrivePickupSubsystem::teleop(void){
 
 	SmartDashboard::PutBoolean("Back Photoeye" , backPhotoeye.Get());
+	SmartDashboard::PutBoolean("Front Photoeye" , frontPhotoeye.Get());
 
 	int POV = robot.joystick.joystick1.GetPOV();
 
@@ -237,7 +239,7 @@ if(robot.joystick.button(HYBRID_GOAL_ALIGN)){
 		std::cout << "WARNING: Entering Hybrid" << std::endl;
 		robot.isHybrid = true;
 		teleSeq->reset();
-		teleSeq->add( new GoalAlign(robot, *vision, ((POV == 90)?VisionSubsystem::RIGHT:(POV == 270)?VisionSubsystem::LEFT:VisionSubsystem::CENTER)));
+		teleSeq->add( new GoalAlign(robot, *vision, ((POV == 90)?VisionSubsystem::RIGHT:(POV == 270)?VisionSubsystem::LEFT:VisionSubsystem::CENTER), 11.0));
 		teleSeq->add( new ShootAction(robot));
 		teleSeq->add( new StopHybridAction(robot));
 		teleSeq->init();
@@ -284,7 +286,10 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
   SmartDashboard::PutNumber(std::string("Right Encoder"), frontRight.GetEncPosition());
 #endif
 	if (!robot.isHybrid){
-
+		robot.motorMap[BACK_RIGHT]->SetControlMode(CANTalon::kPercentVbus);
+		robot.motorMap[BACK_LEFT]->SetControlMode(CANTalon::kPercentVbus);
+		robot.motorMap[FRONT_RIGHT]->SetControlMode(CANTalon::kPercentVbus);
+		robot.motorMap[FRONT_LEFT]->SetControlMode(CANTalon::kPercentVbus);
 
   	SmartDashboard::PutNumber(leftPickupPos.n,leftPotValue());
   	SmartDashboard::PutNumber(rightPickupPos.n,rightPotValue());
@@ -576,6 +581,13 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 	}
 
 
+
+	double roller = DEADBAND(robot.joystick.axis(ROLLER_AXIS),.05);
+	if(roller == 0){
+		roller = ((robot.joystick.button(ROLLER_OUT))?1:((robot.joystick.button(ROLLER_IN))?-1:0));
+	}
+  	rollerMotor.Set(roller);
+
 //Pickup Height's buttons
 	if(DEADBAND(robot.joystick.axis(PICKUP_AXIS),.05) != 0){
 //		double rightPickupError =  rightPotValue() - leftPotValue() ;
@@ -599,13 +611,16 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 //		pickupSet = (pickupSet<0 && rightPot.GetVoltage() < SmartDashboard::GetNumber(pickupHeight3.n,pickupHeight3.v))?pickupSet:0.0;
 		leftPickupMotor.Set(pickupSet);
 		rightPickupMotor.Set(pickupSet);
+		oldHeight = rightPotValue();
 	}
-	else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT1))
+	else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT1)){
+		oldHeight = SmartDashboard::GetNumber(pickupHeight1.n,pickupHeight1.v);
 		if(SmartDashboard::GetNumber(pickupHeight1L.n, pickupHeight1L.v) == -1)
 			setPickupHeight(pickupHeight1);
 		else
 			setPickupHeight(pickupHeight1,pickupHeight1L);
-	else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT2)){
+	}else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT2)){
+		oldHeight = SmartDashboard::GetNumber(pickupHeight2.n,pickupHeight2.v);
 		rollerMotor.Set(1.0);
 		if(SmartDashboard::GetNumber(pickupHeight2L.n, pickupHeight2L.v) == -1)
 			setPickupHeight(pickupHeight2);
@@ -613,6 +628,7 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 			setPickupHeight(pickupHeight2,pickupHeight2L);
 	}
 	else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT3)){
+		oldHeight = SmartDashboard::GetNumber(pickupHeight3.n,pickupHeight3.v);
 		double setP = SmartDashboard::GetNumber(otherPickupP.n,otherPickupP.v);
 		SmartDashboard::PutNumber(otherPickupP.n, SmartDashboard::GetNumber(safePickupP.n,safePickupP.v));
 		if(SmartDashboard::GetNumber(pickupHeight3L.n, pickupHeight3L.v) == -1)
@@ -622,6 +638,7 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 		SmartDashboard::PutNumber(otherPickupP.n, setP);
 	}
 	else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT4)){
+		oldHeight = SmartDashboard::GetNumber(pickupHeight4.n,pickupHeight4.v);
 		if(SmartDashboard::GetNumber(pickupHeight4L.n, pickupHeight4L.v) == -1)
 			setPickupHeight(pickupHeight4);
 		else
@@ -629,18 +646,15 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 		rollerMotor.Set(-.5);
 	}
 	else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT5)){
+		oldHeight = SmartDashboard::GetNumber(pickupHeight5.n,pickupHeight5.v);
 		if(SmartDashboard::GetNumber(pickupHeight5L.n, pickupHeight5L.v) == -1)
 			setPickupHeight(pickupHeight5);
 		else
 			setPickupHeight(pickupHeight5,pickupHeight5L);
 	}else{
-		setPickupHeight(rightPotValue());
+		setPickupHeight(oldHeight);
 	}
-	double roller = DEADBAND(robot.joystick.axis(ROLLER_AXIS),.05);
-	if(roller == 0){
-		roller = ((robot.joystick.button(ROLLER_OUT))?1:((robot.joystick.button(ROLLER_IN))?-1:0));
-	}
-  	rollerMotor.Set(roller);
+
 
 
 }

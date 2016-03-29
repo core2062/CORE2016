@@ -22,6 +22,7 @@
 #include "ResetYawAction.h"
 #include "DriveActionTime.h"
 #include "DriveActionTimePhoto.h"
+#include "DriveActionTimePhotoGyro.h"
 #include "StopHybridAction.h"
 #include "DrivePhotoAction.h"
 

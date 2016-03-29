@@ -31,6 +31,8 @@ class DrivePickupSubsystem: public CORESubsystem{
 		double tempP = 0.0;
 		bool oldGoalButton = false;
 		int goalFlag = 0;
+		double oldPickupVal = 0.0;
+		double oldHeight = 0.0;
 public:
 		double drive_mag = 0.0;
 		double drive_rot = 0.0;

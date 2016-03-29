@@ -14,10 +14,9 @@ using namespace CORE;
 
 class DrivePhotoAction : public OrderAction{
 
-	double avgDist = 0.0;
-	double targetDistance = 0;
 	double speed = 0;
 	digitalSensors eye;
+	bool trip = false;
 	//variables
 
 public:
@@ -31,11 +30,11 @@ public:
 	virtual bool backgroundCondition(){
 		return false;
 	}
-	DrivePhotoAction(CORERobot& robot, double targetDistance, double speed, digitalSensors eye):
+	DrivePhotoAction(CORERobot& robot, double speed, digitalSensors eye, bool trip):
 		OrderAction(robot),
-		targetDistance(targetDistance),
 		speed(speed),
-		eye(eye)
+		eye(eye),
+		trip(trip)
 		{
 
 		};
@@ -61,7 +60,7 @@ public:
 		robot.motorMap[FRONT_RIGHT]->Set(speed);
 		robot.motorMap[BACK_LEFT]->Set(speed);
 		robot.motorMap[BACK_RIGHT]->Set(speed);
-		if(robot.digitalSensorMap[eye]->Get()){
+		if(robot.digitalSensorMap[eye]->Get() == trip){
 			return END;
 		}
 		return CONTINUE;
