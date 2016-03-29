@@ -168,6 +168,7 @@ void DrivePickupSubsystem::teleopInit(void){
 	robot.joystick.register_button(SWITCH_CAMERA, 0,8,JoystickCache::RISING);
 	robot.joystick.register_button(DRIVE_GOAL, 0 , 1);
 	robot.joystick.register_button(DRIVE_REVERSE, 0, 6, JoystickCache::RISING);
+	robot.joystick.register_button(HYBRID_GOAL_ALIGN, 0, 2, JoystickCache::RISING);
 	robot.joystick.register_button(DRIVE_PICKUP_HEIGHT1, 1, 1);
 	robot.joystick.register_button(DRIVE_PICKUP_HEIGHT2, 1, 2);
 	robot.joystick.register_button(DRIVE_PICKUP_HEIGHT3, 1, 3);
@@ -216,7 +217,7 @@ void DrivePickupSubsystem::teleopInit(void){
 
 void DrivePickupSubsystem::teleop(void){
 
-
+	SmartDashboard::PutBoolean("Back Photoeye" , backPhotoeye.Get());
 
 	int POV = robot.joystick.joystick1.GetPOV();
 
@@ -227,7 +228,21 @@ void DrivePickupSubsystem::teleop(void){
 	}
 
 
-
+if(robot.joystick.button(HYBRID_GOAL_ALIGN)){
+	if(robot.isHybrid){
+		std::cout << "WARNING: Leaving Hybrid" << std::endl;
+		robot.isHybrid = false;
+		teleSeq->reset();
+	}else{
+		std::cout << "WARNING: Entering Hybrid" << std::endl;
+		robot.isHybrid = true;
+		teleSeq->reset();
+		teleSeq->add( new GoalAlign(robot, *vision, ((POV == 90)?VisionSubsystem::RIGHT:(POV == 270)?VisionSubsystem::LEFT:VisionSubsystem::CENTER)));
+		teleSeq->add( new ShootAction(robot));
+		teleSeq->add( new StopHybridAction(robot));
+		teleSeq->init();
+	}
+}
 
 if (robot.joystick.combo(COMBO5)){
 	robot.ahrs->ZeroYaw();
@@ -296,11 +311,7 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 	}
 	drive_mag2 *= -1;
 
-	double roller = DEADBAND(robot.joystick.axis(ROLLER_AXIS),.05);
-	if(roller == 0){
-		roller = ((robot.joystick.button(ROLLER_OUT))?1:((robot.joystick.button(ROLLER_IN))?-1:0));
-	}
-  	rollerMotor.Set(roller);
+
 
 
 	if ((drive_rot == 0) && (oldRot != 0.0)){
@@ -367,7 +378,6 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 
 			if(oldGoalX!=goalX){
 				oldGyroYaw = robot.ahrs->GetYaw();
-
 			}
 
 			if (goalX == -1){
@@ -626,7 +636,11 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 	}else{
 		setPickupHeight(rightPotValue());
 	}
-
+	double roller = DEADBAND(robot.joystick.axis(ROLLER_AXIS),.05);
+	if(roller == 0){
+		roller = ((robot.joystick.button(ROLLER_OUT))?1:((robot.joystick.button(ROLLER_IN))?-1:0));
+	}
+  	rollerMotor.Set(roller);
 
 
 }

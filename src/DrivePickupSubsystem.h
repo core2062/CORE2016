@@ -7,13 +7,14 @@
 #include <iostream>
 #include <math.h>
 #include "VisionSubsystem.h"
-//#include "CORELIB/COREAuto.h"
-#include "Actions/DriveAction.h"
+#include "CORELIB/COREAuto.h"
+#include "Actions/Actions.h"
 #include "CORELIB/COREPID.h"
 
 using namespace CORE;
 
 class DrivePickupSubsystem: public CORESubsystem{
+		AutoControl* teleSeq;
     	bool oldRot = 0.0;
     	int resetQ = 0;
     	double gyroSet = 0.0;
@@ -46,15 +47,15 @@ public:
 		AnalogInput leftPot;
 		AnalogInput rightPot;
 		AnalogInput jumper;
-		DigitalInput upperLeftLimit;
-		DigitalInput lowerLeftLimit;
-		DigitalInput upperRightLimit;
-		DigitalInput lowerRightLimit;
+		DigitalInput backPhotoeye;
+		DigitalInput frontPhotoeye;
 	std::string name(void);
-	DrivePickupSubsystem(CORERobot& robot, VisionSubsystem& vision):
+	DrivePickupSubsystem(CORERobot& robot, VisionSubsystem& vision, AutoControl& tele):
 		CORESubsystem(robot),
+		teleSeq(&tele),
 		driveChooser(),
 		vision(&vision),
+
 		frontLeft(13),
 		backLeft(12),
 		frontRight(10),
@@ -65,10 +66,8 @@ public:
 		leftPot(0),
 		rightPot(1),
 		jumper(2),
-		upperLeftLimit(1),
-		lowerLeftLimit(2),
-		upperRightLimit(3),
-		lowerRightLimit(4)
+		backPhotoeye(0),
+		frontPhotoeye(1)
 		//gyroITimer()
 		{
 			robot.link(BACK_RIGHT, &backRight);
@@ -80,10 +79,8 @@ public:
 			robot.link(ROLLER, &rollerMotor);
 			robot.link(LEFT_POT, &leftPot);
 			robot.link(RIGHT_POT, &rightPot);
-			robot.link(PICKUP_UPPER_LEFT_LIMIT, &upperLeftLimit);
-			robot.link(PICKUP_LOWER_LEFT_LIMIT, &lowerLeftLimit);
-			robot.link(PICKUP_UPPER_RIGHT_LIMIT, &upperRightLimit);
-			robot.link(PICKUP_LOWER_RIGHT_LIMIT, &lowerRightLimit);
+			robot.link(BACK_PHOTO, &backPhotoeye);
+			robot.link(FRONT_PHOTO, &frontPhotoeye);
 			rightPickupMotor.SetSafetyEnabled(false);
 			leftPickupMotor.SetSafetyEnabled(false);
 			rollerMotor.SetSafetyEnabled(false);

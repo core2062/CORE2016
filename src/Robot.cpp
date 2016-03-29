@@ -30,7 +30,7 @@ public:
 		autoControl(robot.outLog),
 		teleControl(robot.outLog),
 //		lift(robot),
-		drive(robot, vision),
+		drive(robot, vision, teleControl),
 		shooter(robot),
 		vision(robot)
 		#if defined(ULTIMATE_MODE)

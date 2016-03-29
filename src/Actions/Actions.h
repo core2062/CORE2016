@@ -21,5 +21,8 @@
 #include "GoalAlign.h"
 #include "ResetYawAction.h"
 #include "DriveActionTime.h"
+#include "DriveActionTimePhoto.h"
+#include "StopHybridAction.h"
+#include "DrivePhotoAction.h"
 
 #endif /* SRC_ACTIONS_ACTIONS_H_ */

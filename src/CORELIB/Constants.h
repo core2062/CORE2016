@@ -66,7 +66,8 @@ enum controllerInputs{
 	COMBO2,
 	COMBO3,
 	COMBO4,
-	COMBO5
+	COMBO5,
+	HYBRID_GOAL_ALIGN
 };
 enum digitalSensors{
 	BOT_LIFT_LIMIT,
@@ -74,7 +75,9 @@ enum digitalSensors{
 	PICKUP_UPPER_RIGHT_LIMIT,
 	PICKUP_LOWER_RIGHT_LIMIT,
 	PICKUP_UPPER_LEFT_LIMIT,
-	PICKUP_LOWER_LEFT_LIMIT
+	PICKUP_LOWER_LEFT_LIMIT,
+	BACK_PHOTO,
+	FRONT_PHOTO,
 };
 enum analogSensors{
 	GYRO,
@@ -199,7 +202,7 @@ const smartDB otherPickupP(std::string("Pickup P Main Control"), -1.50);
 const smartDB safePickupP(std::string("Safe Pickup P"), -1.0);
 const smartDB pickupCurrentThresh(std::string("Pickup Current Threshold"), 0.0);
 const smartDB pickupShootClearance(std::string("Pickup Safe Min"), 0.0);
-const smartDB goalCenter(std::string("Goal Center"), 480.0);
+const smartDB goalCenter(std::string("Goal Center"), 472.0);
 const smartDB goalPulse(std::string("Goal Align Pulse"), .15);
 const smartDB magneticPotMax(std::string("Pot Max"), 4.8);
 const smartDB leftMagPotBase(std::string("Left Pot Base"), 0.0);
