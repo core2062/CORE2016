@@ -1,4 +1,3 @@
-
 #include "CORERobot.h"
 
 using namespace CORE;
@@ -140,6 +139,3 @@ double CORERobot::getLoopWait(){
 	return loopTime;
 }
 // void CORERobot::link()
-
-
-

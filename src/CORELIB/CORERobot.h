@@ -44,6 +44,7 @@ public:
 //#if defined(USE_NAVX)
 #if defined(ENABLE_AHRS)
     AHRS *ahrs;
+    ZXGestureSensor gestureSensor;
 #elif defined(ENABLE_IMU_ADVANCED)
         IMUAdvanced *ahrs;
 #elif defined(ENABLE_IMU) // ENABLE_IMU
@@ -61,7 +62,8 @@ public:
 		subsystems(),
 		serial_port(),
 		joystick(),
-		outLog()
+		outLog(),
+		gestureSensor(I2C::Port::kOnboard)
 	{}
 
 	void add(CORESubsystem& subsystem);
