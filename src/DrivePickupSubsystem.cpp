@@ -174,7 +174,8 @@ void DrivePickupSubsystem::teleopInit(void){
 	robot.joystick.register_button(DRIVE_PICKUP_HEIGHT2, 1, 2);
 	robot.joystick.register_button(DRIVE_PICKUP_HEIGHT3, 1, 3);
 	robot.joystick.register_button(DRIVE_PICKUP_HEIGHT4, 1, 4);
-	robot.joystick.register_button(DRIVE_PICKUP_HEIGHT5, 1, 10);
+	robot.joystick.register_button(DRIVE_PICKUP_HEIGHT5, 1, 9);
+	robot.joystick.register_button(GESTURE_BUTTON, 1, 10);
 	robot.joystick.register_button(ROLLER_IN, 1, 8);
 	robot.joystick.register_button(ROLLER_OUT, 1, 6);
 	robot.joystick.register_button(PICKUP_SET, 1, 7);
@@ -580,11 +581,15 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 		}
 	}
 
-
-
-	double roller = DEADBAND(robot.joystick.axis(ROLLER_AXIS),.05);
-	if(roller == 0){
-		roller = ((robot.joystick.button(ROLLER_OUT))?1:((robot.joystick.button(ROLLER_IN))?-1:0));
+	double roller;
+	if(!robot.joystick.button(GESTURE_BUTTON)){
+		roller = DEADBAND(robot.joystick.axis(ROLLER_AXIS),.05);
+		if(roller == 0){
+			roller = ((robot.joystick.button(ROLLER_OUT))?1:((robot.joystick.button(ROLLER_IN))?-1:0));
+		}
+	}else{
+		double gesError = roller - SmartDashboard::GetNumber(gestureCenter.n,gestureCenter.v);
+		roller = gesError*SmartDashboard::GetNumber(gestureP.n,gestureP.v);
 	}
   	rollerMotor.Set(roller);
 

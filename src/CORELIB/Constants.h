@@ -67,7 +67,8 @@ enum controllerInputs{
 	COMBO3,
 	COMBO4,
 	COMBO5,
-	HYBRID_GOAL_ALIGN
+	HYBRID_GOAL_ALIGN,
+	GESTURE_BUTTON
 };
 enum digitalSensors{
 	BOT_LIFT_LIMIT,
@@ -208,6 +209,8 @@ const smartDB magneticPotMax(std::string("Pot Max"), 4.8);
 const smartDB leftMagPotBase(std::string("Left Pot Base"), 0.0);
 const smartDB rightMagPotBase(std::string("Right Pot Base"), 0.0);
 const smartDB lowbarTurnAngle(std::string("Low Bar Turn Angle"), 25.0);
+const smartDB gestureCenter(std::string("Gesture Sensor Center"), 160.0);
+const smartDB gestureP(std::string("Gesture Sensor P"), .05);
 const std::vector<const smartDB *> sdPointers = {
 	&rotationPValue,
 	&rotationIValue,
@@ -231,6 +234,9 @@ const std::vector<const smartDB *> sdPointers = {
 	&roughTime,
 	&rampartTime,
 	&autoDefenseTime,
+
+	&gestureCenter,
+	&gestureP,
 	//&testTargetX,
 	//&testTargetY,
 	//&testTargetAngle,
