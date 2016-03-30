@@ -95,10 +95,10 @@ public:
 		if(timer.Get()<.5){
 			robot.pneumaticMap[SHOOTER_LEFT_CYLINDER]->Set(DoubleSolenoid::kForward);
 			robot.pneumaticMap[SHOOTER_RIGHT_CYLINDER]->Set(DoubleSolenoid::kForward);
-		}else if(timer.Get()>.5 && timer.Get()<1.5){
+		}else if(timer.Get()>.5 && timer.Get()<.75){
 			robot.pneumaticMap[SHOOTER_LEFT_CYLINDER]->Set(DoubleSolenoid::kReverse);
 			robot.pneumaticMap[SHOOTER_RIGHT_CYLINDER]->Set(DoubleSolenoid::kReverse);
-		}else if(timer.Get()>1.5){
+		}else if(timer.Get()>.75){
 			robot.pneumaticMap[SHOOTER_LEFT_CYLINDER]->Set(DoubleSolenoid::kOff);
 			robot.pneumaticMap[SHOOTER_RIGHT_CYLINDER]->Set(DoubleSolenoid::kOff);
 			return END;

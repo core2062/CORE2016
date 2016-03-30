@@ -108,7 +108,9 @@ public:
 				autoControl.add(new DriveActionTimePhotoGyro(robot, SmartDashboard::GetNumber(roughTime.n,roughTime.v), NORMAL_SPEED));
 			}
 			autoControl.add( new PickupArmAction(robot, pickupHeight1, true));
-//			autoControl.add( new DrivePhotoAction(robot, -NORMAL_SPEED, BACK_PHOTO, false));
+			if(defense != "RockWall"){
+				autoControl.add( new DrivePhotoAction(robot, -NORMAL_SPEED*.75, FRONT_PHOTO, false));
+			}
 			autoControl.add( new WaitAction(robot, .25));
 			if(choice == "Lowbar"){
 				autoControl.add( new TurnWithGyroAction(robot, SmartDashboard::GetNumber(lowbarTurnAngle.n,lowbarTurnAngle.v)));

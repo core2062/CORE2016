@@ -119,7 +119,7 @@ public:
 					goalFlag = 2;
 					drive_rot = -.55;
 				}
-			}else if (fabs(error) > 35)
+			}else if (fabs(error) > 50)
 			{
 				gyroIntegral = 0.0;
 				if (error > 0){
@@ -139,7 +139,7 @@ public:
 					goalFlag = (goalFlag==4)?4:2;
 				}
 			}
-			else if (fabs(error) > 18)
+			else if (fabs(error) > 48)
 			{
 				gyroIntegral = 0.0;
 					if (error > 0){
@@ -199,7 +199,7 @@ public:
 			break;
 		case CHECKING:
 			drive_rot = 0.0;
-			if(fabs(error) > 20){
+			if(fabs(error) > 50){
 				controlTimer.Reset();
 				state = PULSING;
 				goalFlag = 0;
@@ -225,7 +225,7 @@ public:
 			}
 			break;
 		case FINE:
-			if (fabs(error)<=3){
+			if (fabs(error)<=2){
 				if(controlTimer.Get()>.2)
 					return BACKGROUND;
 //				good++;

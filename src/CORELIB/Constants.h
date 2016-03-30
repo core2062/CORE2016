@@ -154,9 +154,9 @@ public:
 	 }
 };
 */
-const smartDB rotationPValue(std::string("Rotation P"), 0.1);
-const smartDB rotationIValue(std::string("Rotation I"), 0.03);
-const smartDB rotationDValue(std::string("Rotation D"), 0.001);
+const smartDB rotationPValue(std::string("Rotation P"), 0.055);
+const smartDB rotationIValue(std::string("Rotation I"), 0.025);
+const smartDB rotationDValue(std::string("Rotation D"), 0.0085);
 const smartDB rotationClosePValue(std::string("Rotation Close P"), 0.0);
 const smartDB rotationCloseIValue(std::string("Rotation Close I"), 0.1);
 const smartDB etherA(std::string("Ether A"), 1.0);
