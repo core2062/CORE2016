@@ -580,21 +580,12 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 			SmartDashboard::PutNumber(pickupHeight5.n, rightPotValue());
 		}
 	}
-	SmartDashboard::PutNumber("Gesture Sensor X", robot.gestureSensor.getXValue());
-	double roller;
-	if(!robot.joystick.button(GESTURE_BUTTON)){
-		roller = DEADBAND(robot.joystick.axis(ROLLER_AXIS),.05);
-		if(roller == 0){
-			roller = ((robot.joystick.button(ROLLER_OUT))?1:((robot.joystick.button(ROLLER_IN))?-1:0));
-		}
-	}else{
-		double gesError = robot.gestureSensor.getXValue() - SmartDashboard::GetNumber(gestureCenter.n,gestureCenter.v);
-		roller = gesError*SmartDashboard::GetNumber(gestureP.n,gestureP.v);
-	}
-  	rollerMotor.Set(roller);
+
 
 //Pickup Height's buttons
 	if(DEADBAND(robot.joystick.axis(PICKUP_AXIS),.05) != 0){
+		seenSmall = false;
+		intaking = false;
 //		double rightPickupError =  rightPotValue() - leftPotValue() ;
 //		SmartDashboard::PutNumber("Right Pickup Error", rightPickupError);
 //		double rightPickupOutput = (SmartDashboard::GetNumber(pickupPValue.n, pickupPValue.v)*rightPickupError);
@@ -619,20 +610,26 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 		oldHeight = rightPotValue();
 	}
 	else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT1)){
+		seenSmall = false;
+		intaking = false;
 		oldHeight = SmartDashboard::GetNumber(pickupHeight1.n,pickupHeight1.v);
 		if(SmartDashboard::GetNumber(pickupHeight1L.n, pickupHeight1L.v) == -1)
 			setPickupHeight(pickupHeight1);
 		else
 			setPickupHeight(pickupHeight1,pickupHeight1L);
 	}else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT2)){
+//		seenSmall = false;
 		oldHeight = SmartDashboard::GetNumber(pickupHeight2.n,pickupHeight2.v);
-		rollerMotor.Set(1.0);
+//		rollerMotor.Set(1.0);
+		intaking = true;
 		if(SmartDashboard::GetNumber(pickupHeight2L.n, pickupHeight2L.v) == -1)
 			setPickupHeight(pickupHeight2);
 		else
 			setPickupHeight(pickupHeight2,pickupHeight2L);
 	}
 	else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT3)){
+		seenSmall = false;
+		intaking = false;
 		oldHeight = SmartDashboard::GetNumber(pickupHeight3.n,pickupHeight3.v);
 		double setP = SmartDashboard::GetNumber(otherPickupP.n,otherPickupP.v);
 		SmartDashboard::PutNumber(otherPickupP.n, SmartDashboard::GetNumber(safePickupP.n,safePickupP.v));
@@ -643,6 +640,8 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 		SmartDashboard::PutNumber(otherPickupP.n, setP);
 	}
 	else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT4)){
+		seenSmall = false;
+		intaking = false;
 		oldHeight = SmartDashboard::GetNumber(pickupHeight4.n,pickupHeight4.v);
 		if(SmartDashboard::GetNumber(pickupHeight4L.n, pickupHeight4L.v) == -1)
 			setPickupHeight(pickupHeight4);
@@ -651,19 +650,47 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 //		rollerMotor.Set(-.5);
 	}
 	else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT5)){
+		seenSmall = false;
+		intaking = false;
 		oldHeight = SmartDashboard::GetNumber(pickupHeight5.n,pickupHeight5.v);
 		if(SmartDashboard::GetNumber(pickupHeight5L.n, pickupHeight5L.v) == -1)
 			setPickupHeight(pickupHeight5);
 		else
 			setPickupHeight(pickupHeight5,pickupHeight5L);
 	}else{
+		seenSmall = false;
+		intaking = false;
 		double setP = SmartDashboard::GetNumber(otherPickupP.n,otherPickupP.v);
 		SmartDashboard::PutNumber(otherPickupP.n, SmartDashboard::GetNumber(safePickupP.n,safePickupP.v));
 		setPickupHeight(oldHeight);
 		SmartDashboard::PutNumber(otherPickupP.n, setP);
 	}
 
+	SmartDashboard::PutNumber("Gesture Sensor X", robot.gestureSensor.getXValue());
+	double roller;
 
+if(intaking){
+	if(robot.gestureSensor.getXValue() <115){
+		seenSmall = true;
+	}
+	if((seenSmall && robot.gestureSensor.valueReady()) && (robot.gestureSensor.getXValue() <130 && robot.gestureSensor.getXValue() > 110)){
+		double gesError = robot.gestureSensor.getXValue() - SmartDashboard::GetNumber(gestureCenter.n,gestureCenter.v);
+		roller = gesError*SmartDashboard::GetNumber(gestureP.n,gestureP.v);
+//		roller = (roller<0)?0:roller;
+	}else{
+		roller = .75;
+	}
+}else if(!robot.joystick.button(GESTURE_BUTTON)){
+	roller = DEADBAND(robot.joystick.axis(ROLLER_AXIS),.05);
+	if(roller == 0){
+		roller = ((robot.joystick.button(ROLLER_OUT))?1:((robot.joystick.button(ROLLER_IN))?-1:0));
+	}
+}else if (robot.gestureSensor.valueReady()){
+	double gesError = robot.gestureSensor.getXValue() - SmartDashboard::GetNumber(gestureCenter.n,gestureCenter.v);
+	roller = gesError*SmartDashboard::GetNumber(gestureP.n,gestureP.v);
+
+}
+	rollerMotor.Set(roller);
 
 }
 

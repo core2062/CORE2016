@@ -25,5 +25,6 @@
 #include "DriveActionTimePhotoGyro.h"
 #include "StopHybridAction.h"
 #include "DrivePhotoAction.h"
+#include "GestureRollerAction.h"
 
 #endif /* SRC_ACTIONS_ACTIONS_H_ */

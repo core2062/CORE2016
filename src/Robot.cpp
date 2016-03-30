@@ -108,6 +108,7 @@ public:
 				autoControl.add(new DriveActionTimePhotoGyro(robot, SmartDashboard::GetNumber(roughTime.n,roughTime.v), NORMAL_SPEED));
 			}
 			autoControl.add( new PickupArmAction(robot, pickupHeight1, true));
+//			autoControl.add( new DrivePhotoAction(robot, -NORMAL_SPEED, BACK_PHOTO, false));
 			autoControl.add( new WaitAction(robot, .25));
 			if(choice == "Lowbar"){
 				autoControl.add( new TurnWithGyroAction(robot, SmartDashboard::GetNumber(lowbarTurnAngle.n,lowbarTurnAngle.v)));
@@ -134,10 +135,18 @@ public:
         	autoControl.add( new GoalAlign(robot, vision, VisionSubsystem::RIGHT));
         	autoControl.add( new ShootAction(robot, false));
         }else if(choice == "DropTheBall"){
+
         	autoControl.add( new PickupRollerAction(robot,IN,1.5,true));
         	autoControl.add( new PickupArmAction(robot, pickupHeight2, false));
         	autoControl.add( new WaitAction(robot, .25));
-        	autoControl.add( new DriveAction(robot, toEnc(SmartDashboard::GetNumber(lowbarDist.n,lowbarDist.v)),.6,1));
+
+        	autoControl.add( new DriveAction(robot, toEnc(20),.6,1));
+        	autoControl.add( new TurnWithGyroAction(robot, -20));
+        	autoControl.add( new DriveAction(robot, toEnc(50),.6,1));
+        	autoControl.add( new TurnWithGyroAction(robot, 20));
+        	autoControl.add( new WaitAction(robot, .25));
+
+        	autoControl.add( new DriveAction(robot, toEnc(SmartDashboard::GetNumber(lowbarDist.n,lowbarDist.v)-50),.6,1));
         	autoControl.add( new PickupArmAction(robot, pickupHeight1, true));
         	autoControl.add( new PickupRollerAction(robot,IN,1.0,true));
         	autoControl.add( new WaitAction(robot, .1));
@@ -148,6 +157,18 @@ public:
         	autoControl.add( new WaitAction(robot, .5));
         	autoControl.add( new TurnWithGyroAction(robot, 0.0));
         	autoControl.add( new DriveAction(robot, toEnc(SmartDashboard::GetNumber(lowbarDist.n,lowbarDist.v)),-.6,1));
+
+        	autoControl.add( new PickupRollerAction(robot,IN,1.5,true));
+        	autoControl.add( new PickupArmAction(robot, pickupHeight2, false));
+        	autoControl.add( new WaitAction(robot, .25));
+
+        	autoControl.add( new DriveAction(robot, toEnc(SmartDashboard::GetNumber(lowbarDist.n,lowbarDist.v)),.6,1));
+        	autoControl.add( new PickupArmAction(robot, pickupHeight1, true));
+        	autoControl.add( new PickupRollerAction(robot,IN,1.0,true));
+        	autoControl.add( new WaitAction(robot, .1));
+        	autoControl.add( new TurnWithGyroAction(robot, SmartDashboard::GetNumber(lowbarTurnAngle.n,lowbarTurnAngle.v)));
+        	autoControl.add( new GoalAlign(robot, vision, VisionSubsystem::LEFT));
+        	autoControl.add( new ShootAction(robot, true));
 
 
         }

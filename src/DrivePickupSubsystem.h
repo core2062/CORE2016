@@ -33,6 +33,8 @@ class DrivePickupSubsystem: public CORESubsystem{
 		int goalFlag = 0;
 		double oldPickupVal = 0.0;
 		double oldHeight = 0.0;
+		bool intaking = false;
+		bool seenSmall = false;
 public:
 		double drive_mag = 0.0;
 		double drive_rot = 0.0;

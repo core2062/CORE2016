@@ -210,7 +210,7 @@ const smartDB magneticPotMax(std::string("Pot Max"), 4.8);
 const smartDB leftMagPotBase(std::string("Left Pot Base"), 0.0);
 const smartDB rightMagPotBase(std::string("Right Pot Base"), 0.0);
 const smartDB lowbarTurnAngle(std::string("Low Bar Turn Angle"), 25.0);
-const smartDB gestureCenter(std::string("Gesture Sensor Center"), 118.0);
+const smartDB gestureCenter(std::string("Gesture Sensor Center"), 120.0);
 const smartDB gestureP(std::string("Gesture Sensor P"), -.2);
 const std::vector<const smartDB *> sdPointers = {
 	&rotationPValue,
