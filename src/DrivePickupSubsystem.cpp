@@ -348,7 +348,7 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 		goalX = vision->getGoalX();
 	}
 	gyroSet = 0.0;
-
+	SmartDashboard::PutNumber("Goal X", goalX);
 	if((drive_rot == 0 && drive_mag == 0)){
 
 		if(robot.joystick.button(DRIVE_AUTO_PICKUP)){
@@ -580,7 +580,7 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 			SmartDashboard::PutNumber(pickupHeight5.n, rightPotValue());
 		}
 	}
-
+	SmartDashboard::PutNumber("Gesture Sensor X", robot.gestureSensor.getXValue());
 	double roller;
 	if(!robot.joystick.button(GESTURE_BUTTON)){
 		roller = DEADBAND(robot.joystick.axis(ROLLER_AXIS),.05);
@@ -588,7 +588,7 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 			roller = ((robot.joystick.button(ROLLER_OUT))?1:((robot.joystick.button(ROLLER_IN))?-1:0));
 		}
 	}else{
-		double gesError = roller - SmartDashboard::GetNumber(gestureCenter.n,gestureCenter.v);
+		double gesError = robot.gestureSensor.getXValue() - SmartDashboard::GetNumber(gestureCenter.n,gestureCenter.v);
 		roller = gesError*SmartDashboard::GetNumber(gestureP.n,gestureP.v);
 	}
   	rollerMotor.Set(roller);
@@ -648,7 +648,7 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 			setPickupHeight(pickupHeight4);
 		else
 			setPickupHeight(pickupHeight4,pickupHeight4L);
-		rollerMotor.Set(-.5);
+//		rollerMotor.Set(-.5);
 	}
 	else if(robot.joystick.button(DRIVE_PICKUP_HEIGHT5)){
 		oldHeight = SmartDashboard::GetNumber(pickupHeight5.n,pickupHeight5.v);
@@ -657,7 +657,10 @@ SmartDashboard::PutNumber( compass.n, robot.ahrs->GetCompassHeading());
 		else
 			setPickupHeight(pickupHeight5,pickupHeight5L);
 	}else{
+		double setP = SmartDashboard::GetNumber(otherPickupP.n,otherPickupP.v);
+		SmartDashboard::PutNumber(otherPickupP.n, SmartDashboard::GetNumber(safePickupP.n,safePickupP.v));
 		setPickupHeight(oldHeight);
+		SmartDashboard::PutNumber(otherPickupP.n, setP);
 	}
 
 

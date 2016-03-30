@@ -48,6 +48,9 @@ class GoalAlign : public OrderAction{
 	int good = 0;
 	VisionSubsystem::Goals goal = VisionSubsystem::CENTER;
 	double maxV = 11;
+	double oldError = 0.0;
+//	double oldTime = 0.0;
+	Timer dTimer;
 
 public:
 
@@ -103,6 +106,7 @@ public:
 //		robot.motorMap[FRONT_RIGHT]->Set(0.0);
 //		robot.motorMap[FRONT_LEFT]->Set(0.0);
 		goalX = vision.getGoalX(goal);
+		SmartDashboard::PutNumber("Goal X", goalX);
 		double error = goalX-SmartDashboard::GetNumber(goalCenter.n,goalCenter.v);
 		switch(state){
 		case PULSING:
@@ -135,7 +139,7 @@ public:
 					goalFlag = (goalFlag==4)?4:2;
 				}
 			}
-			else if (fabs(error) > 10)
+			else if (fabs(error) > 18)
 			{
 				gyroIntegral = 0.0;
 					if (error > 0){
@@ -195,7 +199,7 @@ public:
 			break;
 		case CHECKING:
 			drive_rot = 0.0;
-			if(fabs(error) > 12){
+			if(fabs(error) > 20){
 				controlTimer.Reset();
 				state = PULSING;
 				goalFlag = 0;
@@ -212,6 +216,8 @@ public:
 			}else{
 				std::cout<< "WARNING: Fine Tuning Start" << std::endl;
 				controlTimer.Reset();
+				dTimer.Reset();
+				dTimer.Start();
 				state = FINE;
 				good = 0;
 				gyroIntegral=0.0;
@@ -219,7 +225,7 @@ public:
 			}
 			break;
 		case FINE:
-			if (fabs(error)<=2){
+			if (fabs(error)<=3){
 				if(controlTimer.Get()>.2)
 					return BACKGROUND;
 //				good++;
@@ -233,15 +239,23 @@ public:
 			gyroSet  = oldGyroYaw+((error)/(SmartDashboard::GetNumber(goalCenter.n,goalCenter.v)))*(VISION_H_FOV/2.0);
 			double gyroError = gyroSet - robot.ahrs->GetYaw();
 			gyroIntegral+=gyroError;
+			double deriv = (gyroError-oldError)/(dTimer.Get());
+			dTimer.Reset();
+//			if((goalX>=SmartDashboard::GetNumber(goalCenter.n,goalCenter.v)+2  && gyroIntegral<0) || (goalX<=SmartDashboard::GetNumber(goalCenter.n,goalCenter.v)-2  && gyroIntegral>0)){
+//				gyroIntegral = 0;
+//				std::cout << "Integral Reset" << std::endl;
+//			}
 //			if(fabs(error)>10){
 //				gyroIntegral = 0;
 //			}
-			double gyroOutput = ((tempP*gyroError) + (SmartDashboard::GetNumber( rotationIValue.n,  rotationIValue.v)*gyroIntegral));
+			double gyroOutput = ((tempP*gyroError) + (SmartDashboard::GetNumber( rotationIValue.n,  rotationIValue.v)*gyroIntegral) + (SmartDashboard::GetNumber( rotationDValue.n,  rotationDValue.v)*deriv));
 			gyroOutput = gyroOutput > .35 ? .35 : (gyroOutput < -.35 ? -.35 : gyroOutput);
 			drive_rot = gyroOutput;
 			if(fabs(gyroOutput) == .35){
 				gyroIntegral-=gyroError;
 			}
+
+			oldError = gyroError;
 			break;
 		}
 		SmartDashboard::PutNumber("Drive Rot", drive_rot);

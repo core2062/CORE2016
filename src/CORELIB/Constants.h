@@ -156,6 +156,7 @@ public:
 */
 const smartDB rotationPValue(std::string("Rotation P"), 0.1);
 const smartDB rotationIValue(std::string("Rotation I"), 0.03);
+const smartDB rotationDValue(std::string("Rotation D"), 0.001);
 const smartDB rotationClosePValue(std::string("Rotation Close P"), 0.0);
 const smartDB rotationCloseIValue(std::string("Rotation Close I"), 0.1);
 const smartDB etherA(std::string("Ether A"), 1.0);
@@ -187,7 +188,7 @@ const smartDB rockWallFastDrive(std::string("Rock Wall Dist"), 100.0);
 const smartDB pickupHeight1(std::string("Pickup Height 1"), 1.528);
 const smartDB pickupHeight2(std::string("Pickup Height 2"), .5);
 const smartDB pickupHeight3(std::string("Pickup Height 3"), 3.17);
-const smartDB pickupHeight4(std::string("Pickup Height 4"), 2.5);
+const smartDB pickupHeight4(std::string("Pickup Height 4"), .884);
 const smartDB pickupHeight5(std::string("Pickup Height 5"), 2.5);
 const smartDB pickupHeight1L(std::string("Pickup Height 1L"), -1.0);
 const smartDB pickupHeight2L(std::string("Pickup Height 2L"), -1.0);
@@ -209,11 +210,12 @@ const smartDB magneticPotMax(std::string("Pot Max"), 4.8);
 const smartDB leftMagPotBase(std::string("Left Pot Base"), 0.0);
 const smartDB rightMagPotBase(std::string("Right Pot Base"), 0.0);
 const smartDB lowbarTurnAngle(std::string("Low Bar Turn Angle"), 25.0);
-const smartDB gestureCenter(std::string("Gesture Sensor Center"), 160.0);
-const smartDB gestureP(std::string("Gesture Sensor P"), .05);
+const smartDB gestureCenter(std::string("Gesture Sensor Center"), 118.0);
+const smartDB gestureP(std::string("Gesture Sensor P"), -.2);
 const std::vector<const smartDB *> sdPointers = {
 	&rotationPValue,
 	&rotationIValue,
+	&rotationDValue,
 	&rotationClosePValue,
 	&rotationCloseIValue,
 //	&etherA,

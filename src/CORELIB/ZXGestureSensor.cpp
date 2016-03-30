@@ -12,14 +12,14 @@ gestureSensor(port, I2C_ADR)
 }
 int ZXGestureSensor::getZValue(void) {
 	byte buffer[1];
-	if(!gestureSensor.Read(ZX_ZPOS, 1, buffer))
+	if(gestureSensor.Read(ZX_ZPOS, 1, buffer))
 		return -1;
 	else
 		return (int)buffer[0];
 }
 int ZXGestureSensor::getXValue(void) {
 	byte buffer[1];
-	if(!gestureSensor.Read(ZX_XPOS, 1, buffer))
+	if(gestureSensor.Read(ZX_XPOS, 1, buffer))
 		return -1;
 	else
 		return (int)buffer[0];

@@ -91,7 +91,7 @@ if(run){
 //		}
 //
 //		SmartDashboard::PutNumber("Goal Area", goalAreas[0]);
-		SmartDashboard::PutNumber("Goal X", goalX);
+
 }else if (checkTimer.Get() >=5.0){
 	try{
 		visionTable = NetworkTable::GetTable("Vision");
